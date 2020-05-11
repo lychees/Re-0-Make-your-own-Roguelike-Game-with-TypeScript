@@ -22,6 +22,35 @@ class Player {
     draw() {
         game.map.display.draw(this.x, this.y, this.ch, this.color);
     }
+    act() {
+        game.engine.lock();
+        window.addEventListener("keydown", this);
+    }     
+    handleEvent(e) {
+        var keyMap = {};
+        keyMap[38] = 0;
+        keyMap[33] = 1;
+        keyMap[39] = 2;
+        keyMap[34] = 3;
+        keyMap[40] = 4;
+        keyMap[35] = 5;
+        keyMap[37] = 6;
+        keyMap[36] = 7;
+     
+        var code = e.keyCode;     
+        if (!(code in keyMap)) { return; }
+     
+        var d = ROT.DIRS[8][keyMap[code]];
+        var xx = this.x + d[0];
+        var yy = this.y + d[1];     
+        if (!((xx+","+yy) in game.map.layer)) { return; }
+        game.map.display.draw(this.x, this.y, game.map.layer[this.x+","+this.y]);
+        this.x = xx;
+        this.y = yy;
+        this.draw();
+        window.removeEventListener("keydown", this);
+        game.engine.unlock();        
+    }    
 }
 
 class Map {
@@ -74,9 +103,14 @@ class Game {
     
     map: Map;
     player: Player;
+    engine: any;
 
     init() {
-        this.map = new Map();             
+        this.map = new Map();                     
+        let scheduler = new ROT.Scheduler.Simple();
+        scheduler.add(this.player, true);
+        this.engine = new ROT.Engine(scheduler);
+        this.engine.start();
         this.draw();
     }
     draw() {        
