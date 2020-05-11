@@ -6,6 +6,8 @@ module.exports = {
 
   entry: [
     path.resolve(__dirname, "src/main.ts"),
+    path.resolve(__dirname, "src/logs.ts"),
+    path.resolve(__dirname, "src/camera.ts"),
     path.resolve(__dirname, "style/style.css"),
   ],
   output: {
