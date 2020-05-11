@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-
+import * as $ from "jquery";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 30;
@@ -214,11 +214,11 @@ let Logs = {
 	
 	init: function() {
         var elem = $('<div>').attr({
-            id: 'notifications',
-            className: 'notifications'
+            id: 'logs',
+            class: 'logs'
         });    
-        $('<div>').attr('id', 'notifyGradient').appendTo(elem);        
-        elem.appendTo($(".notification")); 
+        $('<div>').attr('id', 'logs_gradient').appendTo(elem);        
+        //elem.appendTo($("#logs")); 
 	},
 	
 	logs: [],			
@@ -231,8 +231,8 @@ let Logs = {
 	},
 	
 	clearHidden: function() {
-		var bottom = $('#notifyGradient').position().top + $('#notifyGradient').outerHeight(true);		
-		$('.notification').each(function() {		
+		var bottom = $('#logs_gradient').position().top + $('#logs_gradient').outerHeight(true);		
+		$('.logs').each(function() {		
 			if($(this).position().top > bottom){
 				$(this).remove();
 			}		
@@ -240,7 +240,7 @@ let Logs = {
 	},
 	
 	printMessage: function(t) {
-		var text = $('<div>').addClass('notification').css('opacity', '0').text(t).prependTo('div#notifications');
+		var text = $('<div>').addClass('logs').css('opacity', '0').text(t).prependTo('div#logs');
 		text.animate({opacity: 1}, 500, 'linear', () => {
 			this.clearHidden();
 		});
