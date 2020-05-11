@@ -50,7 +50,24 @@ export class Map {
             this.agents.push(r);
         }
     }
-    light(key) {        
+    
+    pass(key: string) {
+        if (this.layer[key] !== "　") return false;
+
+        let parts = key.split(",");
+        let x = parseInt(parts[0]);
+        let y = parseInt(parts[1]);
+        
+        for (let i=0;i<this.agents.length;++i) {
+            let a = this.agents[i];
+            if (a.x === x && a.x === x  && a.hp > 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    light(key: string) {        
         let t = this.layer[key];
         return t === "　";        
     }

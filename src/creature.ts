@@ -25,6 +25,10 @@ class Creature {
     color: string;
     dir: number;
     
+    hp: number; HP: number; _HP: number;
+    mp: number; MP: number; _MP: number;
+    sp: number; SP: number; _SP: number;
+
     str: number; dex: number; con: number;
     int: number; wis: number; cha: number;
 
