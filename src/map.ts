@@ -1,16 +1,11 @@
 import * as ROT from "rot-js";
-import { game } from "./main.ts";
-import { Player } from "./creature.ts";
+import { game, rand, pop_random } from "./main.ts";
+import { Player, Rat, Snake } from "./creature.ts";
 
-const MAP_WIDTH = 60;
-const MAP_HEIGHT = 30;
+const MAP_WIDTH = 15;
+const MAP_HEIGHT = 15;
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 25;
-
-export function pop_random(A: Array<[number, number]>): [number, number] {
-    var index = Math.floor(ROT.RNG.getUniform() * A.length);    
-    return A[0];
-}
 
 export class Map {
     display: any;
@@ -18,6 +13,7 @@ export class Map {
     height: number;
     layer: {};
     shadow: {};
+    agents: Array<any>;
 
     constructor() {
         this.display = new ROT.Display({
@@ -43,6 +39,16 @@ export class Map {
 
         let p = pop_random(free_cells);
         game.player = new Player(p[0], p[1]);
+
+        this.agents = Array<any>();
+        this.agents.push(game.player);
+        
+        for (let i=0;i<20;++i) {            
+            let p = pop_random(free_cells);
+            let r = new Rat(p[0], p[1]);
+            console.log(p);
+            this.agents.push(r);
+        }
     }
     light(key) {        
         let t = this.layer[key];
@@ -81,6 +87,10 @@ export class Map {
                 let key = xx+','+yy;
                 this.draw_tile_at(x, y, key);
         	}
+        }
+
+        for (let i=0;i<this.agents.length;++i) {
+            this.agents[i].draw();
         }
         this.gen_shadow(game.player, '#555');
     }
