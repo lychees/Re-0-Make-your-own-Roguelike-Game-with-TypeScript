@@ -218,7 +218,8 @@ let Logs = {
             class: 'logs'
         });    
         $('<div>').attr('id', 'logs_gradient').appendTo(elem);        
-        //elem.appendTo($("#logs")); 
+        elem.appendTo($("div#wrapper")); 
+        console.log($("div#wrapper"));
 	},
 	
 	logs: [],			
