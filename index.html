@@ -1,13 +1,50 @@
 <!doctype html>
 <html>
 <meta charset="utf-16"/>
+
+<style>
+	/* Notifications */
+	div#notifications {
+		position: absolute;
+		top: 20px;
+		left: 1020px;
+		height: 700px;
+		width: 200px;
+		overflow: hidden;
+	}
+
+	div#notifications div.notification {
+		margin-bottom: 10px;
+	}
+
+	div#notifyGradient {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+		background-color: white;
+		background: -webkit-linear-gradient(
+			rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%
+		);
+		background: linear-gradient(
+			rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%
+		);
+		filter: alpha(
+			Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=500
+		);
+	}	
+</style>
+
 <head>
 	<title>[程序基础] Re:0 从 0 开始打造你的 Roguelike 游戏</title>
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap" rel="stylesheet">
 </head>
 <body>
-	<script>exports = {"__esModule": true};</script>		
-	<script src="node_modules/rot-js/dist/rot.min.js"></script>
-	<script src="built/main.js"></script>
+	<div class="notification"></div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>exports = {"__esModule": true};</script>		
+<script src="node_modules/rot-js/dist/rot.min.js"></script>
+<script src="built/main.js"></script>
 </html>

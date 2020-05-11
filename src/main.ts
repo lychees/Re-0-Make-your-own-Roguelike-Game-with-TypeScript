@@ -55,9 +55,6 @@ class Camera {
     }
 }
 
-
-
-
 class Player {
     x: number;
     y: number;
@@ -73,8 +70,7 @@ class Player {
         this.dir = 1;
     }
     draw() {
-        game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
-        // game.map.display.draw(this.x, this.y, this.ch, this.color);
+        game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);        
     }
     act() {
         game.engine.lock();
@@ -96,6 +92,7 @@ class Player {
         }
         let new_dir = keyMap[code];
         if (this.dir !== new_dir) {
+            Logs.notify("你向四处张望。");
             this.dir = new_dir;
         } else {
             let d = ROT.DIRS[8][new_dir];
@@ -135,7 +132,7 @@ class Map {
         let free_cells = [];
         let digger = new ROT.Map.Digger(this.width, this.height);
         digger.create((x, y, value) => {
-            if (value) return;
+            if (value) return; 
             var key = x + "," + y;
             this.layer[key] = "　";
             free_cells.push([x, y]);
@@ -212,3 +209,42 @@ class Game {
 
 let game = new Game();
 game.init();
+
+let Logs = {
+	
+	init: function() {
+        var elem = $('<div>').attr({
+            id: 'notifications',
+            className: 'notifications'
+        });    
+        $('<div>').attr('id', 'notifyGradient').appendTo(elem);        
+        elem.appendTo($(".notification")); 
+	},
+	
+	logs: [],			
+	notifyQueue: {},
+		
+	notify: function(text) {      
+        console.log(text)  ;
+        this.logs.push(text);
+        this.printMessage(text);
+	},
+	
+	clearHidden: function() {
+		var bottom = $('#notifyGradient').position().top + $('#notifyGradient').outerHeight(true);		
+		$('.notification').each(function() {		
+			if($(this).position().top > bottom){
+				$(this).remove();
+			}		
+		});		
+	},
+	
+	printMessage: function(t) {
+		var text = $('<div>').addClass('notification').css('opacity', '0').text(t).prependTo('div#notifications');
+		text.animate({opacity: 1}, 500, 'linear', () => {
+			this.clearHidden();
+		});
+	},
+};
+
+Logs.init();
