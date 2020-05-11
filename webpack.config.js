@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   mode: "none",
 
-  entry: path.resolve(__dirname, "src/main.ts"),
+  entry: [
+    path.resolve(__dirname, "src/main.ts"),
+    path.resolve(__dirname, "style/style.css"),
+  ],
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js",
@@ -18,8 +21,14 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/,
+        use: [{
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'style'
+          },
+        }],
       }
     ],
   },
