@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ROT = require("rot-js");
+//var ROT = require("rot-js");
 var MAP_WIDTH = 40;
 var MAP_HEIGHT = 25;
 function pop_random(A) {
@@ -16,6 +16,37 @@ var Player = /** @class */ (function () {
     }
     Player.prototype.draw = function () {
         game.map.display.draw(this.x, this.y, this.ch, this.color);
+    };
+    Player.prototype.act = function () {
+        game.engine.lock();
+        window.addEventListener("keydown", this);
+    };
+    Player.prototype.handleEvent = function (e) {
+        var keyMap = {};
+        keyMap[38] = 0;
+        keyMap[33] = 1;
+        keyMap[39] = 2;
+        keyMap[34] = 3;
+        keyMap[40] = 4;
+        keyMap[35] = 5;
+        keyMap[37] = 6;
+        keyMap[36] = 7;
+        var code = e.keyCode;
+        if (!(code in keyMap)) {
+            return;
+        }
+        var d = ROT.DIRS[8][keyMap[code]];
+        var xx = this.x + d[0];
+        var yy = this.y + d[1];
+        if (!((xx + "," + yy) in game.map.layer)) {
+            return;
+        }
+        game.map.display.draw(this.x, this.y, game.map.layer[this.x + "," + this.y]);
+        this.x = xx;
+        this.y = yy;
+        this.draw();
+        window.removeEventListener("keydown", this);
+        game.engine.unlock();
     };
     return Player;
 }());
@@ -66,6 +97,10 @@ var Game = /** @class */ (function () {
     }
     Game.prototype.init = function () {
         this.map = new Map();
+        var scheduler = new ROT.Scheduler.Simple();
+        scheduler.add(this.player, true);
+        this.engine = new ROT.Engine(scheduler);
+        this.engine.start();
         this.draw();
     };
     Game.prototype.draw = function () {
