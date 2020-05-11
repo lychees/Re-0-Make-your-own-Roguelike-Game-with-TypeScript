@@ -3,6 +3,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //var ROT = require("rot-js");
 var MAP_WIDTH = 40;
 var MAP_HEIGHT = 25;
+function pop_random(A) {    
+    var index = Math.floor(ROT.RNG.getUniform() * A.length);
+    return A[index];
+}
+var Player = /** @class */ (function () {
+    function Player(x, y) {
+        this.x = x;
+        this.y = y;
+        this.ch = "伊";
+        this.color = "#0be";
+    }
+    Player.prototype.draw = function () {
+        game.map.display.draw(this.x, this.y, this.ch, this.color);
+    };
+    return Player;
+}());
 var Map = /** @class */ (function () {
     function Map() {
         var _this = this;
@@ -23,8 +39,10 @@ var Map = /** @class */ (function () {
                 return;
             var key = x + "," + y;
             _this.layer[key] = "　";
-            free_cells.push(key);
+            free_cells.push([x, y]);
         });
+        var p = pop_random(free_cells);
+        game.player = new Player(p[0], p[1]);
     }
     Map.prototype.draw = function () {
         var w = this.width;
@@ -52,6 +70,7 @@ var Game = /** @class */ (function () {
     };
     Game.prototype.draw = function () {
         this.map.draw();
+        this.player.draw();
     };
     return Game;
 }());
