@@ -63,14 +63,11 @@ class Player {
     y: number;
     ch: string;
     color: string;
-    dir: number;
-
     constructor(x: number, y: number) {        
         this.x = x;
         this.y = y;
         this.ch = "伊";
         this.color = "#0be";
-        this.dir = 1;
     }
     draw() {
         game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
@@ -90,22 +87,18 @@ class Player {
         keyMap[35] = 5;
         keyMap[37] = 6;
         keyMap[36] = 7;
-        var code = e.keyCode;
-        if (!(code in keyMap)) {
-            return;
-        }
-        let new_dir = keyMap[code];
-        if (this.dir !== new_dir) {
-            this.dir = new_dir;
-        } else {
-            let d = ROT.DIRS[8][new_dir];
-            let xx = this.x + d[0];
-            let yy = this.y + d[1];        
-            if (!((xx + "," + yy) in game.map.layer)) return;        
-            game.camera.move(d[0], d[1]);
-            this.x = xx;
-            this.y = yy;
-        }
+     
+        var code = e.keyCode;     
+        if (!(code in keyMap)) { return; }
+     
+        var d = ROT.DIRS[8][keyMap[code]];
+        var xx = this.x + d[0];
+        var yy = this.y + d[1];             
+
+        if (!((xx+","+yy) in game.map.layer)) { return; }
+        game.camera.move(d[0], d[1]);
+        this.x = xx;
+        this.y = yy;        
         window.removeEventListener("keydown", this);
         game.engine.unlock();
         game.draw();
@@ -117,7 +110,6 @@ class Map {
     width: number;
     height: number;
     layer: {};
-    shadow: {};
 
     constructor() {
         this.display = new ROT.Display({
@@ -131,7 +123,6 @@ class Map {
         this.width = MAP_WIDTH;
         this.height = MAP_HEIGHT;
         this.layer = {};
-        this.shadow = {};
         let free_cells = [];
         let digger = new ROT.Map.Digger(this.width, this.height);
         digger.create((x, y, value) => {
@@ -144,45 +135,24 @@ class Map {
         let p = pop_random(free_cells);
         game.player = new Player(p[0], p[1]);
     }
-    light(key) {        
-        let t = this.layer[key];
-        return t === "　";        
-    }
-    gen_shadow(p: Player, color: string) {
-        let fov = new ROT.FOV.RecursiveShadowcasting((x, y) => {
-            const key = x+','+y; 
-            return this.light(key);
-        });
-
-        fov.compute180(p.x, p.y, 9, p.dir, (x, y, r, visibility) => {            
-            const key = x+','+y;   
-            this.shadow[key] = color;
-        });
-    }
-    draw_tile_at(x, y, key) {
+    drawTileAt(x, y, key) {
         if (this.layer[key] === '　') {
             this.display.draw(x, y, this.layer[key]);
         } else {
-            if (this.shadow[key]) {
-                this.display.draw(x, y, "墻", this.shadow[key]);
-            } else {
-                this.display.draw(x, y, null);
-            }
+            this.display.draw(x, y, "墻");
         }
     }    
     draw() {
         const o = this.display.getOptions(); 
         let w = o.width, h = o.height; 
-        this.gen_shadow(game.player, '#fff');
         for (let x=0;x<w;++x) {
         	for (let y=0;y<h;++y) {
                 let xx = x + game.camera.x - game.camera.ox;
                 let yy = y + game.camera.y - game.camera.oy;
                 let key = xx+','+yy;
-                this.draw_tile_at(x, y, key);
+                this.drawTileAt(x, y, key);
         	}
         }
-        this.gen_shadow(game.player, '#555');
     }
 }
 
@@ -204,7 +174,7 @@ class Game {
 
         this.draw();
     }
-    draw() {     
+    draw() {        
         this.map.draw();
         this.player.draw();
     }

@@ -1,21 +1,66 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-//var ROT = require("rot-js");
-var MAP_WIDTH = 40;
-var MAP_HEIGHT = 25;
+// var ROT = require("rot-js");
+var MAP_WIDTH = 60;
+var MAP_HEIGHT = 30;
+var DISPLAY_WIDTH = 40;
+var DISPLAY_HEIGHT = 25;
 function pop_random(A) {
     var index = Math.floor(ROT.RNG.getUniform() * A.length);
     return A[0];
 }
+var Camera = /** @class */ (function () {
+    function Camera() {
+        var o = game.map.display.getOptions();
+        var w = o.width, h = o.height;
+        this.x = game.player.x;
+        this.y = game.player.y;
+        this.ox = Math.floor(w / 2);
+        this.oy = Math.floor(h / 2);
+        this.adjust();
+    }
+    Camera.prototype.adjust = function () {
+        var o = game.map.display.getOptions();
+        var w = o.width, h = o.height;
+        if (this.x - this.ox < 0)
+            this.ox += this.x - this.ox;
+        if (game.map.width - this.x + this.ox < w)
+            this.ox -= (game.map.width - this.x + this.ox) - w + 1;
+        if (this.y - this.oy < 0)
+            this.oy += this.y - this.oy;
+        if (game.map.height - this.y + this.oy < h)
+            this.oy -= (game.map.height - this.y + this.oy) - h + 1;
+    };
+    Camera.prototype.move = function (dx, dy) {
+        this.x += dx;
+        this.y += dy;
+        var o = game.map.display.getOptions();
+        var w = o.width, h = o.height;
+        var ww = Math.floor(w / 2);
+        var hh = Math.floor(h / 2);
+        if (dx > 0 && this.x < ww || dx < 0 && this.x > game.map.width - ww) {
+            this.ox += dx;
+        }
+        else if (dy > 0 && this.y < hh || dy < 0 && this.y > game.map.height - hh) {
+            this.oy += dy;
+        }
+        else {
+            this.adjust();
+        }
+    };
+    return Camera;
+}());
 var Player = /** @class */ (function () {
     function Player(x, y) {
         this.x = x;
         this.y = y;
         this.ch = "伊";
         this.color = "#0be";
+        this.dir = 1;
     }
     Player.prototype.draw = function () {
-        game.map.display.draw(this.x, this.y, this.ch, this.color);
+        game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
+        // game.map.display.draw(this.x, this.y, this.ch, this.color);
     };
     Player.prototype.act = function () {
         game.engine.lock();
@@ -35,18 +80,23 @@ var Player = /** @class */ (function () {
         if (!(code in keyMap)) {
             return;
         }
-        var d = ROT.DIRS[8][keyMap[code]];
-        var xx = this.x + d[0];
-        var yy = this.y + d[1];
-        if (!((xx + "," + yy) in game.map.layer)) {
-            return;
+        var new_dir = keyMap[code];
+        if (this.dir !== new_dir) {
+            this.dir = new_dir;
         }
-        game.map.display.draw(this.x, this.y, game.map.layer[this.x + "," + this.y]);
-        this.x = xx;
-        this.y = yy;
-        this.draw();
+        else {
+            var d = ROT.DIRS[8][new_dir];
+            var xx = this.x + d[0];
+            var yy = this.y + d[1];
+            if (!((xx + "," + yy) in game.map.layer))
+                return;
+            game.camera.move(d[0], d[1]);
+            this.x = xx;
+            this.y = yy;
+        }
         window.removeEventListener("keydown", this);
         game.engine.unlock();
+        game.draw();
     };
     return Player;
 }());
@@ -54,8 +104,8 @@ var Map = /** @class */ (function () {
     function Map() {
         var _this = this;
         this.display = new ROT.Display({
-            width: MAP_WIDTH,
-            height: MAP_HEIGHT,
+            width: DISPLAY_WIDTH,
+            height: DISPLAY_HEIGHT,
             fontSize: 24,
             fontFamily: 'sans-serif',
         });
@@ -63,6 +113,7 @@ var Map = /** @class */ (function () {
         this.width = MAP_WIDTH;
         this.height = MAP_HEIGHT;
         this.layer = {};
+        this.shadow = {};
         var free_cells = [];
         var digger = new ROT.Map.Digger(this.width, this.height);
         digger.create(function (x, y, value) {
@@ -75,20 +126,47 @@ var Map = /** @class */ (function () {
         var p = pop_random(free_cells);
         game.player = new Player(p[0], p[1]);
     }
-    Map.prototype.draw = function () {
-        var w = this.width;
-        var h = this.height;
-        for (var x = 0; x < w; ++x) {
-            for (var y = 0; y < h; ++y) {
-                var key = x + "," + y;
-                if (this.layer[key] === '　') {
-                    this.display.draw(x, y, this.layer[key]);
-                }
-                else {
-                    this.display.draw(x, y, "墻");
-                }
+    Map.prototype.light = function (key) {
+        var t = this.layer[key];
+        return t === "　";
+    };
+    Map.prototype.gen_shadow = function (p, color) {
+        var _this = this;
+        var fov = new ROT.FOV.RecursiveShadowcasting(function (x, y) {
+            var key = x + ',' + y;
+            return _this.light(key);
+        });
+        fov.compute180(p.x, p.y, 9, p.dir, function (x, y, r, visibility) {
+            var key = x + ',' + y;
+            _this.shadow[key] = color;
+        });
+    };
+    Map.prototype.draw_tile_at = function (x, y, key) {
+        if (this.layer[key] === '　') {
+            this.display.draw(x, y, this.layer[key]);
+        }
+        else {
+            if (this.shadow[key]) {
+                this.display.draw(x, y, "墻", this.shadow[key]);
+            }
+            else {
+                this.display.draw(x, y, null);
             }
         }
+    };
+    Map.prototype.draw = function () {
+        var o = this.display.getOptions();
+        var w = o.width, h = o.height;
+        this.gen_shadow(game.player, '#fff');
+        for (var x = 0; x < w; ++x) {
+            for (var y = 0; y < h; ++y) {
+                var xx = x + game.camera.x - game.camera.ox;
+                var yy = y + game.camera.y - game.camera.oy;
+                var key = xx + ',' + yy;
+                this.draw_tile_at(x, y, key);
+            }
+        }
+        this.gen_shadow(game.player, '#555');
     };
     return Map;
 }());
@@ -97,6 +175,7 @@ var Game = /** @class */ (function () {
     }
     Game.prototype.init = function () {
         this.map = new Map();
+        this.camera = new Camera();
         var scheduler = new ROT.Scheduler.Simple();
         scheduler.add(this.player, true);
         this.engine = new ROT.Engine(scheduler);
