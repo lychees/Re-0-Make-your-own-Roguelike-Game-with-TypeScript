@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
-import { game, pop_random } from "./main.ts";
-import { Player, Rat, Snake } from "./creature.ts";
+import { game, pop_random } from "./main";
+import { Player, Rat, Snake } from "./creature";
 
 const MAP_WIDTH = 15;
 const MAP_HEIGHT = 15;

@@ -1,8 +1,8 @@
 import * as ROT from "rot-js";
-import { Camera } from "./camera.ts";
-import { Player } from "./creature.ts";
-import { Map } from "./map.ts";
-import { Sound } from "./sound.js";
+import { Camera } from "./camera";
+import { Player } from "./creature";
+import { Map } from "./map";
+import { Sound } from "./sound";
 
 export function rand(n: number): number {
     return Math.floor(ROT.RNG.getUniform() * n);    
