@@ -1,3 +1,6 @@
+//import ActionSwing1_Komori from '../assets/sound/Wolf RPG Maker/[Action]Swing1_Komori.ogg';
+
+
 import {Howl, Howler} from 'howler';
 
 export class Sound {    
@@ -11,7 +14,8 @@ export class Sound {
         $(this.soundPlayerElt).jPlayer('play');
         */
         let SE = new Howl({
-            src: ['assets/sound/' + name]
+            src: ['../assets/sound/' + name]
+            //src: [t]
         });      
         SE.play();
     }
