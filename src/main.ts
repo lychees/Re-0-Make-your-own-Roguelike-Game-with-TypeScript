@@ -3,6 +3,7 @@ import * as $ from "jquery";
 import { Camera } from "./camera";
 import { Player } from "./creature";
 import { Map } from "./map";
+import { Map0 } from "./level/lv0";
 import { Sound } from "./sound";
 
 export function rand(n: number): number {
@@ -14,8 +15,12 @@ export function pop_random(A: Array<[number, number]>): [number, number] {
     return A[index];
 }
 
+const DISPLAY_WIDTH = 40;
+const DISPLAY_HEIGHT = 25;
+
 class Game {
     
+    display: any;
     map: Map;
     player: Player;    
     camera: Camera;
@@ -25,7 +30,18 @@ class Game {
     engine: any;
 
     init() {
-        this.map = new Map();
+
+
+        game.display = new ROT.Display({
+            width: DISPLAY_WIDTH,
+            height: DISPLAY_HEIGHT,
+            fontSize: 24,            
+            fontFamily: 'sans-serif',
+        });
+        document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));    
+
+        //this.map = new Map();
+        this.map = new Map0();
         this.camera = new Camera();
         this.SE = new Sound();
 
@@ -40,7 +56,6 @@ class Game {
     }
     draw() {     
         this.map.draw();
-        console.log($("#HP > .row_key"));
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
         $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
@@ -50,6 +65,7 @@ class Game {
         $("#INT > .row_key").text("INT:" + this.player.int);
         $("#WIS > .row_key").text("WIS:" + this.player.wis);
         $("#CHA > .row_key").text("CHA:" + this.player.cha);
+        $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
     }
 };
 

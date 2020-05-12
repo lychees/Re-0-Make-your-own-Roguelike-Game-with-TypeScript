@@ -1,23 +1,9 @@
 import * as ROT from "rot-js";
 import { Logs } from "./logs";
 import { game, rand } from "./main";
-
+import { add_shadow } from "./map";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
-
-function add_shadow(c1) {
-    if (c1[0] !== '#') {
-        return c1;
-    }    
-    let r = c1.charCodeAt(1); if (r >= 97) r -= 97 - 10; else r -= 48;
-    let g = c1.charCodeAt(2); if (g >= 97) g -= 97 - 10; else g -= 48;
-    let b = c1.charCodeAt(3); if (b >= 97) b -= 97 - 10; else b -= 48;
-    r = Math.floor(r / 2) + 48;
-    g = Math.floor(g / 2) + 48;
-    b = Math.floor(b / 2) + 48;
-    let c2 = '#' + String.fromCharCode(r) + String.fromCharCode(g) + String.fromCharCode(b);    
-    return c2;
-}
 
 function attack(alice, bob) {    
 
@@ -80,11 +66,11 @@ class Creature {
         this.logs = new Logs();
     }
     draw() {
-        let s = game.map.shadow[this.x+','+this.y];
+        let s = game.map.shadow[this.x+','+this.y];        
         if (s === '#fff') {
-            game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
+            game.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
         } else if (s === '#555') {
-            game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, add_shadow(this.color));
+            game.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, add_shadow(this.color));
         }
     }
     dead(murderer: any) {        
@@ -152,7 +138,38 @@ export class Player extends Creature {
         window.addEventListener("keydown", this);
     }     
     handleEvent(e) {
-        var keyMap = {};
+        let keyMap = {};
+        let code = e.keyCode;
+
+        if (code == 13 || code == 32) {
+            var key = this.x + "," + this.y;
+            //let e = game.map.layer[key];
+            /*if (e) {
+                for (let i=0;i<e.length;++i) {
+                    let d = MyGame.map.objectDefinitions[e[i]];
+                    if (d['open']) {
+                        d['open'](e,i);
+                    }  
+                }
+            }
+            
+            let g = MyGame.map.ground[key];
+            let d = MyGame.map.objectDefinitions[g];   
+            if (d['open']) {
+                d['open']();
+            }*/
+
+            let t = game.map.layer[key];                       
+            if (t) {
+                if (t.enter) {
+                    t.enter(this);
+                } else {
+                }
+            }
+            return;
+        }
+
+
         keyMap[38] = 0;
         keyMap[33] = 1;
         keyMap[39] = 2;
@@ -161,7 +178,7 @@ export class Player extends Creature {
         keyMap[35] = 5;
         keyMap[37] = 6;
         keyMap[36] = 7;
-        var code = e.keyCode;
+
         if (!(code in keyMap)) {
             return;
         }

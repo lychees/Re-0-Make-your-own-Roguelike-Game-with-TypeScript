@@ -6,8 +6,8 @@ export class Camera {
     ox: number;
     oy: number;
 
-    constructor() {        
-        const o = game.map.display.getOptions();
+    reload() {
+        const o = game.display.getOptions();
         const w = o.width, h = o.height;
         this.x = game.player.x;
         this.y = game.player.y;
@@ -16,8 +16,12 @@ export class Camera {
         this.adjust();
     }
 
+    constructor() {        
+        this.reload();
+    }
+
     adjust() {
-    	const o = game.map.display.getOptions();
+    	const o = game.display.getOptions();
         const w = o.width, h = o.height;
 
         if (this.x - this.ox < 0) this.ox += this.x - this.ox;    	
@@ -29,7 +33,7 @@ export class Camera {
 
     move(dx:number, dy:number) {
     	this.x += dx; this.y += dy;
-        const o = game.map.display.getOptions();
+        const o = game.display.getOptions();
         const w = o.width, h = o.height;
         const ww = Math.floor(w/2);
         const hh = Math.floor(h/2);
