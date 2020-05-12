@@ -76,11 +76,9 @@ class Upstair extends Stair {
             this.target = {};
             this.target.map = new Map0();
             let p = pop_random(this.target.map.free_cells);
-
             this.target.x = p[0];
             this.target.y = p[1];
             this.target.map.layer[p[0]+','+p[1]] = new Downstair();
-
             this.target.map.layer[p[0]+','+p[1]].target = {};
             this.target.map.layer[p[0]+','+p[1]].target.map = game.map;
             this.target.map.layer[p[0]+','+p[1]].target.x = who.x;
@@ -109,11 +107,8 @@ export class Map0 extends _Map {
             this.free_cells.push([x, y]);
         });
 
-        let p = pop_random(this.free_cells);
-        game.player = new Player(p[0], p[1]);
-
+        
         this.agents = Array<any>();
-        this.agents.push(game.player);
 
         for (let i=0;i<5;++i) {            
             let p = pop_random(this.free_cells);

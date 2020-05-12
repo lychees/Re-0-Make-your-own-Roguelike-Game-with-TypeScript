@@ -138,8 +138,11 @@ export class Player extends Creature {
         window.addEventListener("keydown", this);
     }     
     handleEvent(e) {
+        
         let keyMap = {};
         let code = e.keyCode;
+        console.log(code);
+        console.log(this.x, this.y);
 
         if (code == 13 || code == 32) {
             var key = this.x + "," + this.y;

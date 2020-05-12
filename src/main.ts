@@ -21,7 +21,7 @@ const DISPLAY_HEIGHT = 25;
 class Game {
     
     display: any;
-    map: Map;
+    map: any;
     player: Player;    
     camera: Camera;
     SE: Sound;
@@ -30,7 +30,6 @@ class Game {
     engine: any;
 
     init() {
-
 
         game.display = new ROT.Display({
             width: DISPLAY_WIDTH,
@@ -42,6 +41,10 @@ class Game {
 
         //this.map = new Map();
         this.map = new Map0();
+        let p = pop_random(this.map.free_cells);
+        game.player = new Player(p[0], p[1]);
+        this.map.agents.push(game.player);
+
         this.camera = new Camera();
         this.SE = new Sound();
 

@@ -157,11 +157,7 @@ export class Map extends _Map {
             free_cells.push([x, y]);
         });
 
-        let p = pop_random(free_cells);
-        game.player = new Player(p[0], p[1]);
-
         this.agents = Array<any>();
-        this.agents.push(game.player);
         
         for (let i=0;i<5;++i) {            
             let p = pop_random(free_cells);
