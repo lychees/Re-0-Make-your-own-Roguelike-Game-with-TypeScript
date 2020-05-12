@@ -2,6 +2,7 @@ import * as ROT from "rot-js";
 import { Camera } from "./camera.ts";
 import { Player } from "./creature.ts";
 import { Map } from "./map.ts";
+import { Sound } from "./sound.js";
 
 export function rand(n: number): number {
     return Math.floor(ROT.RNG.getUniform() * n);    
@@ -18,10 +19,12 @@ class Game {
     player: Player;
     engine: any;
     camera: Camera;
+    SE: Sound;
 
     init() {
         this.map = new Map();
         this.camera = new Camera();
+        this.SE = new Sound();
 
         let scheduler = new ROT.Scheduler.Simple();
         for (let i=0;i<this.map.agents.length;++i) {

@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import { game, rand, pop_random } from "./main.ts";
+import { game, pop_random } from "./main.ts";
 import { Player, Rat, Snake } from "./creature.ts";
 
 const MAP_WIDTH = 15;
@@ -87,7 +87,7 @@ export class Map {
             this.display.draw(x, y, this.layer[key]);
         } else {
             if (this.shadow[key]) {
-                this.display.draw(x, y, "墻", this.shadow[key]);
+                this.display.draw(x, y, "牆", this.shadow[key]);
             } else {
                 this.display.draw(x, y, null);
             }

@@ -127,6 +127,8 @@ export class Player extends Creature {
         let new_dir = keyMap[code];
         this.dir = new_dir;
 
+        game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");
+
         if (e.shiftKey) {                    
             this.logs.notify("你向四处张望。");                        
         } else {
