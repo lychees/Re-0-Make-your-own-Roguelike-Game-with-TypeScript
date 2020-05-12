@@ -58,12 +58,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "index.html"),
     }),
-    new CopyPlugin([
-      {
-        from: 'assets/sound/*',
-        to: 'built/assets/sound',
-      },
-    ]),
+    new CopyPlugin([{
+      from: path.resolve(__dirname, "assets/**/*"),
+      to: '[path][name].[ext]',
+    }]),
   ],
 
   devServer: {
