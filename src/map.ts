@@ -43,38 +43,38 @@ export class Map {
         this.agents = Array<any>();
         this.agents.push(game.player);
         
-        for (let i=0;i<20;++i) {            
+        for (let i=0;i<5;++i) {            
             let p = pop_random(free_cells);
             let r = new Rat(p[0], p[1]);
-            console.log(p);
+            this.agents.push(r);
+        }
+        for (let i=0;i<3;++i) {            
+            let p = pop_random(free_cells);
+            let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
     }
     
-    pass(key: string) {
-        if (this.layer[key] !== "　") return false;
-
-        let parts = key.split(",");
-        let x = parseInt(parts[0]);
-        let y = parseInt(parts[1]);
-        
+    pass(x: number, y: number) {
+        let key = x+','+y;
+        if (this.layer[key] !== "　") return false;        
         for (let i=0;i<this.agents.length;++i) {
             let a = this.agents[i];
-            if (a.x === x && a.x === x  && a.hp > 0) {
+            if (a.x === x && a.y === y  && a.hp > 0) {
                 return false;
             }
         }
         return true;
     }
 
-    light(key: string) {        
+    light(x: number, y: number) {     
+        let key = x+','+y;  
         let t = this.layer[key];
         return t === "　";        
     }
     gen_shadow(p: Player, color: string) {
         let fov = new ROT.FOV.RecursiveShadowcasting((x, y) => {
-            const key = x+','+y; 
-            return this.light(key);
+            return this.light(x, y);
         });
 
         fov.compute90(p.x, p.y, 9, p.dir, (x, y, r, visibility) => {            

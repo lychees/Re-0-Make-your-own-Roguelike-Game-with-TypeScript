@@ -41,6 +41,10 @@ class Creature {
 
         this.str = 5; this.dex = 5; this.con = 5;
         this.int = 5; this.wis = 5; this.cha = 5;
+
+        this.hp = 1; this.HP = 1; this._HP = 1;
+        this.mp = 1; this.MP = 1; this._MP = 1;
+        this.sp = 1; this.SP = 1; this._SP = 1;
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];
@@ -62,8 +66,9 @@ export class Enemy extends Creature {
 
         let d = ROT.DIRS[4][new_dir];
         let xx = this.x + d[0];
-        let yy = this.y + d[1];            
-        if (((xx + "," + yy) in game.map.layer)) {
+        let yy = this.y + d[1];    
+                
+        if ((game.map.pass(xx, yy))) {
             this.x = xx;
             this.y = yy;
         }
@@ -74,7 +79,7 @@ export class Rat extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
         this.ch = "鼠";
-        this.color = "#191";
+        this.color = "#777";
     }
 }
 
@@ -127,8 +132,9 @@ export class Player extends Creature {
         } else {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
-            let yy = this.y + d[1];            
-            if (((xx + "," + yy) in game.map.layer)) {
+            let yy = this.y + d[1];        
+            if (game.map.pass(xx, yy)) {            
+//            if (((xx + "," + yy) in game.map.layer)) {
                 game.camera.move(d[0], d[1]);
                 this.x = xx;
                 this.y = yy;
