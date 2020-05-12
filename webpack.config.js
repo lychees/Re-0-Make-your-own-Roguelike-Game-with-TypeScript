@@ -7,6 +7,7 @@ module.exports = {
   entry: [
     path.resolve(__dirname, "src/main.ts"),
     path.resolve(__dirname, "style/style.css"),
+    path.resolve(__dirname, "assets/sound/Wolf RPG Maker/[Action]Swing1_Komori.ogg"),      
   ],
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -29,6 +30,10 @@ module.exports = {
             outputPath: 'style'
           },
         }],
+      },
+      {
+        test: /\.(gif|jpg|png|mp3|aac|ogg)$/,
+        use: 'file-loader',
       }
     ],
   },

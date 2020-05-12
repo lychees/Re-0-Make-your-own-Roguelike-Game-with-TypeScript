@@ -221,7 +221,6 @@ export function Sound(source) {
 
     
     this.playSE = function(name) {    
-        alert(name);
         $(this.soundPlayerElt).jPlayer("setMedia", {
             'oga': 'assets/sound/' + name,
             'wav': 'assets/sound/' + name,
