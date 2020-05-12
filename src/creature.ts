@@ -139,7 +139,11 @@ export class Player extends Creature {
         this.name = "伊莎貝拉";
         this.ch = "伊";
         this.color = "#0be";
-        this.dex = 7;
+        this.hp = 10; this.HP = 10; this._HP = 10;        
+        this.mp = 10; this.MP = 10; this._MP = 10;
+        this.sp = 5; this.SP = 5; this._SP = 5;
+        this.str = 2; this.dex = 7; this.con = 3;
+        this.int = 6; this.wis = 7; this.cha = 7;
         this.z = 100;
     }
 

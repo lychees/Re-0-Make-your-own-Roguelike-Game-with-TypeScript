@@ -22,7 +22,11 @@ export class Map {
             fontSize: 24,            
             fontFamily: 'sans-serif',
         });
-        document.body.appendChild(this.display.getContainer());
+        //this.display.getContainer(). appendTo($("div")); 
+        document.body.replaceChild(this.display.getContainer(), document.getElementById('canvas'));
+
+        //replaceChild<T extends Node>(newChild: Node, oldChild: T): T;
+        //();
         
         this.width = MAP_WIDTH;
         this.height = MAP_HEIGHT;

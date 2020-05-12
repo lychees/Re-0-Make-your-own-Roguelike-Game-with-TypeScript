@@ -1,3 +1,11 @@
+/* Fonts */
+body, .tooltip, select.menuBtn {
+	font-family: "monospace", serif;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: normal;
+	letter-spacing: normal;
+}
 /* Logs */
 div#logs {
 	position: absolute;
@@ -28,4 +36,100 @@ div#logs_gradient {
 	filter: alpha(
 		Opacity=0, FinishOpacity=100, Style=1, StartX=0, StartY=0, FinishX=0, FinishY=500
 	);
-}	
+}
+
+/* Dashboard */
+
+#outfitting {
+	position: relative;
+	border: 1px solid black;
+	width: 200px;
+	margin-bottom: 20px;
+	padding: 5px 10px;
+}
+
+div#outfitting:before ,div#perks:before, div#inventory:before {
+	content: attr(data-legend);
+	position: absolute;
+	top: -13px;
+	background-color: white;
+}
+
+div.outfitRow .tooltip {
+	width: 150px;
+}
+
+div#bagspace {
+	background-color: white;
+	position: absolute;
+	top:-13px;
+	right: 10px;
+}
+
+div#perks {
+	position: relative;
+    border: 1px solid black;
+    width: 200px;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+}
+
+div#inventory {
+	position: relative;
+    border: 1px solid black;
+    width: 200px;
+    margin-bottom: 20px;
+    padding: 5px 10px;
+}
+
+div.perkRow {
+	position: relative;
+}
+
+div.perkRow .row_key {
+	float: none;
+}
+
+/* Tooltip */
+
+div.tooltip {
+	display: none;
+	padding: 2px 5px;
+	border: 1px solid black;
+	position: absolute;
+	box-shadow: -1px 3px 2px #666;
+	background: white;
+	z-index: 999;
+}
+
+.tooltip.bottom {
+	top: 30px;
+}
+
+.tooltip.right {
+	left: 2px;
+}
+
+.tooltip.left {
+	right: 0px;
+}
+
+.tooltip.top {
+	bottom: 20px;
+}
+
+*:hover > div.tooltip {
+	display: block;
+}
+
+div.tooltip:hover {
+	display: none !important;
+}
+
+.disabled:hover > div.tooltip, .button.free:hover > div.tooltip {
+	display: none;
+}
+
+#event .button.disabled:hover > div.tooltip {
+	display: block;
+}

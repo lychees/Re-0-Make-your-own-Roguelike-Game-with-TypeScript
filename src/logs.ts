@@ -21,8 +21,7 @@ export class Logs {
             class: 'logs'
         });    
         $('<div>').attr('id', 'logs_gradient').appendTo(elem);        
-        elem.appendTo($("div#wrapper")); 
-        console.log($("div#wrapper"));
+        elem.appendTo($("div#wrapper"));        
 	}
 		
 	push(text: string) {      

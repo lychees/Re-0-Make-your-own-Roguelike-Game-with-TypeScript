@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import * as $ from "jquery";
 import { Camera } from "./camera";
 import { Player } from "./creature";
 import { Map } from "./map";
@@ -39,6 +40,16 @@ class Game {
     }
     draw() {     
         this.map.draw();
+        console.log($("#HP > .row_key"));
+        $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
+        $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
+        $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
+        $("#STR > .row_key").text("STR:" + this.player.str);
+        $("#DEX > .row_key").text("DEX:" + this.player.dex);
+        $("#CON > .row_key").text("CON:" + this.player.con);
+        $("#INT > .row_key").text("INT:" + this.player.int);
+        $("#WIS > .row_key").text("WIS:" + this.player.wis);
+        $("#CHA > .row_key").text("CHA:" + this.player.cha);
     }
 };
 
