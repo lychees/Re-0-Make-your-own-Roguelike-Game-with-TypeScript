@@ -1,15 +1,21 @@
 import * as $ from "jquery";
+import { game } from "./main";
+
+let fb = true;
 
 export class Logs {
 
-    logs: Array<String>;
+    logs: Array<string>;
 
     constructor() {
-        this.logs = Array<String>();
-        this.init();
+		this.logs = Array<string>();
+		if (fb) {
+			this.init();
+			fb = false;
+		}
     }
 	
-	init() {
+	init() {		
         var elem = $('<div>').attr({
             id: 'logs',
             class: 'logs'
@@ -24,8 +30,10 @@ export class Logs {
     }
     
     notify(text: string) {              
-        this.push(text);
-        this.printMessage(text);
+		this.push(text);
+		if (this === game.player.logs) {
+			this.printMessage(text);
+		}
 	}
 	
 	clearHidden() {
@@ -43,4 +51,13 @@ export class Logs {
 			this.clearHidden();
 		});
 	}
+	/*
+	printQueue() { 
+		$('.logs').each(function() {					
+			$(this).remove();
+		});	
+		for (let i=0;i<this.logs.length;++i) { // TODO(minakokojima): 優化!
+			this.printMessage(this.logs[i]);
+		}
+	}*/
 };

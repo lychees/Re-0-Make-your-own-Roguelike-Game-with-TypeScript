@@ -53,6 +53,11 @@ export class Map {
             let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
+        this.agents.sort(function(a: any, b: any): number {
+            if (a.z < b.z) return -1;
+            if (a.z > b.z) return 1;
+            return 0;
+        });
     }
     
     pass(x: number, y: number) {
@@ -105,7 +110,6 @@ export class Map {
                 this.draw_tile_at(x, y, key);
         	}
         }
-
         for (let i=0;i<this.agents.length;++i) {
             this.agents[i].draw();
         }

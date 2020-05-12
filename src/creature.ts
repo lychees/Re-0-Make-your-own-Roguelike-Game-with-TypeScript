@@ -4,6 +4,7 @@ import { game, rand } from "./main";
 
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
+
 function add_shadow(c1) {
     if (c1[0] !== '#') {
         return c1;
@@ -18,9 +19,35 @@ function add_shadow(c1) {
     return c2;
 }
 
+function attack(alice, bob) {    
+
+    if (bob.hp <= 0) return;
+    let dice = rand;
+
+    let miss = dice(6) + dice(6);
+    if (miss < 6) {
+        game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
+        alice.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
+        bob.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
+        return; 
+    }
+
+    let dmg = dice(6) + dice(6);    
+    game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
+   
+    bob.hp -= dmg; 
+    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害。'); 
+    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害。'); 
+    if (bob.hp <= 0) {
+        bob.dead(alice);
+    }
+}
+
 class Creature {
+    name: string;
     x: number;
     y: number;
+    z: number;
     ch: string;
     color: string;
     dir: number;
@@ -32,12 +59,16 @@ class Creature {
     str: number; dex: number; con: number;
     int: number; wis: number; cha: number;
 
+    logs: Logs;
+
     constructor(x: number, y: number) {
+        this.name = "生物";
         this.x = x;
         this.y = y;
         this.ch = "生";
         this.color = "#fff";
         this.dir = 1;
+        this.z = 1;
 
         this.str = 5; this.dex = 5; this.con = 5;
         this.int = 5; this.wis = 5; this.cha = 5;
@@ -45,6 +76,8 @@ class Creature {
         this.hp = 1; this.HP = 1; this._HP = 1;
         this.mp = 1; this.MP = 1; this._MP = 1;
         this.sp = 1; this.SP = 1; this._SP = 1;
+
+        this.logs = new Logs();
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];
@@ -54,6 +87,10 @@ class Creature {
             game.map.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, add_shadow(this.color));
         }
     }
+    dead(murderer: any) {        
+        this.logs.push(this.name + '被' + murderer.name + "殺死了。"); 
+        this.color = '#222';
+    }
 }
 
 export class Enemy extends Creature {
@@ -61,6 +98,8 @@ export class Enemy extends Creature {
         super(x, y);
     }
     act() {
+        if (this.hp <= 0) return;
+        game.scheduler.setDuration( 20 / this.dex );
         let new_dir = rand(4);
         this.dir = new_dir;
 
@@ -78,6 +117,7 @@ export class Enemy extends Creature {
 export class Rat extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
+        this.name = "碩鼠";
         this.ch = "鼠";
         this.color = "#777";
     }
@@ -86,24 +126,21 @@ export class Rat extends Enemy {
 export class Snake extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
+        this.name = "蛇";
         this.ch = "蛇";
         this.color = "#191";
     }
 }
 
 export class Player extends Creature {
-    x: number;
-    y: number;
-    ch: string;
-    color: string;
-    dir: number;
-    logs: Logs;
 
     constructor(x: number, y: number) {
         super(x, y);
+        this.name = "伊莎貝拉";
         this.ch = "伊";
-        this.color = "#0be";        
-        this.logs = new Logs();
+        this.color = "#0be";
+        this.dex = 7;
+        this.z = 100;
     }
 
     act() {
@@ -127,18 +164,39 @@ export class Player extends Creature {
         let new_dir = keyMap[code];
         this.dir = new_dir;
 
-        game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");
+        // game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");
+
+        // AP = 100
+        // move = 10
+        // face = 5
+
 
         if (e.shiftKey) {                    
-            this.logs.notify("你向四处张望。");                        
+            this.logs.notify("你向四处张望。");
+            game.scheduler.setDuration( 5 / this.dex );
         } else {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
             let yy = this.y + d[1];        
-            if (game.map.pass(xx, yy)) {
-                game.camera.move(d[0], d[1]);
-                this.x = xx;
-                this.y = yy;
+            game.scheduler.setDuration( 10 / this.dex );
+
+            let attacked = false;
+            for (let i=0;i<game.map.agents.length;++i) {
+                let a = game.map.agents[i];
+                if (a.x === xx && a.y === yy && a.hp > 0) {
+                    attack(this, a);
+                    attacked = true;
+                    game.player.logs.printMessage
+                    break;
+                }
+            }
+
+            if (!attacked) {
+                if (game.map.pass(xx, yy)) {
+                    game.camera.move(d[0], d[1]);
+                    this.x = xx;
+                    this.y = yy;
+                }
             }
         }
         window.removeEventListener("keydown", this);
