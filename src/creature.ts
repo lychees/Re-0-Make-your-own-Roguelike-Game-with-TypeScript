@@ -135,8 +135,7 @@ export class Player extends Creature {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
             let yy = this.y + d[1];        
-            if (game.map.pass(xx, yy)) {            
-//            if (((xx + "," + yy) in game.map.layer)) {
+            if (game.map.pass(xx, yy)) {
                 game.camera.move(d[0], d[1]);
                 this.x = xx;
                 this.y = yy;
