@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
-import { Logs } from "./logs.ts";
-import { game, rand } from "./main.ts";
+import { Logs } from "./logs";
+import { game, rand } from "./main";
 
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
