@@ -1,7 +1,7 @@
-[程序基础] Re:0 从 0 开始打造你的 Roguelike 游戏
+Re:0 从 0 开始打造你的 Roguelike 游戏
 ==========
 ## 在线试玩
-[ITCH](https://minakokojima.itch.io/uminouta)
+[itch](https://minakokojima.itch.io/uminouta)
 
 ## 如何運行
 [webpack](https://webpack.js.org/) 不香麼？
