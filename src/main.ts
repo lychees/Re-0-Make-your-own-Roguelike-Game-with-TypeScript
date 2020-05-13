@@ -76,7 +76,7 @@ class Game {
         $("#WIS > .row_key").text("WIS:" + this.player.wis);
         $("#CHA > .row_key").text("CHA:" + this.player.cha);
         $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
-        $("#SCORE > .row_key").text("TIME:" + game.score);
+        $("#SCORE > .row_key").text("SCORE:" + game.score);
 
         this.player.inventory.draw();
     }
