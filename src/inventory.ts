@@ -99,7 +99,7 @@ export class Inventory {
     }
 
     open() {        
-        game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");            
+        game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");
         window.addEventListener("keydown", this);
     }
 

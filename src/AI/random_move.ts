@@ -7,12 +7,6 @@ export function random_move() {
     let new_dir = rand(4);
     this.dir = new_dir;
 
-    let d = ROT.DIRS[4][new_dir];
-    let xx = this.x + d[0];
-    let yy = this.y + d[1];    
-            
-    if ((game.map.pass(xx, yy))) {
-        this.x = xx;
-        this.y = yy;
-    }
+    let d = ROT.DIRS[4][new_dir];    
+    this.moveBy(d[0], d[1]);
 }

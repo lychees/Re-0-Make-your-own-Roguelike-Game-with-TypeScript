@@ -1,22 +1,11 @@
 import * as ROT from "rot-js";
-import { game, rand } from "../main";
+import { game } from "../main";
 import { random_move } from "./random_move";
 
 export function hostile() {
     if (this.hp <= 0) return;
 
     game.scheduler.setDuration( 20 / this.dex );
-    let new_dir = rand(4);
-    this.dir = new_dir;
-
-    let d = ROT.DIRS[4][new_dir];
-    let xx = this.x + d[0];
-    let yy = this.y + d[1];    
-            
-    if ((game.map.pass(xx, yy))) {
-        this.x = xx;
-        this.y = yy;
-    }
 
     let fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
         return game.map.light(x, y);
@@ -49,12 +38,9 @@ export function hostile() {
     astar.compute(this.x, this.y, pathCallback);    
 
     path.shift();
-    // console.log(path); // ???
-    if (!path || path.length === 0) {     
-        //attack(this, MyGame.player);   
-        //alert("遊戲結束，你被活捉了！");
-        //MyGame.engine.lock();        
-    } else {
-        this.move(path[0][0], path[0][1]);  
+    if (!path || path.length === 0) {      
+        random_move.bind(this)(); 
+    } else {        
+        this.moveTo_or_attack(path[0][0], path[0][1]);        
     }
 }

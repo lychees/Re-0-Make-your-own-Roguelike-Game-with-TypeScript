@@ -108,25 +108,22 @@ export class Enemy extends Creature {
     constructor(x: number, y: number) {
         super(x, y);
         this.act = hostile.bind(this);
-    }
-    move(x: number, y: number) {
-        let block = false;
-
-        if (x == game.player.x && y == game.player.y) {
-            attack(this, game.player);
-            block = true;
+    }    
+    moveTo(x: number, y: number) {
+        if (game.map.pass(x, y)) {
+            this.x = x;
+            this.y = y;
         }
-        if (!block) {
-            for (let i=0;i<game.map.agents.length;++i) {
-                let a = game.map.agents[i];
-                if (x == a.x && y == a.y && a.hp > 0) {
-                    block = true;
-                    break;
-                }
-            }    
-        }     
-        if (!block){
-            this.x = x; this.y = y;            
+    }
+    moveBy(dx :number, dy: number) {
+        this.moveTo(this.x + dx, this.y + dy);
+    }
+    moveTo_or_attack(x: number, y: number) {        
+        if (x == game.player.x && y == game.player.y) {
+            attack(this, game.player);            
+        }
+        else {
+            this.moveTo(x, y);
         }
     }
 }
@@ -184,12 +181,15 @@ export class Player extends Creature {
         this.inventory.push(new Water_Mirror());
         this.inventory.push(new Necklace());
     }
-
+    dead(murderer: any) {
+        super.dead(murderer);
+        game.SE.playSE("狂父/[びたちー]少女（悲鳴）.ogg");
+    }
     act() {
         game.draw();
         game.engine.lock();
         window.addEventListener("keydown", this);
-    }     
+    }
     handleEvent(e) {
         
         let keyMap = {};
