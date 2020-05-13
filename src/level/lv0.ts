@@ -1,7 +1,8 @@
 import * as ROT from "rot-js";
 import { game, pop_random } from "../main";
-import { Player, Rat, Snake } from "../creature";
+import { Player, Rat, Snake, Orc } from "../creature";
 import { _Map, add_shadow } from "../map";
+import { Apple } from "../inventory";
 
 const MAP_WIDTH = 50;
 const MAP_HEIGHT = 30;
@@ -20,6 +21,29 @@ class Tile {
             game.display.draw(x, y, this.ch, this.color);
         } else if (s === '#555') {
             game.display.draw(x, y, this.ch, add_shadow(this.color));
+        }
+    }
+}
+
+class Box extends Tile {
+
+    item: any;
+
+    constructor() {
+        super();
+        this.ch = "箱";
+        this.color = "#ee1";
+        this.pass = true;
+        this.light = true;
+        this.item = new Apple();
+    }    
+    enter(who: any) {
+        if (this.item != null) {
+            game.SE.playSE("Wolf RPG Maker/[System]Get2_wolf.ogg"); 
+            who.inventory.push(this.item);
+            this.color = "#555";
+            who.logs.notify(who.name + "得到了" + this.item.name);
+            this.item = null;            
         }
     }
 }
@@ -67,6 +91,7 @@ class Upstair extends Stair {
     }
     enter(who: any) {
         if (!this.target) {
+            game.score += 1;
             this.target = {};
             this.target.map = new Map0();
             let p = pop_random(this.target.map.free_cells);
@@ -80,21 +105,6 @@ class Upstair extends Stair {
         }
         super.enter(who);
     }
-}
-
-class Box extends Tile {
-
-    item: any;
-
-    constructor() {
-        super();
-        this.color = "#ff3";
-        this.pass = true;
-        this.light = true;
-    }    
-    enter(who: any) {
-        //who.inv
-    }    
 }
 
 export class Map0 extends _Map {
@@ -129,6 +139,12 @@ export class Map0 extends _Map {
             let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
+
+        for (let i=0;i<1;++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Orc(p[0], p[1]);
+            this.agents.push(r);
+        }
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
@@ -136,9 +152,16 @@ export class Map0 extends _Map {
             return 0;
         });
 
-        for (let i=0;i<20;++i) {
+        for (let i=0;i<2;++i) {
             let p = pop_random(this.free_cells);
             let t = new Upstair();
+            let key = p[0]+','+p[1];
+            this.layer[key] = t;
+        }
+
+        for (let i=0;i<1;++i) {
+            let p = pop_random(this.free_cells);
+            let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key] = t;
         }

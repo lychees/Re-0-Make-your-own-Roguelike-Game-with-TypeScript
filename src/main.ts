@@ -25,6 +25,7 @@ class Game {
     player: Player;    
     camera: Camera;
     SE: Sound;
+    score: number;
 
     scheduler: any;
     engine: any;
@@ -41,6 +42,7 @@ class Game {
 
         //this.map = new Map();
         this.map = new Map0();
+        this.score = 0;
         let p = pop_random(this.map.free_cells);
         game.player = new Player(p[0], p[1]);
         this.map.agents.push(game.player);
@@ -56,6 +58,12 @@ class Game {
         this.engine.start();
         this.draw();
     }
+    reschedule() {
+        this.scheduler.clear();
+        for (let i=0;i<this.map.agents.length;++i) {
+            this.scheduler.add(this.map.agents[i], true);
+        }
+    }
     draw() {     
         this.map.draw();
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
@@ -68,14 +76,9 @@ class Game {
         $("#WIS > .row_key").text("WIS:" + this.player.wis);
         $("#CHA > .row_key").text("CHA:" + this.player.cha);
         $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
+        $("#SCORE > .row_key").text("TIME:" + game.score);
 
         this.player.inventory.draw();
-
-        /*
-            <div id="i0" class="perkRow"><div class="row_key">蘋果</div><div class="tooltip bottom right">一個蘋果，食用隨機恢復 1d3 點 HP 和 1d3 點 SP。</div></div>
-			<div id="i1" class="perkRow"><div class="row_key">水鏡</div><div class="tooltip bottom right">少女慣用的愛劍，攻擊力 2d6。</div></div>
-            <div id="i2" class="perkRow"><div class="row_key">藍寶石項鏈</div><div class="tooltip bottom right">雕刻有美人女在石礁上唱歌的藍寶石項鏈。</div></div>
-        */
     }
 };
 

@@ -90,6 +90,14 @@ div.perkRow .row_key {
 	float: none;
 }
 
+div.inventoryRow {
+	position: relative;
+}
+
+div.inventoryRow .row_key {
+	float: none;
+}
+
 /* Tooltip */
 
 div.tooltip {

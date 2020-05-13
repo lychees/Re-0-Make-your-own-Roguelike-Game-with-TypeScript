@@ -4,7 +4,8 @@ import { game, rand } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace } from "./inventory";
+import { hostile } from "./AI/hostile";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -14,19 +15,20 @@ function attack(alice, bob) {
     let dice = rand;
 
     let miss = dice(6) + dice(6);
-    if (miss < 6) {
+    if (miss < bob.dex) {
         game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
         alice.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         bob.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         return; 
     }
 
-    let dmg = dice(6) + dice(6);    
+    let dmg = dice(alice.str) + dice(alice.str);
+    if (alice == game.player) dmg = dice(6) + dice(6); 
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
     bob.hp -= dmg; 
-    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害。'); 
-    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害。'); 
+    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
+    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
     if (bob.hp <= 0) {
         bob.dead(alice);
     }
@@ -69,6 +71,21 @@ class Creature {
 
         this.logs = new Logs();
     }
+    hp_healing(d: number): number {
+        d = Math.min(d, this.HP - this.hp);
+        this.hp += d;
+        return d;
+    }
+    mp_healing(d: number): number {
+        d = Math.min(d, this.MP - this.mp);
+        this.mp += d;
+        return d;
+    }
+    sp_healing(d: number): number {
+        d = Math.min(d, this.SP - this.sp);
+        this.sp += d;
+        return d;
+    }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];        
         if (s === '#fff') {
@@ -78,28 +95,38 @@ class Creature {
         }
     }
     dead(murderer: any) {        
-        this.logs.push(this.name + '被' + murderer.name + "殺死了。"); 
+        this.logs.push(this.name + '被' + murderer.name + "殺死了"); 
         this.color = '#222';
+        this.z = 0;
+    }
+    act() {
+
     }
 }
 
 export class Enemy extends Creature {
     constructor(x: number, y: number) {
         super(x, y);
+        this.act = hostile.bind(this);
     }
-    act() {
-        if (this.hp <= 0) return;
-        game.scheduler.setDuration( 20 / this.dex );
-        let new_dir = rand(4);
-        this.dir = new_dir;
+    move(x: number, y: number) {
+        let block = false;
 
-        let d = ROT.DIRS[4][new_dir];
-        let xx = this.x + d[0];
-        let yy = this.y + d[1];    
-                
-        if ((game.map.pass(xx, yy))) {
-            this.x = xx;
-            this.y = yy;
+        if (x == game.player.x && y == game.player.y) {
+            attack(this, game.player);
+            block = true;
+        }
+        if (!block) {
+            for (let i=0;i<game.map.agents.length;++i) {
+                let a = game.map.agents[i];
+                if (x == a.x && y == a.y && a.hp > 0) {
+                    block = true;
+                    break;
+                }
+            }    
+        }     
+        if (!block){
+            this.x = x; this.y = y;            
         }
     }
 }
@@ -109,6 +136,8 @@ export class Rat extends Enemy {
         super(x, y);
         this.name = "碩鼠";
         this.ch = "鼠";
+        this.str = 2;
+        this.dex = 6;
         this.color = "#777";
     }
 }
@@ -117,8 +146,22 @@ export class Snake extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "蛇";
+        this.str = 3;
+        this.dex = 7;
         this.ch = "蛇";
         this.color = "#191";
+    }
+}
+
+export class Orc extends Enemy {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.hp = 25; this.HP = 25; this._HP = 25;
+        this.dex = 4;
+        this.str = 6;
+        this.name = "獸人步兵";
+        this.ch = "獸";
+        this.color = "#4e4";
     }
 }
 
@@ -136,10 +179,14 @@ export class Player extends Creature {
         this.int = 6; this.wis = 7; this.cha = 7;
         this.z = 100;
         this.inventory = new Inventory();
+        this.inventory.owner = this;
         this.inventory.push(new Apple());
+        this.inventory.push(new Water_Mirror());
+        this.inventory.push(new Necklace());
     }
 
     act() {
+        game.draw();
         game.engine.lock();
         window.addEventListener("keydown", this);
     }     
@@ -147,14 +194,10 @@ export class Player extends Creature {
         
         let keyMap = {};
         let code = e.keyCode;
-        
-        //console.log(code);
-        //console.log(this.x, this.y);
 
         if (code == 73 || code == 105) {
-            game.SE.playSE("[System]Enter02_Koya.ogg");
             window.removeEventListener("keydown", this);
-            window.addEventListener("keydown", this.inventory);
+            this.inventory.open();
             return;
         }
 
@@ -192,13 +235,6 @@ export class Player extends Creature {
         let new_dir = keyMap[code];
         this.dir = new_dir;
 
-        // game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");
-
-        // AP = 100
-        // move = 10
-        // face = 5
-
-
         if (e.shiftKey) {                    
             this.logs.notify("你向四处张望。");
             game.scheduler.setDuration( 5 / this.dex );
@@ -229,6 +265,5 @@ export class Player extends Creature {
         }
         window.removeEventListener("keydown", this);
         game.engine.unlock();
-        game.draw();
     }    
 }

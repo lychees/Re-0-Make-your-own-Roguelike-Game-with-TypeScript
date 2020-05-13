@@ -46,9 +46,24 @@ export class _Map {
             game.player.logs.notify("你进入了" + target.map.name);
             game.map = target.map;
             game.camera.reload();
+            game.reschedule();
             game.draw();
         }
     }
+
+    pass_without_agents(x: number, y: number) {
+        let key = x+','+y;
+
+
+        if (typeof(this.layer[key]) === "object") {
+            let t = this.layer[key];
+            return t.pass;
+        }
+
+
+        if (this.layer[key] !== "　") return false;
+        return true;
+    }    
     
     pass(x: number, y: number) {
         let key = x+','+y;
