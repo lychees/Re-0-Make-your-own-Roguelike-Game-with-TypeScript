@@ -32,7 +32,8 @@ export class Apple extends Item {
         let d_sp = who.sp_healing(1+rand(2));
         who.logs.notify(this.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
         this.durability -= 1;
-        console.log(this.durability);
+        //console.log(this.durability);
+        game.draw();
     }
     constructor() {
         super();

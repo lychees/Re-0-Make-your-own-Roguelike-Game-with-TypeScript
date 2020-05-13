@@ -95,6 +95,7 @@ div.tooltip {
 	box-shadow: -1px 3px 2px #666;
 	background: white;
 	z-index: 999;
+	white-space: pre;
 }
 
 .tooltip.bottom {

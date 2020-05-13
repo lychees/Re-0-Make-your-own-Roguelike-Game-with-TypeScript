@@ -1,16 +1,39 @@
-
 import * as ROT from "rot-js";
 import { game, dice } from "../main";
 import { random_move } from "./random_move";
+import { Slime } from "../creature";
 
-export function hostile() {
+
+export function copy() {    
+    game.scheduler.setDuration( 20 / this.dex );
+    for (let i=0;i<4;++i) {        
+        let d = ROT.DIRS[4][i];    
+        let x = this.x + d[0];
+        let y = this.y + d[0];
+        if (game.map.pass(x, y)) {
+            let slime = new Slime(x, y);
+            game.map.agents.push(slime);
+            game.scheduler.add(slime, true);
+            return;
+        }
+    }
+}
+
+export function slime_hostile() {
     if (this.hp <= 0) return;
 
-    if (this.hp != this.HP) {
+    console.log("??");
+
+    /*if (this.hp != this.HP) {
         if (dice(6) == 1) {
             this.act = random_move.bind(this);
             this.act();
         }
+        return;
+    }*/
+
+    if (dice(6) == 1) {
+        copy.bind(this)();
         return;
     }
 

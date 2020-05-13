@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
-import { game, pop_random } from "../main";
-import { Player, Rat, Snake, Orc } from "../creature";
+import { game, pop_random, dice, rand } from "../main";
+import { Player, Rat, Snake, Orc, Slime } from "../creature";
 import { _Map, add_shadow } from "../map";
 import { Apple } from "../inventory";
 
@@ -129,18 +129,24 @@ export class Map0 extends _Map {
         
         this.agents = Array<any>();
 
-        for (let i=0;i<5;++i) {            
+        for (let i=0;i<dice(7);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<3;++i) {            
+        for (let i=0;i<dice(5);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
 
-        for (let i=0;i<1;++i) {
+        for (let i=0;i<rand(3);++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Slime(p[0], p[1]);
+            this.agents.push(r);
+        }
+
+        for (let i=0;i<dice(2);++i) {
             let p = pop_random(this.free_cells);
             let r = new Orc(p[0], p[1]);
             this.agents.push(r);
