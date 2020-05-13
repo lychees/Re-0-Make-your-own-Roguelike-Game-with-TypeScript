@@ -9,10 +9,13 @@
 - `npm run build`
 
 
-### FAQ
+## FAQ
 
-#### 如何播放音效？
-參考隔壁 [Untrusted](https://github.com/lychees/untrusted/blob/master/scripts/sound.js)。
+### 什麼是 Roguelike？
+[Gadio Pro, Roguelike 是什么？：我们一起在过去和现在的游戏中寻找Roguelike](https://www.gcores.com/radios/121523)
 
-#### 如何實現日誌框的漸隱效果？
+### 如何播放音效？
+隔壁 [Untrusted](https://github.com/lychees/untrusted/blob/master/scripts/sound.js) 使用的 Jplayer 好像有點 old dated，這裡使用的是 [Howlerjs](https://howlerjs.com/)。
+
+### 如何實現日誌框的漸隱效果？
 參考隔壁 [小黑屋](https://github.com/doublespeakgames/adarkroom/blob/master/script/notifications.js)。

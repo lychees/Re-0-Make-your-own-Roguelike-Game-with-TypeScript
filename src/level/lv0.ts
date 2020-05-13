@@ -5,8 +5,6 @@ import { _Map, add_shadow } from "../map";
 
 const MAP_WIDTH = 50;
 const MAP_HEIGHT = 30;
-const DISPLAY_WIDTH = 40;
-const DISPLAY_HEIGHT = 25;
 
 class Tile {
     name: string;
@@ -68,7 +66,7 @@ class Upstair extends Stair {
         this.ch = "上";
     }
     enter(who: any) {
-        if (!this.target) {            
+        if (!this.target) {
             this.target = {};
             this.target.map = new Map0();
             let p = pop_random(this.target.map.free_cells);
