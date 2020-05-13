@@ -1,13 +1,14 @@
 [程序基础] Re:0 从 0 开始打造你的 Roguelike 游戏
 ==========
+## 在线试玩
+[ITCH](https://minakokojima.itch.io/uminouta)
 
-[连载地址](http://www.gamecreator.com.cn/forum.php?mod=viewthread&tid=238&page=1&extra=#pid1026)
-
-### 如何運行
+## 如何運行
 [webpack](https://webpack.js.org/) 不香麼？
 - `npm run start`
-- `npm run build`
 
+## 如何发布
+- `npm run build`
 
 ## FAQ
 
@@ -19,3 +20,6 @@
 
 ### 如何實現日誌框的漸隱效果？
 參考隔壁 [小黑屋](https://github.com/doublespeakgames/adarkroom/blob/master/script/notifications.js)。
+
+## 教程连载？
+[地址](http://www.gamecreator.com.cn/forum.php?mod=viewthread&tid=238&page=1&extra=#pid1026)
