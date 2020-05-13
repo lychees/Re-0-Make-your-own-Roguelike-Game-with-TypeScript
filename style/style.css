@@ -1,4 +1,9 @@
 /* Fonts */
+
+body {
+	background: rgb(255, 255, 255);
+}
+
 body, .tooltip, select.menuBtn {
 	font-family: "monospace", serif;
 	font-size: 18px;
