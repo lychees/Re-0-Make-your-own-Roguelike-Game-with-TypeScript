@@ -251,7 +251,7 @@ export class Orc extends Enemy {
         super(x, y);
         this.name = "獸人步兵";
         this.hp = 25; this.HP = 25;
-        this.str = 6; this.dex = 4;
+        this.str = 8; this.dex = 6;
         this.modify_con(5);
         this.ch = "獸";
         this.color = "#4e4";        
@@ -491,7 +491,7 @@ export class Player extends Elf {
     dead(murderer: any) {
         super.dead(murderer);
         this.logs.notify("眼前一片漆黑，你掛了")
-        game.SE.playSE("狂父/[びたちー]少女（悲鳴）.ogg");
+        game.SE.playSE("狂父/[びたちー]少女（悲鳴）.ogg");
     }
     act() {
         game.draw();
