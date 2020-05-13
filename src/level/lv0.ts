@@ -72,7 +72,6 @@ class Upstair extends Stair {
     }
     enter(who: any) {
         if (!this.target) {
-            alert("???");
             this.target = {};
             this.target.map = new Map0();
             let p = pop_random(this.target.map.free_cells);

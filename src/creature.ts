@@ -141,8 +141,6 @@ export class Player extends Creature {
         
         let keyMap = {};
         let code = e.keyCode;
-        console.log(code);
-        console.log(this.x, this.y);
 
         if (code == 13 || code == 32) {
             var key = this.x + "," + this.y;
@@ -173,14 +171,19 @@ export class Player extends Creature {
         }
 
 
-        keyMap[38] = 0;
+        keyMap[ROT.KEYS.VK_UP] = 0; 
         keyMap[33] = 1;
-        keyMap[39] = 2;
+        keyMap[ROT.KEYS.VK_RIGHT] = 2;
         keyMap[34] = 3;
-        keyMap[40] = 4;
+        keyMap[ROT.KEYS.VK_DOWN] = 4;
         keyMap[35] = 5;
-        keyMap[37] = 6;
+        keyMap[ROT.KEYS.VK_LEFT] = 6;
         keyMap[36] = 7;
+
+        keyMap[ROT.KEYS.VK_W] = 0;
+        keyMap[ROT.KEYS.VK_D] = 2;
+        keyMap[ROT.KEYS.VK_S] = 4;
+        keyMap[ROT.KEYS.VK_A] = 6;
 
         if (!(code in keyMap)) {
             return;
