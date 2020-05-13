@@ -10,6 +10,10 @@ export function rand(n: number): number {
     return Math.floor(ROT.RNG.getUniform() * n);    
 }
 
+export function dice(n: number): number {
+    return rand(n) + 1;
+}
+
 export function pop_random(A: Array<[number, number]>): [number, number] {
     var index = rand(A.length);
     return A[index];
@@ -57,11 +61,31 @@ class Game {
         this.engine = new ROT.Engine(this.scheduler);
         this.engine.start();
         this.draw();
+        //this.draw_abilities(this.player);
     }
     reschedule() {
         this.scheduler.clear();
         for (let i=0;i<this.map.agents.length;++i) {
             this.scheduler.add(this.map.agents[i], true);
+        }
+    }
+    draw_abilities(p) {
+                    /*
+        $('#inventory div').each(function() {
+			$(this).remove();					
+        });*/
+        $('#abilities div').each(function() {            
+			$(this).remove();					
+        });
+
+        for (let i=0;i<p.abilities.length;++i) {
+            let a = p.abilities[i];
+            let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
+            let name =$('<div>').addClass('row_key').text(a.name);
+            let tip = $('<div>').addClass("tooltip bottom right").text(a.description);
+            tip.appendTo(dom);
+            name.appendTo(dom);            
+            dom.appendTo('div#abilities');
         }
     }
     draw() {     
@@ -78,7 +102,8 @@ class Game {
         $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
         $("#SCORE > .row_key").text("SCORE:" + game.score);
 
-        this.player.inventory.draw();
+        this.player.inventory.draw();        
+        this.draw_abilities(this.player);
     }
 };
 

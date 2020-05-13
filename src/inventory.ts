@@ -26,7 +26,8 @@ export class Apple extends Item {
         game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");           
     }
     use(who: any) {
-        game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");
+        //game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");
+        game.SE.playSE("吃.wav");
         let d_hp = who.hp_healing(1+rand(2));
         let d_sp = who.sp_healing(1+rand(2));
         who.logs.notify(this.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
@@ -83,9 +84,9 @@ export class Inventory {
     }
 
     draw() {        
-        $('.inventoryRow').each(function() {
+        $('#inventory div').each(function() {
 			$(this).remove();					
-		});	
+        });
 
         for (let i=0;i<this.items.length;++i) {
             let item = this.items[i];            

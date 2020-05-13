@@ -53,7 +53,7 @@ div#logs_gradient {
 	padding: 5px 10px;
 }
 
-div#outfitting:before ,div#perks:before, div#inventory:before {
+div#outfitting:before ,div.menu:before {
 	content: attr(data-legend);
 	position: absolute;
 	top: -13px;
@@ -64,22 +64,7 @@ div.outfitRow .tooltip {
 	width: 150px;
 }
 
-div#bagspace {
-	background-color: white;
-	position: absolute;
-	top:-13px;
-	right: 10px;
-}
-
-div#perks {
-	position: relative;
-    border: 1px solid black;
-    width: 200px;
-    margin-bottom: 20px;
-    padding: 5px 10px;
-}
-
-div#inventory {
+div.menu {
 	position: relative;
     border: 1px solid black;
     width: 200px;
@@ -91,7 +76,7 @@ div.perkRow {
 	position: relative;
 }
 
-div.perkRow .row_key {
+.row_key {
 	float: none;
 }
 
@@ -99,9 +84,6 @@ div.inventoryRow {
 	position: relative;
 }
 
-div.inventoryRow .row_key {
-	float: none;
-}
 
 /* Tooltip */
 

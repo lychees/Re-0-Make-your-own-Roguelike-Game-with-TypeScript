@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 
-import { game, rand } from "./main";
+import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
@@ -22,7 +22,9 @@ function attack(alice, bob) {
         return; 
     }
 
-    let dmg = dice(alice.str) + dice(alice.str);
+    let dmg = alice.base_attack();
+    if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
+
     if (alice == game.player) dmg = dice(6) + dice(6); 
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
@@ -43,15 +45,16 @@ class Creature {
     color: string;
     dir: number;
     
-    hp: number; HP: number; _HP: number;
-    mp: number; MP: number; _MP: number;
-    sp: number; SP: number; _SP: number;
+    hp: number; HP: number;
+    mp: number; MP: number;
+    sp: number; SP: number;
 
     str: number; dex: number; con: number;
     int: number; wis: number; cha: number;
 
     logs: Logs;
     inventory: Inventory;
+    abilities : Array<Ability>;
 
     constructor(x: number, y: number) {
         this.name = "生物";
@@ -61,16 +64,42 @@ class Creature {
         this.color = "#fff";
         this.dir = 1;
         this.z = 1;
+        
+        this.hp = 1; this.HP = 1;
+        this.mp = 1; this.MP = 1;
+        this.sp = 1; this.sp = 1;
 
-        this.str = 5; this.dex = 5; this.con = 5;
-        this.int = 5; this.wis = 5; this.cha = 5;
-
-        this.hp = 1; this.HP = 1; this._HP = 1;
-        this.mp = 1; this.MP = 1; this._MP = 1;
-        this.sp = 1; this.SP = 1; this._SP = 1;
-
+        this.str = 0; this.dex = 0; this.con = 0;
+        this.int = 0; this.wis = 0; this.cha = 0;        
         this.logs = new Logs();
+        this.inventory = new Inventory(); this.inventory.owner = this;
+        this.abilities = new Array<Ability>();
     }
+    base_attack() {
+        return dice(this.str) + dice(this.str);
+    }
+    modify_HP(d: number) {
+        this.hp += d; this.HP += d;
+    }
+    modify_MP(d: number) {
+        this.mp += d; this.MP += d;
+    }
+    modify_SP(d: number) {
+        this.sp += d; this.SP += d;
+    }
+    modify_str(d: number) {
+        this.str += d;
+        this.modify_HP(d);
+    }
+    modify_con(d: number) {
+        this.con += d;
+        this.modify_HP(d*5);
+        this.modify_SP(d);
+    }
+    modify_int(d: number) {
+        this.int += d;
+    } 
+    
     hp_healing(d: number): number {
         d = Math.min(d, this.HP - this.hp);
         this.hp += d;
@@ -99,16 +128,6 @@ class Creature {
         this.color = '#222';
         this.z = 0;
     }
-    act() {
-
-    }
-}
-
-export class Enemy extends Creature {
-    constructor(x: number, y: number) {
-        super(x, y);
-        this.act = hostile.bind(this);
-    }    
     moveTo(x: number, y: number) {
         if (game.map.pass(x, y)) {
             this.x = x;
@@ -125,16 +144,30 @@ export class Enemy extends Creature {
         else {
             this.moveTo(x, y);
         }
+    }    
+    act() {
+
+    }
+}
+
+export class Enemy extends Creature {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.act = hostile.bind(this);
+    }
+    base_atk() {
+        return dice(this.str) + dice(this.str);
     }
 }
 
 export class Rat extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
-        this.name = "碩鼠";
+        this.name = "碩鼠";        
+        this.str = 1; this.dex = 6;
+        this.wis = 6; this.cha = 5;
+        this.modify_con(1);
         this.ch = "鼠";
-        this.str = 2;
-        this.dex = 6;
         this.color = "#777";
     }
 }
@@ -143,9 +176,9 @@ export class Snake extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "蛇";
-        this.str = 3;
-        this.dex = 7;
-        this.ch = "蛇";
+        this.str = 2; this.dex = 7;
+        this.modify_con(1);
+        this.ch = "蛇";        
         this.color = "#191";
     }
 }
@@ -153,14 +186,49 @@ export class Snake extends Enemy {
 export class Orc extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
-        this.hp = 25; this.HP = 25; this._HP = 25;
-        this.dex = 4;
-        this.str = 6;
         this.name = "獸人步兵";
+        this.hp = 25; this.HP = 25;
+        this.str = 6; this.dex = 4;
+        this.modify_con(5);
         this.ch = "獸";
         this.color = "#4e4";
     }
 }
+
+class Ability {
+    name: string;
+    description: string;    
+    owner: Creature;
+    constructor(owner: Creature) {        
+        this.owner = owner;
+        this.name = "???";
+        this.description = "???";
+    }
+}
+
+class Magic_Talent extends Ability {
+    lv : number;
+    modify_int(d: number) {
+        this.owner.modify_MP(this.lv*3);
+    } 
+    constructor(owner: Creature, lv: number) {
+        super(owner);
+        this.lv = lv;
+        this.name = "魔法天賦";        
+        this.description = "每點智力增加 " + lv + " 點魔法";
+    }
+}
+
+class Light_as_a_swallow extends Ability {    
+    lv: number;
+    constructor(owner: Creature, lv: number) {
+        super(owner);
+        this.lv = lv;
+        this.name = "身輕如燕";        
+        this.description = "增加 " + lv + " 點敏捷";
+    }
+}
+
 
 export class Player extends Creature {
 
@@ -169,14 +237,16 @@ export class Player extends Creature {
         this.name = "伊莎貝拉";
         this.ch = "伊";
         this.color = "#0be";
-        this.hp = 10; this.HP = 10; this._HP = 10;        
-        this.mp = 10; this.MP = 10; this._MP = 10;
-        this.sp = 5; this.SP = 5; this._SP = 5;
-        this.str = 2; this.dex = 7; this.con = 3;
-        this.int = 6; this.wis = 7; this.cha = 7;
+        this.hp = 5; this.HP = 5;
+        this.str = 2; this.dex = 7; 
+        this.wis = 7; this.cha = 7;
+        this.modify_con(3); this.modify_int(6);
+    
         this.z = 100;
-        this.inventory = new Inventory();
-        this.inventory.owner = this;
+
+        this.abilities.push(new Light_as_a_swallow(this, 1));
+        this.abilities.push(new Magic_Talent(this, 3));
+        
         this.inventory.push(new Apple());
         this.inventory.push(new Water_Mirror());
         this.inventory.push(new Necklace());
@@ -191,6 +261,8 @@ export class Player extends Creature {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
+
+        event.preventDefault();
         
         let keyMap = {};
         let code = e.keyCode;
