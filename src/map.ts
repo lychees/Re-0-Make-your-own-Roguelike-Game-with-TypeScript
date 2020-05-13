@@ -31,31 +31,19 @@ export class _Map {
 
     }
 
-    move(agent: any, target: any) {        
-        console.log(agent);
-        console.log(this.agents);
+    move(agent: any, target: any) {                
         let idx = this.agents.findIndex((a)=>{
             return a === agent;
         });
-               
-
-        //console.log(agent);
-        //console.log(game.player);
-        // game.SE.playSE("Wolf RPG Maker/[Action]Steps1_Isooki.ogg");                          
-        
 
         this.agents.splice(idx, 1);            
         target.map.agents.push(agent);
         agent.x = target.x; agent.y = target.y;
-
-        //console.log(agent == game.player);
-        //console.log(agent === game.player);
-
-        //if (agent.ch === game.player) { //?
         if (agent.ch === "伊") {
             game.SE.playSE("Wolf RPG Maker/[Action]Steps1_Isooki.ogg");                          
             game.player.x = target.x;
             game.player.y = target.y;
+            game.player.logs.notify("你进入了" + target.map.name);
             game.map = target.map;
             game.camera.reload();
             game.draw();

@@ -48,7 +48,6 @@ class Game {
         this.camera = new Camera();
         this.SE = new Sound();
 
-
         this.scheduler = new ROT.Scheduler.Action();
         for (let i=0;i<this.map.agents.length;++i) {
             this.scheduler.add(this.map.agents[i], true);
@@ -69,6 +68,14 @@ class Game {
         $("#WIS > .row_key").text("WIS:" + this.player.wis);
         $("#CHA > .row_key").text("CHA:" + this.player.cha);
         $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
+
+        this.player.inventory.draw();
+
+        /*
+            <div id="i0" class="perkRow"><div class="row_key">蘋果</div><div class="tooltip bottom right">一個蘋果，食用隨機恢復 1d3 點 HP 和 1d3 點 SP。</div></div>
+			<div id="i1" class="perkRow"><div class="row_key">水鏡</div><div class="tooltip bottom right">少女慣用的愛劍，攻擊力 2d6。</div></div>
+            <div id="i2" class="perkRow"><div class="row_key">藍寶石項鏈</div><div class="tooltip bottom right">雕刻有美人女在石礁上唱歌的藍寶石項鏈。</div></div>
+        */
     }
 };
 

@@ -1,7 +1,10 @@
 import * as ROT from "rot-js";
-import { Logs } from "./logs";
+
 import { game, rand } from "./main";
 import { add_shadow } from "./map";
+
+import { Logs } from "./logs";
+import { Inventory, Apple } from "./inventory";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -46,6 +49,7 @@ class Creature {
     int: number; wis: number; cha: number;
 
     logs: Logs;
+    inventory: Inventory;
 
     constructor(x: number, y: number) {
         this.name = "生物";
@@ -131,6 +135,8 @@ export class Player extends Creature {
         this.str = 2; this.dex = 7; this.con = 3;
         this.int = 6; this.wis = 7; this.cha = 7;
         this.z = 100;
+        this.inventory = new Inventory();
+        this.inventory.push(new Apple());
     }
 
     act() {
@@ -141,26 +147,19 @@ export class Player extends Creature {
         
         let keyMap = {};
         let code = e.keyCode;
-        console.log(code);
-        console.log(this.x, this.y);
+        
+        //console.log(code);
+        //console.log(this.x, this.y);
+
+        if (code == 73 || code == 105) {
+            game.SE.playSE("[System]Enter02_Koya.ogg");
+            window.removeEventListener("keydown", this);
+            window.addEventListener("keydown", this.inventory);
+            return;
+        }
 
         if (code == 13 || code == 32) {
             var key = this.x + "," + this.y;
-            //let e = game.map.layer[key];
-            /*if (e) {
-                for (let i=0;i<e.length;++i) {
-                    let d = MyGame.map.objectDefinitions[e[i]];
-                    if (d['open']) {
-                        d['open'](e,i);
-                    }  
-                }
-            }
-            
-            let g = MyGame.map.ground[key];
-            let d = MyGame.map.objectDefinitions[g];   
-            if (d['open']) {
-                d['open']();
-            }*/
 
             let t = game.map.layer[key];                       
             if (t) {

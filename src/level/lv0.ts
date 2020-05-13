@@ -37,7 +37,6 @@ class Stair extends Tile {
         this.light = true;
     }    
     enter(who: any) {
-        console.log(this.target);
         game.map.move(who, this.target);        
     }
 }
@@ -54,8 +53,6 @@ class Downstair extends Stair {
             let p = pop_random(this.target.map.free_cells);
             this.target.x = p[0];
             this.target.y = p[1];
-            console.log(game);
-            console.log(game.map);
             this.target.map.layer[p[0]+','+p[1]] = new Upstair();
             this.target.map.layer[p[0]+','+p[1]].target.map = game.map;
             this.target.map.layer[p[0]+','+p[1]].target.x = who.x;
@@ -71,8 +68,7 @@ class Upstair extends Stair {
         this.ch = "上";
     }
     enter(who: any) {
-        if (!this.target) {
-            alert("???");
+        if (!this.target) {            
             this.target = {};
             this.target.map = new Map0();
             let p = pop_random(this.target.map.free_cells);
@@ -86,6 +82,21 @@ class Upstair extends Stair {
         }
         super.enter(who);
     }
+}
+
+class Box extends Tile {
+
+    item: any;
+
+    constructor() {
+        super();
+        this.color = "#ff3";
+        this.pass = true;
+        this.light = true;
+    }    
+    enter(who: any) {
+        //who.inv
+    }    
 }
 
 export class Map0 extends _Map {
