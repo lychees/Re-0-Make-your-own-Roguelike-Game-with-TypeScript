@@ -5,8 +5,6 @@ import { _Map, add_shadow } from "../map";
 
 const MAP_WIDTH = 50;
 const MAP_HEIGHT = 30;
-const DISPLAY_WIDTH = 40;
-const DISPLAY_HEIGHT = 25;
 
 class Tile {
     name: string;
