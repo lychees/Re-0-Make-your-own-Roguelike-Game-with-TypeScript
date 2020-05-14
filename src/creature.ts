@@ -31,11 +31,16 @@ function attack(alice, bob) {
 
     console.log(dmg);
 
+    
+
     if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
 
     if (alice == game.player) dmg = dice(6) + dice(6); 
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
+    if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
+        bob.injured(1);
+    }
     bob.hp -= dmg; 
     alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
     bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
@@ -128,6 +133,10 @@ class Creature {
         d = Math.min(d, this.SP - this.sp);
         this.sp += d;
         return d;
+    }
+    injured(d: number) {
+        this.logs.notify(this.name + "受傷了");
+        this.abilities.push(new Injured(this, d));        
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];        
@@ -309,6 +318,33 @@ class Ability {
         this.owner = owner;
         this.name = "???";
         this.description = "???";
+    }
+}
+
+class Injured extends Ability {
+    lv : number;
+    str_penalty: number;
+    dex_penalty: number;
+
+    str() : string {
+        if (this.str_penalty == 0) return;
+        return "-" + this.str_penalty + " 來自 " + this.name;
+    }  
+    dex() : string {
+        if (this.dex_penalty == 0) return;
+        return "-" + this.dex_penalty + " 來自 " + this.name;
+    }
+    constructor(owner: Creature, lv: number) {
+        super(owner);
+        this.name = "受傷"; 
+        this.lv = lv;
+        this.str_penalty = rand(lv+1);
+        this.dex_penalty = lv - this.str_penalty;
+        owner.str -= this.str_penalty;
+        owner.dex -= this.dex_penalty;
+        this.description = "這個單位受傷了";
+        if (this.str_penalty > 0) this.description += "，力量 - " + this.str_penalty;
+        if (this.dex_penalty > 0) this.description += "，力量 - " + this.dex_penalty;        
     }
 }
 
