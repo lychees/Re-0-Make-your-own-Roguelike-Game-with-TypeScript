@@ -1,6 +1,7 @@
 import * as ROT from "rot-js";
 import { game, pop_random } from "./main";
 import { Player, Rat, Snake } from "./creature";
+import { Apple } from "./inventory";
 
 const MAP_WIDTH = 15;
 const MAP_HEIGHT = 15;
@@ -19,7 +20,48 @@ export function add_shadow(c1) {
     return c2;
 }
 
-export class _Map {
+export class Tile {
+    name: string;
+    ch: string;
+    color: string;
+    pass: any;
+    light: any;
+
+    constructor() {        
+    }
+    draw(x: number, y: number, s: string){
+        if (s === '#fff') {
+            game.display.draw(x, y, this.ch, this.color);
+        } else if (s === '#555') {
+            game.display.draw(x, y, this.ch, add_shadow(this.color));
+        }
+    }
+}
+
+export class Box extends Tile {
+
+    item: any;
+
+    constructor() {
+        super();
+        this.ch = "箱";
+        this.color = "#ee1";
+        this.pass = true;
+        this.light = true;
+        this.item = new Apple();
+    }    
+    enter(who: any) {
+        if (this.item != null) {
+            game.SE.playSE("Wolf RPG Maker/[System]Get2_wolf.ogg"); 
+            who.inventory.push(this.item);
+            this.color = "#555";
+            who.logs.notify(who.name + "得到了" + this.item.name);
+            this.item = null;            
+        }
+    }
+}
+
+export class Map {
     
     width: number;
     height: number;
@@ -141,42 +183,4 @@ export class _Map {
         }
         this.gen_shadow(game.player, '#555');
     }
-}
-
-
-export class Map extends _Map {
-    constructor() {
-        super();    
-        this.width = MAP_WIDTH;
-        this.height = MAP_HEIGHT;
-        this.layer = {};
-        this.shadow = {};
-        let free_cells = [];
-        let digger = new ROT.Map.Digger(this.width, this.height);
-        digger.create((x, y, value) => {
-            if (value) return; 
-            var key = x + "," + y;
-            this.layer[key] = "　";
-            free_cells.push([x, y]);
-        });
-
-        this.agents = Array<any>();
-        
-        for (let i=0;i<5;++i) {            
-            let p = pop_random(free_cells);
-            let r = new Rat(p[0], p[1]);
-            this.agents.push(r);
-        }
-        for (let i=0;i<3;++i) {            
-            let p = pop_random(free_cells);
-            let r = new Snake(p[0], p[1]);
-            this.agents.push(r);
-        }
-        this.agents.sort(function(a: any, b: any): number {
-            if (a.z < b.z) return -1;
-            if (a.z > b.z) return 1;
-            return 0;
-        });
-    }
-
 }

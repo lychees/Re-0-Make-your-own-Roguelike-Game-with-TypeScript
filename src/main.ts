@@ -2,7 +2,6 @@ import * as ROT from "rot-js";
 import * as $ from "jquery";
 import { Camera } from "./camera";
 import { Player } from "./creature";
-import { Map } from "./map";
 import { Map0 } from "./level/lv0";
 import { Sound } from "./sound";
 
@@ -113,15 +112,6 @@ class Game {
         this.map.draw();
 
         this.draw_attributes(this.player);
-        /*
-<div id="STR" class="perkRow"><div class="row_key">STR</div><div class="tooltip bottom right">力量代表肌肉力量、運動訓練、及能發揮多少肉體潛能</div></div>
-<div id="DEX" class="perkRow"><div class="row_key">DEX</div><div class="tooltip bottom right">敏捷代表機敏度、反射速度、平衡力</div></div>
-<div id="CON" class="perkRow"><div class="row_key">CON</div><div class="tooltip bottom right">體魄代表健康、耐力、生命力</div></div>
-<div id="INT" class="perkRow"><div class="row_key">INT</div><div class="tooltip bottom right">智力代表思考速度、記憶力、邏輯能力</div></div>
-<div id="WIS" class="perkRow"><div class="row_key">WIS</div><div class="tooltip bottom right">感知代表你對外在環境的觸覺，反映觀察力和洞察力</div></div>
-<div id="CHA" class="perkRow"><div class="row_key">CHA</div><div class="tooltip bottom right">魅力量度你跟他人有效地交流的能力。它代表了信心、口才，也能代表迷人或有力的個性</div></div>
-*/
-
         $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
         $("#SCORE > .row_key").text("SCORE:" + game.score);
 

@@ -1,52 +1,10 @@
 import * as ROT from "rot-js";
 import { game, pop_random, dice, rand } from "../main";
 import { Player, Rat, Snake, Orc, Slime } from "../creature";
-import { _Map, add_shadow } from "../map";
-import { Apple } from "../inventory";
+import { Map, Box, Tile, add_shadow } from "../map";
 
 const MAP_WIDTH = 50;
 const MAP_HEIGHT = 30;
-
-class Tile {
-    name: string;
-    ch: string;
-    color: string;
-    pass: any;
-    light: any;
-
-    constructor() {        
-    }
-    draw(x: number, y: number, s: string){
-        if (s === '#fff') {
-            game.display.draw(x, y, this.ch, this.color);
-        } else if (s === '#555') {
-            game.display.draw(x, y, this.ch, add_shadow(this.color));
-        }
-    }
-}
-
-class Box extends Tile {
-
-    item: any;
-
-    constructor() {
-        super();
-        this.ch = "箱";
-        this.color = "#ee1";
-        this.pass = true;
-        this.light = true;
-        this.item = new Apple();
-    }    
-    enter(who: any) {
-        if (this.item != null) {
-            game.SE.playSE("Wolf RPG Maker/[System]Get2_wolf.ogg"); 
-            who.inventory.push(this.item);
-            this.color = "#555";
-            who.logs.notify(who.name + "得到了" + this.item.name);
-            this.item = null;            
-        }
-    }
-}
 
 class Stair extends Tile {
 
@@ -107,7 +65,7 @@ class Upstair extends Stair {
     }
 }
 
-export class Map0 extends _Map {
+export class Map0 extends Map {
 
     free_cells: Array<[number, number]>;
 
