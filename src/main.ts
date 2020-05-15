@@ -63,7 +63,8 @@ class Game {
             fontSize: 24,            
             fontFamily: 'sans-serif',
         });
-        document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));    
+        document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));
+        this.SE = new Sound();
 
         //this.map = new Map();
         this.map = new Map0();
@@ -73,7 +74,7 @@ class Game {
         this.map.agents.push(game.player);
 
         this.camera = new Camera();
-        this.SE = new Sound();
+        
 
         this.scheduler = new ROT.Scheduler.Action();
         for (let i=0;i<this.map.agents.length;++i) {

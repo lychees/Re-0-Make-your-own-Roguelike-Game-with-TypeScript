@@ -35,10 +35,12 @@ export class Door extends Tile {
 
     trigger() {
         if (this.pass == false) {
+            game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
             this.ch = "門";
             this.pass = true;
             this.light = true;
         } else {
+            game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
             this.ch = "關";
             this.pass = false;
             this.light = false;
@@ -207,7 +209,7 @@ export class Dungeon extends Map {
         
         this.agents = Array<any>();
 
-        for (let i=0;i<dice(7);++i) {            
+        for (let i=0;i<dice(15);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
             this.agents.push(r);
