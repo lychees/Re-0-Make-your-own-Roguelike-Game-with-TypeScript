@@ -33,14 +33,16 @@ export class Door extends Tile {
     pass: any;
     light: any;
 
-    trigger() {
-        if (this.pass == false) {
-            game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
+    trigger(who?: any) {
+        if (this.pass == false) {            
+            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
+            if (who && who.logs) who.logs.notify("你打開了門");
             this.ch = "門";
             this.pass = true;
             this.light = true;
         } else {
-            game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
+            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
+            if (who && who.logs) who.logs.notify("你關上了門");
             this.ch = "關";
             this.pass = false;
             this.light = false;
@@ -200,7 +202,7 @@ export class Dungeon extends Map {
             for (let y=0;y<this.height;++y) {
                 let key = x + "," + y;
                 if (this.layer[key] && this.layer[key].ch == "門") {
-                    this.layer[key].trigger();
+                    this.layer[key].trigger('god');
                 }
             }
         }

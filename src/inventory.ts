@@ -185,15 +185,13 @@ export class Inventory {
             dom.appendTo('div#inventory');
         }
 
-
         let p = game.player;
         if (p) {
-        let weapon_name = p.weapon ? p.weapon.name : "無";
-        let weapon_description = p.weapon ? p.weapon.description : "";
-
-        $("#weapon > .row_key").text("武器 " + weapon_name);
-        $("#weapon > .tooltip").text(weapon_description);
-    }
+            let weapon_name = p.weapon ? p.weapon.name : "無";
+            let weapon_description = p.weapon ? p.weapon.description : "";
+            $("#weapon > .row_key").text("武器 " + weapon_name);
+            $("#weapon > .tooltip").text(weapon_description);
+        }
     }
 
     open() {        

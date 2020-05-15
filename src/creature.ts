@@ -508,9 +508,7 @@ export class Player extends Elf {
             let yy = this.y + d[1];
             let door = game.map.layer[xx+','+yy];
             if (door && (door.ch == "門" || door.ch == "關")) {
-                door.trigger();
-                if (door.ch == "門") this.logs.notify("你打開了門");
-                else this.logs.notify("你關上了門");
+                door.trigger(this);
                 game.scheduler.setDuration( 2000 );
             } else {
                 this.logs.notify("你向四處張望");
