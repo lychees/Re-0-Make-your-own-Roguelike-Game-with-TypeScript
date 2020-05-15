@@ -4,7 +4,7 @@ import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
@@ -30,12 +30,8 @@ function attack(alice, bob) {
         return; 
     }
 
-    let dmg = alice.base_atk();
-    //console.log(dmg);
-
+    let dmg = alice.get_atk();
     if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
-
-    if (alice == game.player) dmg = dice(6) + dice(6); 
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
     if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
@@ -171,10 +167,6 @@ export class Creature {
         return z;
     }
 
-    /*
-    base_attack() {
-        return dice(this.str) + dice(this.str);
-    }*/
     modify_HP(d: number) {
         this.hp += d; this.HP += d;
     }
@@ -319,7 +311,7 @@ export class Enemy extends Creature {
         super(x, y);
         this.act = hostile.bind(this);
     }
-    base_atk() {
+    get_atk() {
         return dice(this.str) + dice(this.str);
     }
 }
@@ -417,9 +409,20 @@ export class Player extends Elf {
         
         this.inventory.push(new Axes());
         this.inventory.push(new Axes());
+        this.inventory.push(new Sword());
+        this.inventory.push(new Sword());
     }
-    base_atk() {
-        return dice(6) + dice(6);
+    get_atk() {
+        let z = 0;
+        for (const a in this.atk) {
+            if (a[0] == 'd') {
+                let t = this.atk[a];
+                while (t--) {
+                    z += dice(parseInt(a.substr(1)));
+                }
+            }        
+        }
+        return z;
     }
     dead(murderer: any) {
         super.dead(murderer);

@@ -71,20 +71,18 @@ export class Equip extends Item {
     }
 }
 
-export class Weapon extends Equip {
-    atk: {};
+export class Weapon extends Equip {    
     cd: number;
-    effect: any;
+    buff: any;
     parse_atk() : string {
         let z = "";        
-        for (let a in this.atk) {
-            z += this.atk[a] + "d" + a + "\n";
+        for (let a in this.buff.atk) {
+            z += this.buff.atk[a] + "d" + a + "\n";
         }
         return z;
     }
     constructor() {
-        super();
-        this.atk = {};
+        super();        
         this.cd = 20;
         this.name = "武器";        
         this.description = "一把武器";      
@@ -94,7 +92,6 @@ export class Weapon extends Equip {
 export class Axes extends Weapon {    
     constructor() {
         super();        
-        this.atk[8] = 1;
         this.cd = 30;
         this.name = "斧";
         this.ch = "斧";
@@ -106,7 +103,7 @@ export class Axes extends Weapon {
         let b = new Buff();
         b.name = "斧";
         b.hp = 1;
-        b.atk['d10'] = 1;
+        b.atk['d13'] = 1;
         b.description = "這個單位裝備了一把斧頭\n";
         b.description += b.parse();
         this.buff = b;        
@@ -115,7 +112,26 @@ export class Axes extends Weapon {
     }    
 }
 
-export class Sword extends Weapon {    
+export class Sword extends Weapon {
+    constructor() {
+        super();        
+        this.cd = 30;
+        this.name = "短劍";
+        this.ch = "劍";
+        this.description = "一把短劍\n";
+        this.ability = new Ability();
+        this.ability.name = this.name;
+        this.ability.name = this.name;
+
+        let b = new Buff();
+        b.name = "短劍";        
+        b.atk['d6'] = 2;
+        b.description = "這個單位裝備了一把短劍\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        this.description += b.parse();
+    }        
 }
 
 export class Water_Mirror extends Sword {
