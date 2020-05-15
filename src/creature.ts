@@ -366,6 +366,19 @@ export class Slime extends Enemy {
     }
 }
 
+export class Dog extends Enemy {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "狗";
+        this.hp = 10; this.HP = 10;
+        this.str = 2; this.dex = 6;
+        this.modify_con(4);
+        this.ch = "狗";
+        this.color = "#aa1";
+        this.act = hostile.bind(this);
+    }
+}
+
 
 /*
 export class Orc extends Creature {
@@ -489,9 +502,21 @@ export class Player extends Elf {
         let new_dir = keyMap[code];
         
         if (e.shiftKey) {                    
-            this.logs.notify("你向四處張望");
-            if (rand(5) == 0) this.sp_healing(1);            
-            game.scheduler.setDuration( 1000 );
+
+            let d = ROT.DIRS[8][new_dir];
+            let xx = this.x + d[0];
+            let yy = this.y + d[1];
+            let door = game.map.layer[xx+','+yy];
+            if (door && (door.ch == "門" || door.ch == "關")) {
+                door.trigger();
+                if (door.ch == "門") this.logs.notify("你打開了門");
+                else this.logs.notify("你關上了門");
+                game.scheduler.setDuration( 2000 );
+            } else {
+                this.logs.notify("你向四處張望");
+                if (rand(5) == 0) this.sp_healing(1);            
+                game.scheduler.setDuration( 1000 );
+            }
         } else {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];

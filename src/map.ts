@@ -38,6 +38,7 @@ export class Tile {
     }
 }
 
+
 export class Box extends Tile {
 
     item: any;
@@ -70,7 +71,9 @@ export class Map {
     agents: Array<any>;
     
     constructor() {
-
+        this.layer = {};
+        this.shadow = {};
+        this.agents = new Array<any>();
     }
 
     move(agent: any, target: any) {                

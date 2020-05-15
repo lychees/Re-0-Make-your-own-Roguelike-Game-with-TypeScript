@@ -26,6 +26,33 @@ class Grass extends Tile {
     }
 }
 
+export class Door extends Tile {
+    name: string;
+    ch: string;
+    color: string;
+    pass: any;
+    light: any;
+
+    trigger() {
+        if (this.pass == false) {
+            this.ch = "門";
+            this.pass = true;
+            this.light = true;
+        } else {
+            this.ch = "關";
+            this.pass = false;
+            this.light = false;
+        }
+    }
+    constructor() {      
+        super();  
+        this.ch = "門";
+        this.color = "#eee";
+        this.pass = true;
+        this.light = true;
+    }    
+}
+
 class Tree extends Tile {
     constructor() {
         super();
@@ -99,6 +126,48 @@ export class Dungeon extends Map {
 
     free_cells: Array<[number, number]>;
 
+    getDeg(x: number, y: number) : number {
+        let deg = 0;
+        for (let i=0;i<4;++i) {
+            let xx = x + ROT.DIRS[4][i][0];
+            let yy = y + ROT.DIRS[4][i][1];            
+            if (this.pass(xx, yy)) {
+                deg += 1;
+            }
+        }
+        return deg;
+    }
+
+    isDoor(x: number, y: number) : boolean {
+
+        //console.log(this.getDeg(x, y));
+        
+        if (this.getDeg(x, y) != 2) return false;
+
+        let degs = [];
+        let dirs = [];
+        for (let i=0;i<4;++i) {
+            let xx = x + ROT.DIRS[4][i][0];
+            let yy = y + ROT.DIRS[4][i][1];            
+            if (this.pass(xx, yy)) {
+                degs.push(this.getDeg(xx,yy));
+                dirs.push(i);
+            }
+        }
+
+        if ((dirs[0] + dirs[1]) & 1) return false;
+
+        if (degs[0] > degs[1]) {
+            let t = degs[0];
+            degs[0] = degs[1];
+            degs[1] = t;
+        }
+
+        //console.log(degs);
+
+        return degs[0] == 2 && degs[1] > 2;
+    }
+
     constructor() {
         super();       
         this.width = MAP_WIDTH;
@@ -112,8 +181,29 @@ export class Dungeon extends Map {
             if (value) return; 
             var key = x + "," + y;
             this.layer[key] = new Stone();
-            this.free_cells.push([x, y]);
         });
+
+        for (let x=0;x<this.width;++x) {
+            for (let y=0;y<this.height;++y) {
+                if (this.isDoor(x, y) && dice(6) < 3) {
+                    let key = x+','+y;
+                    this.layer[key] = new Door();
+                } else {                    
+                    this.free_cells.push([x, y]);
+                }
+            }
+        }
+
+        for (let x=0;x<this.width;++x) {
+            for (let y=0;y<this.height;++y) {
+                let key = x + "," + y;
+                if (this.layer[key] && this.layer[key].ch == "門") {
+                    this.layer[key].trigger();
+                }
+            }
+        }
+
+
         
         this.agents = Array<any>();
 

@@ -6,6 +6,34 @@ import { Map, Box, Tile, add_shadow } from "../map";
 const MAP_WIDTH = 50;
 const MAP_HEIGHT = 30;
 
+export class Door extends Tile {
+    name: string;
+    ch: string;
+    color: string;
+    pass: any;
+    light: any;
+
+    trigger() {
+        if (this.pass == false) {
+            this.ch = "門";
+            this.pass = true;
+            this.light = true;
+        } else {
+            this.ch = "關";
+            this.pass = false;
+            this.light = false;
+        }
+    }
+    constructor() {      
+        super();  
+        this.ch = "關";
+        this.color = "#eee";
+        this.pass = false;
+        this.light = false;
+    }    
+}
+
+
 class Stair extends Tile {
 
     target: any;
