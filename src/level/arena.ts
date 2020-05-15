@@ -6,6 +6,16 @@ import { Map, Box, Tile, add_shadow } from "../map";
 const MAP_WIDTH = 80;
 const MAP_HEIGHT = 60;
 
+class Stone extends Tile {
+    constructor() {
+        super();
+        this.ch = "."
+        this.color = "#666";
+        this.pass = true;
+        this.light = true;
+    }
+}
+
 class Grass extends Tile {
     constructor() {
         super();
@@ -85,7 +95,7 @@ class Upstair extends Stair {
     }
 }
 
-export class Map0 extends Map {
+export class Dungeon extends Map {
 
     free_cells: Array<[number, number]>;
 
@@ -96,20 +106,14 @@ export class Map0 extends Map {
         this.layer = {};
         this.shadow = {};
         this.free_cells = [];
-        let digger = new ROT.Map.Arena(this.width, this.height);
-        digger.create((x, y, value) => {
+
+        let dungeon = new ROT.Map.Digger(this.width, this.height);
+        dungeon.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
-            this.layer[key] = new Grass();
+            this.layer[key] = new Stone();
             this.free_cells.push([x, y]);
         });
-
-        for (let i=0;i<10+rand(40);++i) {            
-            let p = pop_random(this.free_cells);                        
-            let key = p[0]+','+p[1];
-            this.layer[key] = new Tree();
-        }
-
         
         this.agents = Array<any>();
 
@@ -123,12 +127,6 @@ export class Map0 extends Map {
             let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
-
-        /*for (let i=0;i<rand(3);++i) {
-            let p = pop_random(this.free_cells);
-            let r = new Slime(p[0], p[1]);
-            this.agents.push(r);
-        }*/
 
         for (let i=0;i<dice(2);++i) {
             let p = pop_random(this.free_cells);
@@ -149,7 +147,95 @@ export class Map0 extends Map {
             this.layer[key] = t;
         }
 
-        for (let i=0;i<1;++i) {
+        for (let i=0;i<5;++i) {
+            let p = pop_random(this.free_cells);
+            let t = new Box();
+            let key = p[0]+','+p[1];
+            this.layer[key] = t;
+        }
+    }
+
+}
+
+
+export class Map0 extends Map {
+
+    free_cells: Array<[number, number]>;
+    dungeon: Map;
+
+    constructor() {
+        super();       
+
+        this.dungeon = new Dungeon();
+
+        this.width = MAP_WIDTH;
+        this.height = MAP_HEIGHT;
+        this.layer = {};
+        this.shadow = {};
+        this.free_cells = [];
+        let forest = new ROT.Map.Arena(this.width, this.height);
+        forest.create((x, y, value) => {
+            if (value) return; 
+            var key = x + "," + y;
+            this.layer[key] = new Grass();
+            this.free_cells.push([x, y]);
+        });
+
+        for (let i=0;i<10+rand(40);++i) {            
+            let p = pop_random(this.free_cells);                        
+            let key = p[0]+','+p[1];
+            this.layer[key] = new Tree();
+        }
+
+        this.agents = Array<any>();
+
+        for (let i=0;i<dice(7);++i) {            
+            let p = pop_random(this.free_cells);
+            let r = new Rat(p[0], p[1]);
+            this.agents.push(r);
+        }
+        for (let i=0;i<dice(5);++i) {            
+            let p = pop_random(this.free_cells);
+            let r = new Snake(p[0], p[1]);
+            this.agents.push(r);
+        }
+
+        for (let i=0;i<dice(2);++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Orc(p[0], p[1]);
+            this.agents.push(r);
+        }
+        
+        this.agents.sort(function(a: any, b: any): number {
+            if (a.z < b.z) return -1;
+            if (a.z > b.z) return 1;
+            return 0;
+        });
+
+        for (let i=0;i<5;++i) {
+            let p = pop_random(this.free_cells);
+            let key = p[0]+','+p[1];
+            if (this.dungeon.layer[key] == null) {
+                --i;
+                continue;
+            }
+
+            let down = new Downstair();
+            down.target = {};
+            down.target.map = this.dungeon;
+            down.target.x = p[0];
+            down.target.y = p[1];
+            let up = new Upstair();
+            up.target = {}; 
+            up.target.map = this;
+            up.target.x = p[0];
+            up.target.y = p[1];
+
+            this.layer[key] = down;
+            this.dungeon.layer[key] = up;            
+        }
+
+        for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];

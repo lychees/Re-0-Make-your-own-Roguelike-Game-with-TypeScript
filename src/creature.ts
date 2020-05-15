@@ -4,7 +4,7 @@ import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
@@ -70,7 +70,8 @@ export class Creature {
     buffs : Array<Buff>;
 
     run_buff: Buff;
-
+    weapon: Weapon;
+    
     constructor(x: number, y: number) {
         this.name = "生物";
         this.x = x;

@@ -51,11 +51,16 @@ export class Equip extends Item {
     buff: Buff;
     unequip() {
         this.buff.remove();
-        this.equipped = false;        
+        this.owner.weapon = null;
+        this.equipped = false;     
     }
     equip() {
         // this.ability.append(this.owner);
+        if (this.owner.weapon != null) {
+            this.owner.weapon.unequip();            
+        }
         this.buff.append(this.owner);
+        this.owner.weapon = this;
         this.equipped = true;        
     }
     use() {
@@ -172,12 +177,23 @@ export class Inventory {
         for (let i=0;i<this.items.length;++i) {
             let item = this.items[i];            
             let dom = $('<div>').addClass('inventoryRow');
-            let name =$('<div>').addClass('row_key').text(item.name);
+            let name =$('<div>').addClass('row_key').text(item.name + (item.equipped ?  "*" : ""));
             let tip = $('<div>').addClass("tooltip bottom right").text(item.description);
+
             tip.appendTo(dom);
             name.appendTo(dom);            
             dom.appendTo('div#inventory');
         }
+
+
+        let p = game.player;
+        if (p) {
+        let weapon_name = p.weapon ? p.weapon.name : "無";
+        let weapon_description = p.weapon ? p.weapon.description : "";
+
+        $("#weapon > .row_key").text("武器 " + weapon_name);
+        $("#weapon > .tooltip").text(weapon_description);
+    }
     }
 
     open() {        
