@@ -22,7 +22,7 @@ export function copy() {
 export function slime_hostile() {
     if (this.hp <= 0) return;
 
-    console.log("??");
+    // console.log("??");
 
     /*if (this.hp != this.HP) {
         if (dice(6) == 1) {

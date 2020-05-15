@@ -4,20 +4,24 @@ import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
+
+import { Buff, Ability, Elf_Race, Human_Race, Injured } from "./buff";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
 function attack(alice, bob) {    
+
+    game.scheduler.setDuration(5000);
 
     if (bob.hp <= 0) return;
     let dice = rand;
 
     let miss = dice(6) + dice(6) + 2;
 
-    console.log(miss, bob.dex);
+    //console.log(miss, bob.dex);
 
     if (miss < bob.dex) {
         game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
@@ -26,12 +30,8 @@ function attack(alice, bob) {
         return; 
     }
 
-
     let dmg = alice.base_atk();
-
-    console.log(dmg);
-
-    
+    //console.log(dmg);
 
     if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
 
@@ -49,7 +49,7 @@ function attack(alice, bob) {
     }
 }
 
-class Creature {
+export class Creature {
     name: string;
     x: number;
     y: number;
@@ -58,6 +58,9 @@ class Creature {
     color: string;
     dir: number;
     
+    atk: {}; 
+    def: number;
+
     hp: number; HP: number;
     mp: number; MP: number;
     sp: number; SP: number;
@@ -68,6 +71,9 @@ class Creature {
     logs: Logs;
     inventory: Inventory;
     abilities : Array<Ability>;
+    buffs : Array<Buff>;
+
+    run_buff: Buff;
 
     constructor(x: number, y: number) {
         this.name = "生物";
@@ -77,6 +83,9 @@ class Creature {
         this.color = "#fff";
         this.dir = 1;
         this.z = 1;
+
+        this.atk = {}; 
+        this.def = 0;
         
         this.hp = 0; this.HP = 0;
         this.mp = 0; this.MP = 0;
@@ -87,7 +96,81 @@ class Creature {
         this.logs = new Logs();
         this.inventory = new Inventory(); this.inventory.owner = this;
         this.abilities = new Array<Ability>();
+        this.buffs = new Array<Buff>();
+        this.run_buff = new Buff();
+        this.run_buff.name = "跑";
+        this.run_buff.description = "移動速度加快 4 倍，但每次移動有 10% 的概率消耗一點體力，當沒有體力時此狀態無效。";
     }
+
+    parse_atk_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_atk();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+
+    parse_def_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_def();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+
+    parse_hp_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_hp();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+
+    parse_mp_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_mp();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+    
+    parse_sp_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_sp();
+            if (t != "") {
+                t += " 來自 " + b.name;
+                z += t;
+            }
+        }
+        return z;
+    }    
+
+    parse_buffs() {
+        let z = "";
+        for (let i=0;i<this.buffs.length;++i) {
+            let b = this.buffs[i];
+            z += b.parse();
+        }
+        return z;
+    }
+
     /*
     base_attack() {
         return dice(this.str) + dice(this.str);
@@ -136,7 +219,7 @@ class Creature {
     }
     injured(d: number) {
         this.logs.notify(this.name + "受傷了");
-        this.abilities.push(new Injured(this, d));        
+        this.abilities.push(new Injured(this, d));
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];        
@@ -168,6 +251,16 @@ class Creature {
             this.moveTo(x, y);
         }
     }
+    
+    run() {        
+        let idx = this.buffs.findIndex((a) => a == this.run_buff);
+        if (idx == -1) {
+            this.run_buff.append(this);
+        } else {
+            this.run_buff.remove();
+        }
+    }
+
     abilities_detail() {
         let detail = {
             hp: ['生命值'],
@@ -280,198 +373,6 @@ export class Slime extends Enemy {
     }
 }
 
-class Ability {
-    name: string;
-    description: string;    
-    owner: Creature;
-    modify_int(d: number) {
-    }
-    hp() : string {
-        return "";        
-    }
-    mp() : string {
-        return "";        
-    }
-    sp() : string {
-        return "";        
-    }
-    str() : string {        
-        return "";
-    }  
-    dex() : string {
-        return "";
-    }      
-    con() : string {
-        return "";
-    }            
-    int() : string {
-        return "";
-    }
-    wis() : string {
-        return "";
-    }            
-    cha() : string {
-        return "";
-    }  
-
-    constructor(owner: Creature) {        
-        this.owner = owner;
-        this.name = "???";
-        this.description = "???";
-    }
-}
-
-class Injured extends Ability {
-    lv : number;
-    str_penalty: number;
-    dex_penalty: number;
-
-    str() : string {
-        if (this.str_penalty == 0) return;
-        return "-" + this.str_penalty + " 來自 " + this.name;
-    }  
-    dex() : string {
-        if (this.dex_penalty == 0) return;
-        return "-" + this.dex_penalty + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.name = "受傷"; 
-        this.lv = lv;
-        this.str_penalty = rand(lv+1);
-        this.dex_penalty = lv - this.str_penalty;
-        owner.str -= this.str_penalty;
-        owner.dex -= this.dex_penalty;
-        this.description = "這個單位受傷了";
-        if (this.str_penalty > 0) this.description += "，力量 - " + this.str_penalty;
-        if (this.dex_penalty > 0) this.description += "，力量 - " + this.dex_penalty;        
-    }
-}
-
-class Human_Race extends Ability {   
-    str() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }  
-    dex() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }      
-    con() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }            
-    int() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }
-    wis() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }            
-    cha() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }   
-    constructor(owner: Creature) {
-        super(owner);
-        this.name = "人類"; 
-        owner.str += 5; owner.dex += 5; owner.modify_con(5);
-        owner.wis += 5; owner.cha += 5; owner.modify_int(5);        
-        this.description = "在大部分世界的創世史裡，人類都是最年輕的常見種族，姍姍來遲兼且比矮人、精靈、巨龍都要短壽。也許是因為他們的有限歲月，他們會盡力燃燒僅存的有限年日。又或者也許他們覺得需要證明自己給宗祖種族看，為此用搶掠和貿易建立強大的王國。不論是甚麼原因，人類是眾世界的革新者、登峰者、先驅者。";
-    }
-}
-
-class Elf_Race extends Ability {    
-    str() : string {
-        return "+" + 4 + " 來自 " + this.name;
-    }  
-    dex() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }      
-    con() : string {
-        return "+" + 4 + " 來自 " + this.name;
-    }            
-    int() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }
-    wis() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }            
-    cha() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }   
-    constructor(owner: Creature) {
-        super(owner);
-        this.name = "精靈";
-        owner.str += 4; owner.dex += 6; owner.modify_con(4);
-        owner.wis += 6; owner.cha += 6; owner.modify_int(5);
-        this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
-    }
-}
-
-
-class Magic_Talent extends Ability {
-    lv : number;
-    modify_int(d: number) {
-        this.owner.modify_MP(this.lv*d);
-    }
-    mp() : string {
-        return "+" + this.lv*this.owner.int + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "魔法天賦";
-        this.description = "這個單位擁有與生俱來的魔法天賦，每點智力增加 " + lv + " 點魔法";
-        let int = owner.int; 
-        owner.modify_int(-int);
-        owner.modify_int(int);
-        this.modify_int(int);
-    }
-}
-
-class Int_Talent extends Ability {
-    lv : number;
-    
-    int() : string {
-        return "+" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "天資聰穎";
-        this.description = "這個單位的領悟能力異於常人，增加 " + lv + " 點智力";        
-        owner.modify_int(lv);
-    }
-}
-
-class Dex_Talent extends Ability {    
-    lv: number;
-    dex() : string {
-        return "+" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "身輕如燕";                
-        this.description = "這個單位的敏捷異於常人，增加 " + lv + " 點敏捷";
-        owner.dex += lv;
-    }
-}
-
-class Sickly extends Ability {
-    lv : number;
-    
-    str() : string {
-        return "-" + this.lv + " 來自 " + this.name;
-    }
-    con() : string {
-        return "-" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "體弱多病";
-        this.description = "這個單位身嬌體弱，減少 " + lv + " 點力量與體質";        
-        owner.str -= lv;
-        owner.modify_con(lv);
-    }
-}
 
 /*
 export class Orc extends Creature {
@@ -501,25 +402,20 @@ export class Player extends Elf {
         super(x, y);
         this.name = "伊莎貝拉";
         this.ch = "伊";
-        this.color = "#0be";
-        
-        /*
-        this.hp = 5; this.HP = 5;
-        this.str = 2; this.dex = 7; 
-        this.wis = 7; this.cha = 7;
-        this.modify_con(3); this.modify_int(6);
-        */
-    
+        this.color = "#0be";        
         this.z = 100;
 
-        this.abilities.push(new Dex_Talent(this, 1));
+        /*this.abilities.push(new Dex_Talent(this, 1));
         this.abilities.push(new Int_Talent(this, 1));        
         this.abilities.push(new Magic_Talent(this, 3));
-        this.abilities.push(new Sickly(this, 1));
+        this.abilities.push(new Sickly(this, 1));*/
         
-        this.inventory.push(new Apple());
-        this.inventory.push(new Water_Mirror());
-        this.inventory.push(new Necklace());
+        //this.inventory.push(new Apple());
+        //this.inventory.push(new Water_Mirror());
+        //this.inventory.push(new Necklace());
+        
+        this.inventory.push(new Axes());
+        this.inventory.push(new Axes());
     }
     base_atk() {
         return dice(6) + dice(6);
@@ -546,6 +442,12 @@ export class Player extends Elf {
             this.inventory.open();
             return;
         }
+
+        if (code == ROT.KEYS.VK_R) {
+            this.run();
+            return;
+        }
+
 
         if (code == 13 || code == 32) {
             var key = this.x + "," + this.y;
@@ -578,17 +480,31 @@ export class Player extends Elf {
         if (!(code in keyMap)) {
             return;
         }
+        
         let new_dir = keyMap[code];
-        this.dir = new_dir;
-
+        
         if (e.shiftKey) {                    
-            this.logs.notify("你向四处张望。");
-            game.scheduler.setDuration( 5 / this.dex );
+            this.logs.notify("你向四處張望");
+            if (rand(5) == 0) this.sp_healing(1);            
+            game.scheduler.setDuration( 1000 );
         } else {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
-            let yy = this.y + d[1];        
-            game.scheduler.setDuration( 10 / this.dex );
+            let yy = this.y + d[1];
+            
+            
+            game.scheduler.setDuration( 4000 );
+
+            if (this.run_buff.owner == this && this.sp > 0) {
+                if (this.dir == new_dir) {
+                    game.scheduler.setDuration( 1000 );
+                } else {
+                    game.scheduler.setDuration( 2000 );
+                }
+                if (rand(10) == 0) this.sp -= 1;
+            } else {                
+                if (rand(10) == 0) this.sp_healing(1);
+            }
 
             let attacked = false;
             for (let i=0;i<game.map.agents.length;++i) {
@@ -609,6 +525,8 @@ export class Player extends Elf {
                 }
             }
         }
+
+        this.dir = new_dir;
         window.removeEventListener("keydown", this);
         game.engine.unlock();
     }    

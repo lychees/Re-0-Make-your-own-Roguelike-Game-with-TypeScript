@@ -5,6 +5,27 @@ import { Player } from "./creature";
 import { Map0 } from "./level/lv0";
 import { Sound } from "./sound";
 
+export function get_avg_atk(atk: any) {
+    let z = 0;
+    for (const a in atk) {
+        if (a[0] == 'd') {
+            z += atk[a] * (1 + parseInt(a.substr(1))) / 2;
+        }        
+    }
+    return z;
+}
+
+export function parse_atk(atk: any) {
+    let z = "";
+    for (let a in atk) {
+        if (z != "") z += ", ";
+        z += atk[a] > 0 ? "+" : "";
+        z += atk[a] + a;
+    }
+    return z;
+}
+
+
 export function rand(n: number): number {
     return Math.floor(ROT.RNG.getUniform() * n);    
 }
@@ -81,19 +102,34 @@ class Game {
             name.appendTo(dom);            
             dom.appendTo('div#abilities');
         }
+
+        for (let i=0;i<p.buffs.length;++i) {
+            let b = p.buffs[i];
+            let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
+            let name =$('<div>').addClass('row_key').text(b.name);
+            let tip = $('<div>').addClass("tooltip bottom right").text(b.description);
+            tip.appendTo(dom);
+            name.appendTo(dom);            
+            dom.appendTo('div#abilities');
+        }        
     }
 
     draw_attributes(p: any) {
         let detail = this.player.abilities_detail();
-                    
-        
-
+                        
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
         $("#HP > .tooltip").text(detail.hp.join("\n"));
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
         $("#MP > .tooltip").text(detail.mp.join("\n"));
         $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
         $("#SP > .tooltip").text(detail.sp.join("\n"));
+
+        let atk = get_avg_atk(this.player.atk);
+        $("#ATK > .row_key").text("ATK:" + atk);
+        $("#ATK > .tooltip").text(this.player.parse_atk_buffs());
+        $("#DEF > .row_key").text("DEF:" + this.player.def);
+        $("#DEF > .tooltip").text(this.player.parse_def_buffs());
+
         $("#STR > .row_key").text("STR:" + this.player.str);
         $("#STR > .tooltip").text(detail.str.join("\n"));
         $("#DEX > .row_key").text("DEX:" + this.player.dex);
@@ -112,7 +148,10 @@ class Game {
         this.map.draw();
 
         this.draw_attributes(this.player);
-        $("#TIME > .row_key").text("TIME:" + this.scheduler.getTime());
+        
+        let d = new Date();
+        d.setTime(Math.floor(this.scheduler.getTime()));
+        $("#TIME > .row_key").text(d.toUTCString());
         $("#SCORE > .row_key").text("SCORE:" + game.score);
 
         this.player.inventory.draw();        

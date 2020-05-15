@@ -1,6 +1,7 @@
 import * as ROT from "rot-js";
 import * as $ from "jquery";
 import { game, rand } from "./main";
+import { Ability, Buff } from "./buff";
 
 export class Item {
     name: string;
@@ -10,6 +11,7 @@ export class Item {
     durability: number;        
     ch: string;
     color: string;
+    owner: any;
     constructor() {
         this.name = "？？？";
         this.description = "";
@@ -44,15 +46,76 @@ export class Apple extends Item {
 }
 
 export class Equip extends Item {
-
+    equipped: boolean;
+    ability: Ability;
+    buff: Buff;
+    unequip() {
+        this.buff.remove();
+        this.equipped = false;        
+    }
+    equip() {
+        // this.ability.append(this.owner);
+        this.buff.append(this.owner);
+        this.equipped = true;        
+    }
+    use() {
+        if (this.equipped) {
+            this.unequip();
+        } else {
+            this.equip();
+        }
+        if (this.owner == game.player) game.draw();
+    }
+    constructor() {
+        super();
+    }
 }
 
 export class Weapon extends Equip {
-
+    atk: {};
+    cd: number;
+    effect: any;
+    parse_atk() : string {
+        let z = "";        
+        for (let a in this.atk) {
+            z += this.atk[a] + "d" + a + "\n";
+        }
+        return z;
+    }
+    constructor() {
+        super();
+        this.atk = {};
+        this.cd = 20;
+        this.name = "武器";        
+        this.description = "一把武器";      
+    }    
 }
 
-export class Sword extends Weapon {
-    attack: 6;    
+export class Axes extends Weapon {    
+    constructor() {
+        super();        
+        this.atk[8] = 1;
+        this.cd = 30;
+        this.name = "斧";
+        this.ch = "斧";
+        this.description = "一把斧頭\n";
+        this.ability = new Ability();
+        this.ability.name = this.name;
+        this.ability.name = this.name;
+
+        let b = new Buff();
+        b.name = "斧";
+        b.hp = 1;
+        b.atk['d10'] = 1;
+        b.description = "這個單位裝備了一把斧頭\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        this.description += b.parse();
+    }    
+}
+
+export class Sword extends Weapon {    
 }
 
 export class Water_Mirror extends Sword {
@@ -80,6 +143,7 @@ export class Inventory {
     }
 
     push(item: any) {
+        item.owner = this.owner;
         this.items.push(item);
         this.draw();
     }

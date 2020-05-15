@@ -50,6 +50,9 @@ Re:0 从 0 开始打造你的 Roguelike 游戏
 ### 什麼是 Roguelike？
 [Gadio Pro, Roguelike 是什么？：我们一起在过去和现在的游戏中寻找Roguelike](https://www.gcores.com/radios/121523)
 
+### Int 和 Wis 有什麼區別？
+- [https://www.quora.com/What-is-the-difference-between-wisdom-and-intelligence-in-Dungeons-and-Dragons](https://www.quora.com/What-is-the-difference-between-wisdom-and-intelligence-in-Dungeons-and-Dragons)
+
 ### 如何播放音效？
 隔壁 [Untrusted](https://github.com/lychees/untrusted/blob/master/scripts/sound.js) 使用的 Jplayer 好像有點 old dated，這裡使用的是 [Howlerjs](https://howlerjs.com/)。
 

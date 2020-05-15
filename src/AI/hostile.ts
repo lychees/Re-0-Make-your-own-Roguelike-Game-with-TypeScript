@@ -33,7 +33,7 @@ export function hostile() {
         return;
     }
 
-    game.scheduler.setDuration( 20 / this.dex );
+    game.scheduler.setDuration( 4000 );
 
     var passableCallback = function(x, y) {
         return game.map.pass_without_agents(x, y);
