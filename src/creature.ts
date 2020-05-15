@@ -409,9 +409,9 @@ export class Player extends Elf {
         //this.inventory.push(new Necklace());
         
         this.inventory.push(new Axes());
-        this.inventory.push(new Axes());
-        this.inventory.push(new Sword());
-        this.inventory.push(new Sword());
+        let t = new Sword();
+        this.inventory.push(t);
+        t.equip();
     }
     get_atk() {
         let z = 0;

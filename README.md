@@ -3,6 +3,13 @@ Re:0 从 0 开始打造你的 Roguelike 游戏
 ## 在线试玩
 [itch](https://minakokojima.itch.io/uminouta)
 
+## 如何操作
+- 移動/攻擊 WASD 上下左右
+- 原地轉向 shift + 移動
+- 走路/跑步 R 鍵切換，跑步有 1/10 的概率消耗一點體力，體力為 0 時無法跑步
+- 裝備/道具 I 鍵打開道具欄（沒做 UI），然後 abcde 使用對應的道具，現在只能吃蘋果和裝備武器 
+
+
 ## 如何運行
 [webpack](https://webpack.js.org/) 不香麼？
 - `npm run start`
