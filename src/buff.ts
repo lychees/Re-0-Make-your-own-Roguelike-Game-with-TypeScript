@@ -112,8 +112,10 @@ export class Buff {
 
         owner.str += this.str;
         owner.dex += this.dex;
-        owner.con += this.con;
-        owner.int += this.str;
+        //owner.con += this.con;
+        //owner.int += this.int;
+        owner.modify_con(this.con);
+        owner.modify_int(this.int);
         owner.wis += this.wis;
         owner.cha += this.cha;                
     }
@@ -121,6 +123,7 @@ export class Buff {
         let owner = this.owner;
         let idx = owner.buffs.findIndex((a) => a == this);        
         owner.buffs.splice(idx, 1);
+
         owner.HP -= this.hp; if (owner.hp > owner.HP) owner.hp = owner.HP;
         owner.MP -= this.mp; if (owner.mp > owner.MP) owner.mp = owner.MP;
         owner.SP -= this.sp; if (owner.sp > owner.SP) owner.sp = owner.SP;
@@ -130,8 +133,10 @@ export class Buff {
 
         owner.str -= this.str;
         owner.dex -= this.dex;
-        owner.con -= this.con;
-        owner.int -= this.str;
+        //owner.con -= this.con;
+        //owner.int -= this.int;
+        owner.modify_con(-this.con);
+        owner.modify_int(-this.int);
         owner.wis -= this.wis;
         owner.cha -= this.cha;
         this.owner = null;           
@@ -269,6 +274,7 @@ export class Human_Race extends Ability {
     }
 }
 
+/*
 export class Elf_Race extends Ability {    
     str() : string {
         return "+" + 4 + " 來自 " + this.name;
@@ -293,6 +299,20 @@ export class Elf_Race extends Ability {
         this.name = "精靈";
         owner.str += 4; owner.dex += 6; owner.modify_con(4);
         owner.wis += 6; owner.cha += 6; owner.modify_int(5);
+        this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
+    }
+} */
+
+export class Elf_Race extends Buff {    
+    constructor() {
+        super();
+        this.name = "精靈";
+        //owner.str += 4; owner.dex += 6; owner.modify_con(4);
+        //owner.wis += 6; owner.cha += 6; owner.modify_int(5);
+
+        this.str = 4; this.dex = 6; this.con = 4;
+        this.int = 5; this.wis = 6; this.cha = 6; 
+
         this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
     }
 }

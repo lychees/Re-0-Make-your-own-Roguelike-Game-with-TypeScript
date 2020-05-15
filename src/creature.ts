@@ -392,7 +392,8 @@ export class Elf extends Creature {
         super(x, y);
         this.name = "精靈";
         this.ch = "精";
-        this.abilities.push(new Elf_Race(this));
+        //this.abilities.push();
+        (new Elf_Race()).append(this);        
     }
 }
 

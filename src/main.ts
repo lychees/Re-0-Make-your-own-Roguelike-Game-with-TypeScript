@@ -2,7 +2,8 @@ import * as ROT from "rot-js";
 import * as $ from "jquery";
 import { Camera } from "./camera";
 import { Player } from "./creature";
-import { Map0 } from "./level/lv0";
+//import { Map0 } from "./level/lv0";
+import { Map0 } from "./level/arena";
 import { Sound } from "./sound";
 
 export function get_avg_atk(atk: any) {

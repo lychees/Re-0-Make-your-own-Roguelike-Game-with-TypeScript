@@ -59,5 +59,9 @@ Re:0 从 0 开始打造你的 Roguelike 游戏
 ### 如何實現日誌框的漸隱效果？
 參考隔壁 [小黑屋](https://github.com/doublespeakgames/adarkroom/blob/master/script/notifications.js)。
 
+### 我們需要更多的裝備。
+- [http://wiki.d.163.com/diablo/index.htm](http://wiki.d.163.com/diablo/index.htm)
+- [https://nethackwiki.com/wiki/Weapon](https://nethackwiki.com/wiki/Weapon)
+
 ## 教程连载？
 [地址](http://www.gamecreator.com.cn/forum.php?mod=viewthread&tid=238&page=1&extra=#pid1026)

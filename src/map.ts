@@ -150,6 +150,8 @@ export class Map {
     }
     draw_tile_at(x: number, y: number, key: string) {
 
+        game.display.draw(x, y, null);
+
         if (typeof(this.layer[key]) === "object") {            
             let t = this.layer[key];
             this.layer[key].draw(x, y, this.shadow[key]);
