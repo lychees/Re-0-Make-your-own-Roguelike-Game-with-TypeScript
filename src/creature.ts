@@ -475,17 +475,29 @@ export class Player extends Elf {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
+        let keyMap = {};
 
-        event.preventDefault();
+        keyMap[ROT.KEYS.VK_UP] = 0; 
+        keyMap[33] = 1;
+        keyMap[ROT.KEYS.VK_RIGHT] = 2;
+        keyMap[34] = 3;
+        keyMap[ROT.KEYS.VK_DOWN] = 4;
+        keyMap[35] = 5;
+        keyMap[ROT.KEYS.VK_LEFT] = 6;
+        keyMap[36] = 7;
+
+
+        let code = e.keyCode;
+       
+        if (keyMap[code] != undefined) {
+            event.preventDefault();
+        }
 
         if (game.characterMenu.opened == true) {
             game.characterMenu.close();
             return;
         }
         
-        let keyMap = {};
-        let code = e.keyCode;
-
         if (code == 73 || code == 105) {
             window.removeEventListener("keydown", this);
             this.inventory.open();
@@ -512,14 +524,6 @@ export class Player extends Elf {
         }
 
 
-        keyMap[ROT.KEYS.VK_UP] = 0; 
-        keyMap[33] = 1;
-        keyMap[ROT.KEYS.VK_RIGHT] = 2;
-        keyMap[34] = 3;
-        keyMap[ROT.KEYS.VK_DOWN] = 4;
-        keyMap[35] = 5;
-        keyMap[ROT.KEYS.VK_LEFT] = 6;
-        keyMap[36] = 7;
 
         keyMap[ROT.KEYS.VK_W] = 0;
         keyMap[ROT.KEYS.VK_D] = 2;
