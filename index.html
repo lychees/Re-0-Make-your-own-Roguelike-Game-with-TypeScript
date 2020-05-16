@@ -2,27 +2,42 @@
 <html>
 <meta charset="utf-16"/>
 <head>
-	<title>海之歌 Prototype</title>	
+	<title>海之歌 Prototype</title>
 	<link rel="stylesheet" href="style/style.css">
-	<link rel="stylesheet" href="style/menu.css">	
+	<link rel="stylesheet" href="style/menu.css">
 </head>
 <body>
 	<div id="canvas"></div>
+	<div id="chat-wrapper">
+		<div id="chat-button">Chat</div>
+		<div id="chat-content" style="display: none;">
+			<div id="chat-init">
+				Input your name:
+				<input id="chat-name" type="text" />
+				<button id="chat-start-button">Start</button>
+			</div>
+			<div id="chat-area">
+				<div><span>Welcome - </span><span id="chat-user-count"></span></div>
+				<ul id="chat-messages"></ul>
+				<input id="inputMessage" placeholder="Type here..."/>
+			</div>
+		</div>
+	</div>
 	<div id="wrapper">
 		<div id="dashboard">
 			<div id="perks" class="menu" data-legend="伊莎貝拉">
 				<div id="HP" class="perkRow"><div class="row_key">HP</div><div class="tooltip bottom right">生命值</div></div>
 				<div id="MP" class="perkRow"><div class="row_key">MP</div><div class="tooltip bottom right">魔法值</div></div>
 				<div id="SP" class="perkRow"><div class="row_key">SP</div><div class="tooltip bottom right">體力值</div></div>
-			</div>	
-			<div id="inventory" class="menu" data-legend="物品">			
 			</div>
-			<div id="equipment" class="menu" data-legend="裝備">	
+			<div id="inventory" class="menu" data-legend="物品">
+			</div>
+			<div id="equipment" class="menu" data-legend="裝備">
 				<div id="weapon" class="perkRow"><div class="row_key">武器</div><div class="tooltip bottom right"></div></div>
 				<div id="cloth" class="perkRow"><div class="row_key">衣服</div><div class="tooltip bottom right"></div></div>
 				<div id="accessories" class="perkRow"><div class="row_key">飾品</div><div class="tooltip bottom right"></div></div>
-			</div>		
-			<div id="abilities" class="menu" data-legend="能力">					
+			</div>
+			<div id="abilities" class="menu" data-legend="能力">
 			</div>
 		</div>
 	</div>
@@ -34,7 +49,7 @@
 			<div>引っかく音が貯蔵庫から聞こえる。</div>
 			<div>何かがそこにいる。</div>
 		</div>
-		
+
 		<div id="buttons">
 			<div id="exitButtons">
 				<div id="investigate" class="button">調査する
