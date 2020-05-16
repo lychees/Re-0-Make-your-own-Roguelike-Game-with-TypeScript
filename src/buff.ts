@@ -49,10 +49,10 @@ export class Buff {
         return z.filter(i => i !== "").join("\n");
     }
 
-    parse_atk() : string {
+    parse_atk(no_atk?: boolean) : string {
         let z = parse_atk(this.atk);
         if (z == "") return z;
-        z += " ATK";
+        if (!no_atk) z += " ATK";
         return z;
     }
     parse_def() : string {        

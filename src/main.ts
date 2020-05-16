@@ -5,6 +5,7 @@ import { Player } from "./creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
 import { Sound } from "./sound";
+import { CharacterMenu } from "./UI/character";
 
 export function get_avg_atk(atk: any) {
     let z = 0;
@@ -54,6 +55,8 @@ class Game {
 
     scheduler: any;
     engine: any;
+    
+    characterMenu: any;
 
     init() {
 
@@ -65,6 +68,7 @@ class Game {
         });
         document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));
         this.SE = new Sound();
+        this.characterMenu = new CharacterMenu();
 
         //this.map = new Map();
         this.map = new Map0();
@@ -118,32 +122,12 @@ class Game {
 
     draw_attributes(p: any) {
         let detail = this.player.abilities_detail();
-                        
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
         $("#HP > .tooltip").text(detail.hp.join("\n"));
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
         $("#MP > .tooltip").text(detail.mp.join("\n"));
         $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
         $("#SP > .tooltip").text(detail.sp.join("\n"));
-
-        let atk = get_avg_atk(this.player.atk);
-        $("#ATK > .row_key").text("ATK:" + atk);
-        $("#ATK > .tooltip").text(this.player.parse_atk_buffs());
-        $("#DEF > .row_key").text("DEF:" + this.player.def);
-        $("#DEF > .tooltip").text(this.player.parse_def_buffs());
-
-        $("#STR > .row_key").text("STR:" + this.player.str);
-        $("#STR > .tooltip").text(detail.str.join("\n"));
-        $("#DEX > .row_key").text("DEX:" + this.player.dex);
-        $("#DEX > .tooltip").text(detail.dex.join("\n"));
-        $("#CON > .row_key").text("CON:" + this.player.con);
-        $("#CON > .tooltip").text(detail.con.join("\n"));
-        $("#INT > .row_key").text("INT:" + this.player.int);
-        $("#INT > .tooltip").text(detail.int.join("\n"));
-        $("#WIS > .row_key").text("WIS:" + this.player.wis);
-        $("#WIS > .tooltip").text(detail.wis.join("\n"));
-        $("#CHA > .row_key").text("CHA:" + this.player.cha);
-        $("#CHA > .tooltip").text(detail.cha.join("\n"));
     }
 
     draw() {     
@@ -165,9 +149,19 @@ export let game = new Game();
 game.init();
 
 
+//openCharacterMenu(game.player);
+
+
+$( "#character" ).click(function() {    
+    game.characterMenu.toggle(game.player);
+});
+
+
 
 import { _, Events } from "./event";
 import { Apple, Axes } from "./inventory";
+
+
 
 Events.init();
 
@@ -238,7 +232,7 @@ let juqing = {
     }
 };
 
-Events.startEvent(juqing);
+// Events.startEvent(juqing);
 
 
 

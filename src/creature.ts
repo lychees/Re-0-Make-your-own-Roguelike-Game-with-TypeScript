@@ -100,9 +100,9 @@ export class Creature {
     }
 
     parse_atk_buffs() {
-        let z = "";
+        let z = "攻擊力\n";
         for (const b of this.buffs) {
-            let t = b.parse_atk();
+            let t = b.parse_atk(true);
             if (t != "") {
                 t += " 來自 " + b.name + "\n";
                 z += t;
@@ -112,7 +112,7 @@ export class Creature {
     }
 
     parse_def_buffs() {
-        let z = "";
+        let z = "防禦力\n";
         for (const b of this.buffs) {
             let t = b.parse_def();
             if (t != "") {
@@ -451,6 +451,11 @@ export class Player extends Elf {
     handleEvent(e) {
 
         event.preventDefault();
+
+        if (game.characterMenu.opened == true) {
+            game.characterMenu.close();
+            return;
+        }
         
         let keyMap = {};
         let code = e.keyCode;
