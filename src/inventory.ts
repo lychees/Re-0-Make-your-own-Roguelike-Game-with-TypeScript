@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import * as $ from "jquery";
+import $ from "jquery";
 import { game, rand } from "./main";
 import { Ability, Buff } from "./buff";
 

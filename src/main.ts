@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import * as $ from "jquery";
+import $ from "jquery";
 import { Camera } from "./camera";
 import { Player } from "./creature";
 //import { Map0 } from "./level/lv0";
@@ -9,6 +9,7 @@ import { Ch0_Boss } from "./level/lv0";
 
 import { Sound } from "./sound";
 import { CharacterMenu } from "./UI/character";
+import { Chat } from "./chat";
 
 
 import { _, Events } from "./event";
@@ -66,6 +67,12 @@ class Game {
     
     characterMenu: any;
 
+    chat: Chat;
+
+    constructor() {
+        this.chat = new Chat();
+    }
+
     init() {
 
         game.display = new ROT.Display({
@@ -87,7 +94,8 @@ class Game {
         this.map.agents.push(game.player);
 
         this.camera = new Camera();
-        
+
+        this.chat.initialize();
 
         this.scheduler = new ROT.Scheduler.Action();
         for (let i=0;i<this.map.agents.length;++i) {

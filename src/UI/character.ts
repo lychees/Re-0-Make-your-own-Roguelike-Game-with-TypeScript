@@ -1,4 +1,4 @@
-import * as $ from "jquery";
+import $ from "jquery";
 import { game } from "../main";
 import { Creature } from "../creature";
 
