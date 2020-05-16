@@ -99,6 +99,19 @@ export class Creature {
         this.run_buff.description = "移動速度加快 4 倍，但每次移動有 10% 的概率消耗一點體力，當沒有體力時此狀態無效。";
     }
 
+    get_atk() {
+        let z = 0;
+        for (const a in this.atk) {
+            if (a[0] == 'd') {
+                let t = this.atk[a];
+                while (t--) {
+                    z += dice(parseInt(a.substr(1)));
+                }
+            }        
+        }
+        return z;
+    }    
+
     parse_atk_buffs() {
         let z = "攻擊力\n";
         for (const b of this.buffs) {
@@ -398,19 +411,31 @@ export class Elf extends Creature {
         super(x, y);
         this.name = "精靈";
         this.ch = "精";
-        //this.abilities.push();
         (new Elf_Race()).append(this);        
     }
 }
 
-export class Lee extends Enemy {
+export class Elf_Guard extends Elf {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "衛兵";
+        this.ch = "衛";
+        this.color = "#c11";        
+        this.z = 3;
+        let t = new Sword();
+        this.inventory.push(t);
+        t.equip();
+        this.act = hostile.bind(this);
+    }
+}
+
+export class Lee extends Elf {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "李貝爾";
         this.ch = "李";
-        this.color = "#673";        
-        this.z = 99;
-
+        this.color = "#ca3";        
+        this.z = 3;
         let t = new Sword();
         this.inventory.push(t);
         t.equip();
@@ -438,18 +463,6 @@ export class Player extends Elf {
         let t = new Sword();
         this.inventory.push(t);
         t.equip();
-    }
-    get_atk() {
-        let z = 0;
-        for (const a in this.atk) {
-            if (a[0] == 'd') {
-                let t = this.atk[a];
-                while (t--) {
-                    z += dice(parseInt(a.substr(1)));
-                }
-            }        
-        }
-        return z;
     }
     dead(murderer: any) {
         super.dead(murderer);
