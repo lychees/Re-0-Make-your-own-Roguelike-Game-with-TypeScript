@@ -4,36 +4,78 @@
 <head>
 	<title>海之歌 Prototype</title>	
 	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="style/menu.css">	
 </head>
 <body>
 	<div id="canvas"></div>
-	<div id="wrapper"></div>
+	<div id="wrapper">
+		<div id="dashboard">
+			<div id="perks" class="menu" data-legend="伊莎貝拉">
+				<div id="HP" class="perkRow"><div class="row_key">HP</div><div class="tooltip bottom right">生命值</div></div>
+				<div id="MP" class="perkRow"><div class="row_key">MP</div><div class="tooltip bottom right">魔法值</div></div>
+				<div id="SP" class="perkRow"><div class="row_key">SP</div><div class="tooltip bottom right">體力值</div></div>
+				<div id="ATK" class="perkRow"><div class="row_key">ATK</div><div class="tooltip bottom right">攻擊力</div></div>
+				<div id="DEF" class="perkRow"><div class="row_key">DEF</div><div class="tooltip bottom right">防御力</div></div>
+				<div id="STR" class="perkRow"><div class="row_key">STR</div><div class="tooltip bottom right">力量代表肌肉力量、運動訓練、及能發揮多少肉體潛能</div></div>
+				<div id="DEX" class="perkRow"><div class="row_key">DEX</div><div class="tooltip bottom right">敏捷代表機敏度、反射速度、平衡力</div></div>
+				<div id="CON" class="perkRow"><div class="row_key">CON</div><div class="tooltip bottom right">體魄代表健康、耐力、生命力</div></div>
+				<div id="INT" class="perkRow"><div class="row_key">INT</div><div class="tooltip bottom right">智力代表思考速度、記憶力、邏輯能力</div></div>
+				<div id="WIS" class="perkRow"><div class="row_key">WIS</div><div class="tooltip bottom right">感知代表你對外在環境的觸覺，反映觀察力和洞察力</div></div>
+				<div id="CHA" class="perkRow"><div class="row_key">CHA</div><div class="tooltip bottom right">魅力量度你跟他人有效地交流的能力。它代表了信心、口才，也能代表迷人或有力的個性</div></div>
+				<div id="TIME" class="perkRow"><div class="row_key">TIME</div><div class="tooltip bottom right">時刻</div></div>
+				<div id="SCORE" class="perkRow"><div class="row_key">SCORE</div><div class="tooltip bottom right">得分</div></div>
+			</div>	
+			<div id="inventory" class="menu" data-legend="物品">			
+			</div>
+			<div id="equipment" class="menu" data-legend="裝備">	
+				<div id="weapon" class="perkRow"><div class="row_key">武器</div><div class="tooltip bottom right"></div></div>
+				<div id="cloth" class="perkRow"><div class="row_key">衣服</div><div class="tooltip bottom right"></div></div>
+				<div id="accessories" class="perkRow"><div class="row_key">飾品</div><div class="tooltip bottom right"></div></div>
+			</div>		
+			<div id="abilities" class="menu" data-legend="能力">					
+			</div>
+		</div>
+	</div>
 
-	<div id="dashboard">
-		<div id="perks" class="menu" data-legend="伊莎貝拉">
-			<div id="HP" class="perkRow"><div class="row_key">HP</div><div class="tooltip bottom right">生命值</div></div>
-			<div id="MP" class="perkRow"><div class="row_key">MP</div><div class="tooltip bottom right">魔法值</div></div>
-			<div id="SP" class="perkRow"><div class="row_key">SP</div><div class="tooltip bottom right">體力值</div></div>
-			<div id="ATK" class="perkRow"><div class="row_key">ATK</div><div class="tooltip bottom right">攻擊力</div></div>
-			<div id="DEF" class="perkRow"><div class="row_key">DEF</div><div class="tooltip bottom right">防御力</div></div>
-			<div id="STR" class="perkRow"><div class="row_key">STR</div><div class="tooltip bottom right">力量代表肌肉力量、運動訓練、及能發揮多少肉體潛能</div></div>
-			<div id="DEX" class="perkRow"><div class="row_key">DEX</div><div class="tooltip bottom right">敏捷代表機敏度、反射速度、平衡力</div></div>
-			<div id="CON" class="perkRow"><div class="row_key">CON</div><div class="tooltip bottom right">體魄代表健康、耐力、生命力</div></div>
-			<div id="INT" class="perkRow"><div class="row_key">INT</div><div class="tooltip bottom right">智力代表思考速度、記憶力、邏輯能力</div></div>
-			<div id="WIS" class="perkRow"><div class="row_key">WIS</div><div class="tooltip bottom right">感知代表你對外在環境的觸覺，反映觀察力和洞察力</div></div>
-			<div id="CHA" class="perkRow"><div class="row_key">CHA</div><div class="tooltip bottom right">魅力量度你跟他人有效地交流的能力。它代表了信心、口才，也能代表迷人或有力的個性</div></div>
-			<div id="TIME" class="perkRow"><div class="row_key">TIME</div><div class="tooltip bottom right">時刻</div></div>
-			<div id="SCORE" class="perkRow"><div class="row_key">SCORE</div><div class="tooltip bottom right">得分</div></div>
-		</div>	
-		<div id="inventory" class="menu" data-legend="物品">			
+<!--
+	<div id="event" class="eventPanel" style="opacity: 1;">
+		<div class="eventTitle">ノイズ</div>
+		<div id="description">
+			<div>引っかく音が貯蔵庫から聞こえる。</div>
+			<div>何かがそこにいる。</div>
 		</div>
-		<div id="equipment" class="menu" data-legend="裝備">	
-			<div id="weapon" class="perkRow"><div class="row_key">武器</div><div class="tooltip bottom right"></div></div>
-			<div id="cloth" class="perkRow"><div class="row_key">衣服</div><div class="tooltip bottom right"></div></div>
-			<div id="accessories" class="perkRow"><div class="row_key">飾品</div><div class="tooltip bottom right"></div></div>
-		</div>		
-		<div id="abilities" class="menu" data-legend="能力">					
+		
+		<div id="buttons">
+			<div id="exitButtons">
+				<div id="investigate" class="button">調査する
+					<div class="cooldown"></div>
+				</div>
+				<div id="ignore" class="button">無視する
+					<div class="cooldown"></div>
+				</div>
+				<div class="clear"></div>
+			</div>
 		</div>
+	</div>
+-->
+	<div class="footer">
+		<span class="customSelect menuBtn">
+			<span class="customSelectOptions">
+				<ul><li>語言</li>
+					<li data-language="zh_cn">简体中文</li>
+					<li data-language="zh_tw">繁體中文</li>
+					<li data-language="ja">日本語</li>
+					<li data-language="ko">한국어</li>
+					<li data-language="en">English</li>
+				</ul>
+			</span>
+		</span>
+		<span class="hyper menuBtn">模組</span>
+		<span class="menuBtn">分享</span>
+		<span class="menuBtn">保存</span>
+		<span class="menuBtn">地圖</span>
+		<span class="menuBtn">物品</span>
+		<span class="menuBtn">人物</span>
 	</div>
 </body>
 </html>

@@ -163,3 +163,63 @@ class Game {
 
 export let game = new Game();
 game.init();
+
+
+
+import { _, Events } from "./event";
+import { Apple, Axes } from "./inventory";
+
+Events.init();
+
+Events.startEvent({
+//    title: 'ok',
+
+ /* The Thief */
+    title: _('伊莎貝拉'),
+    scenes: {
+        'start': {
+            text: [
+                _('你發現地上有一個上鎖的金色寶箱。'),
+            ],
+            buttons: {
+                'open': {
+                    text: _('用鑰匙打開'),
+                    nextScene: {1: 'open'}
+                },
+                'destroy': {
+                    text: _('暴力破壞'),
+                    nextScene: {1: 'destory'}
+                },
+                'leave': {
+                    text: _('離開它，這或許是一個陷阱。'),
+                    nextScene: 'end'
+                }
+            }
+        },
+        'open': {
+            text: [
+                _('沒有鑰匙。'),
+            ],
+            buttons: {
+                'leave': {
+                    text: _('leave'),
+                    nextScene: 'end'
+                }
+            }
+        },
+        'destory': {
+            text: [
+                _("一番努力之後，你打開了箱子，獲得了一把斧頭。"),
+            ],
+            onLoad: function() {
+                game.player.inventory.push(new Axes());
+            },            
+            buttons: {
+                'leave': {
+                    text: _('leave'),
+                    nextScene: 'end'
+                }
+            }
+        }
+    }
+});

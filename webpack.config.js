@@ -8,6 +8,7 @@ module.exports = {
   entry: [
     path.resolve(__dirname, "src/main.ts"),
     path.resolve(__dirname, "style/style.css"),
+    path.resolve(__dirname, "style/menu.css"),
   ],
   output: {
     path: path.resolve(__dirname, "dist"),
