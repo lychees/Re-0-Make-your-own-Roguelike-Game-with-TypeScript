@@ -32,7 +32,7 @@ export class Apple extends Item {
         game.SE.playSE("吃.wav");
         let d_hp = who.hp_healing(1+rand(2));
         let d_sp = who.sp_healing(1+rand(2));
-        who.logs.notify(this.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
+        who.logs.notify(who.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
         this.durability -= 1;
         //console.log(this.durability);
         game.draw();
@@ -167,6 +167,21 @@ export class Inventory {
         item.owner = this.owner;
         this.items.push(item);
         this.draw();
+    }
+
+    getDom() {
+        let z = $('<div>').addClass('inventory');
+//        $('<div>').addClass('characterMenuTitle').text("物品").appendTo(z);
+        for (let i=0;i<this.items.length;++i) {
+            let item = this.items[i];            
+            let dom = $('<div>').addClass('inventoryRow');
+            let name =$('<div>').addClass('row_key').text(item.name + (item.equipped ?  "*" : ""));
+            let tip = $('<div>').addClass("tooltip bottom right").text(item.description);
+            tip.appendTo(dom);
+            name.appendTo(dom);            
+            dom.appendTo(z);
+        }
+        return z;
     }
 
     draw() {        

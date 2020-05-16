@@ -4,8 +4,16 @@ import { Camera } from "./camera";
 import { Player } from "./creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
+
+import { Ch0_Boss } from "./level/lv0";
+
 import { Sound } from "./sound";
 import { CharacterMenu } from "./UI/character";
+
+
+import { _, Events } from "./event";
+import { Apple, Axes } from "./inventory";
+
 
 export function get_avg_atk(atk: any) {
     let z = 0;
@@ -71,7 +79,8 @@ class Game {
         this.characterMenu = new CharacterMenu();
 
         //this.map = new Map();
-        this.map = new Map0();
+//        this.map = new Map0();
+         this.map = new Ch0_Boss();
         this.score = 0;
         let p = pop_random(this.map.free_cells);
         game.player = new Player(p[0], p[1]);
@@ -146,8 +155,9 @@ class Game {
 };
 
 export let game = new Game();
-game.init();
 
+game.init();
+Events.init();
 
 //openCharacterMenu(game.player);
 
@@ -158,81 +168,11 @@ $( "#character" ).click(function() {
 
 
 
-import { _, Events } from "./event";
-import { Apple, Axes } from "./inventory";
 
 
-
-Events.init();
 
 //import { genCharacterUI } from "./UI/character"
 //Events.startEvent(genCharacterUI(game.player));
-
-
-let juqing = {
-    title: _('伊莎貝拉'),
-    scenes: {
-        'start': {
-            text: [
-                _('到此為止吧，伊莎貝拉殿下。'),
-            ],
-            buttons: {
-                'open': {
-                    text: _('繼續'),
-                    nextScene: 'p0'
-                },
-            }
-        },
-        'p0': {
-            text: [
-                _('李、李貝爾隊長，為什麼連你也會在這裏。'),
-            ],
-            buttons: {
-                'open': {
-                    text: _('繼續'),
-                    nextScene: 'p1'
-                },
-            }
-        },
-        'p1': {
-            text: [
-                _('你的亂來已經給安琪拉造成很多困擾了，現在必須把你抓回去。'),
-            ],
-            buttons: {
-                'p21': {
-                    text: _('1. 安琪拉是我生長的地方，無論如何我也不想去做人質。'),
-                    nextScene: 'p21'
-                },
-                'p22': {
-                    text: _('2. 別怪我不手下留情。'),
-                    nextScene: 'p22'
-                },                
-            }
-        },        
-        'p21': {
-            text: [
-                _('為了安琪拉的未來，只有讓公主委屈一下了。'),
-            ],
-            buttons: {
-                'leave': {
-                    text: '結束'
-                }            
-            }
-        },           
-        'p22': {
-            text: [
-                _('那就讓我來檢驗一下公主殿下的成長吧。'),
-            ],
-            buttons: {
-                'leave': {
-                    text: '結束'
-                }            
-            }
-        },           
-    }
-};
-
-// Events.startEvent(juqing);
 
 
 

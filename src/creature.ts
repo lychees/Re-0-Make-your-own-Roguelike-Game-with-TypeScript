@@ -403,6 +403,20 @@ export class Elf extends Creature {
     }
 }
 
+export class Lee extends Enemy {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "李貝爾";
+        this.ch = "李";
+        this.color = "#673";        
+        this.z = 99;
+
+        let t = new Sword();
+        this.inventory.push(t);
+        t.equip();
+    }
+}
+
 export class Player extends Elf {
 
     constructor(x: number, y: number) {
@@ -415,8 +429,7 @@ export class Player extends Elf {
         /*this.abilities.push(new Dex_Talent(this, 1));
         this.abilities.push(new Int_Talent(this, 1));        
         this.abilities.push(new Magic_Talent(this, 3));
-        this.abilities.push(new Sickly(this, 1));*/
-        
+        this.abilities.push(new Sickly(this, 1));*/       
         //this.inventory.push(new Apple());
         //this.inventory.push(new Water_Mirror());
         //this.inventory.push(new Necklace());

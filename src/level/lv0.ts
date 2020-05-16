@@ -1,10 +1,35 @@
 import * as ROT from "rot-js";
 import { game, pop_random, dice, rand } from "../main";
-import { Player, Rat, Snake, Orc, Slime } from "../creature";
+import { Player, Rat, Snake, Orc, Slime, Lee } from "../creature";
 import { Map, Box, Tile, add_shadow } from "../map";
+import { _, Events } from "../event";
 
-const MAP_WIDTH = 50;
-const MAP_HEIGHT = 30;
+import { hostile } from "../AI/hostile";
+
+
+const MAP_WIDTH = 20;
+const MAP_HEIGHT = 80;
+
+class Stone extends Tile {
+    constructor() {
+        super();
+        this.ch = "."
+        this.color = "#666";
+        this.pass = true;
+        this.light = true;
+    }
+}
+
+class Grass extends Tile {
+    constructor() {
+        super();
+        this.ch = "."
+        this.color = "#2f2";
+        this.pass = true;
+        this.light = true;
+    }
+}
+
 
 export class Door extends Tile {
     name: string;
@@ -13,12 +38,16 @@ export class Door extends Tile {
     pass: any;
     light: any;
 
-    trigger() {
-        if (this.pass == false) {
+    trigger(who?: any) {
+        if (this.pass == false) {            
+            if (who && who == game.player) game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
+            if (who && who.logs) who.logs.notify("你打開了門");
             this.ch = "門";
             this.pass = true;
             this.light = true;
         } else {
+            if (who && who == game.player) game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
+            if (who && who.logs) who.logs.notify("你關上了門");
             this.ch = "關";
             this.pass = false;
             this.light = false;
@@ -26,13 +55,22 @@ export class Door extends Tile {
     }
     constructor() {      
         super();  
-        this.ch = "關";
+        this.ch = "門";
         this.color = "#eee";
-        this.pass = false;
-        this.light = false;
+        this.pass = true;
+        this.light = true;
     }    
 }
 
+class Tree extends Tile {
+    constructor() {
+        super();
+        this.ch = "樹"
+        this.color = "#1f1";
+        this.pass = false;
+        this.light = false;
+    }
+}
 
 class Stair extends Tile {
 
@@ -49,6 +87,7 @@ class Stair extends Tile {
     }
 }
 
+/*
 class Downstair extends Stair {
     constructor() {
         super();
@@ -91,46 +130,133 @@ class Upstair extends Stair {
         }
         super.enter(who);
     }
-}
+}*/
 
-export class Map0 extends Map {
+export class Ch0_Boss extends Map {
 
     free_cells: Array<[number, number]>;
 
     constructor() {
         super();       
+
         this.width = MAP_WIDTH;
         this.height = MAP_HEIGHT;
         this.layer = {};
         this.shadow = {};
         this.free_cells = [];
-        let digger = new ROT.Map.Digger(this.width, this.height);
-        digger.create((x, y, value) => {
+        let forest = new ROT.Map.Cellular(this.width, this.height);
+
+        forest.randomize(0.3);
+
+        for (let x=0;x<this.width;++x) {
+            for (let y=0;y<this.height;++y) {            
+                let key = x + ',' + y;
+                this.layer[key] = new Tree();
+            }
+        }
+        
+
+        forest.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
-            this.layer[key] = "　";
+            this.layer[key] = new Grass();
             this.free_cells.push([x, y]);
+            this.shadow[key] = '#fff';
         });
 
-        
+
+        for (let x=0;x<this.width;++x) {
+            let y = 5;
+            this.layer[x+','+y] = new Tree();
+        }
+        let y = 5;
+        this.layer[5+','+y] = new Door(); this.layer[5+','+y].trigger();
+        this.layer[6+','+y] = new Door(); this.layer[6+','+y].trigger();
+        this.layer[7+','+y] = new Door(); this.layer[7+','+y].trigger();
+
+        /*
+        for (let i=0;i<10+rand(40);++i) {            
+            let p = pop_random(this.free_cells);                        
+            let key = p[0]+','+p[1];
+            this.layer[key] = new Tree();
+        } */
+
         this.agents = Array<any>();
+        let lee = new Lee(7, 6);
+        this.agents.push(lee);
+        lee.act = function(){ // wait Isabella
+            game.scheduler.setDuration( 5000 );
+            console.log('wait');
+            if (game.player && Events && Math.abs(this.x - game.player.x) + Math.abs(this.y - game.player.y) <= 7) {
+                
+                let juqing = {
+                    title: _('伊莎貝拉'),
+                    scenes: {
+                        'start': {
+                            text: [
+                                _('到此為止吧，伊莎貝拉殿下。'),
+                            ],
+                            buttons: {
+                                'open': {
+                                    text: _('繼續'),
+                                    nextScene: 'p0'
+                                },
+                            }
+                        },
+                        'p0': {
+                            text: [
+                                _('李、李貝爾隊長，為什麼連你也會在這裏。'),
+                            ],
+                            buttons: {
+                                'open': {
+                                    text: _('繼續'),
+                                    nextScene: 'p1'
+                                },
+                            }
+                        },
+                        'p1': {
+                            text: [
+                                _('你的亂來已經給安琪拉造成很多困擾了，現在必須把你抓回去。'),
+                            ],
+                            buttons: {
+                                'p21': {
+                                    text: _('1. 安琪拉是我生長的地方，無論如何我也不想離開。'),
+                                    nextScene: 'p21'
+                                },
+                                'p22': {
+                                    text: _('2. 我已經不是當初的那個小女孩了，我的劍可不會手下留情。'),
+                                    nextScene: 'p22'
+                                },                
+                            }
+                        },        
+                        'p21': {
+                            text: [
+                                _('為了安琪拉的未來，只有讓公主委屈一下了。'),
+                            ],
+                            buttons: {
+                                'leave': {
+                                    text: '結束'
+                                }            
+                            }
+                        },           
+                        'p22': {
+                            text: [
+                                _('那就讓我來檢驗一下公主殿下的成長吧。'),
+                            ],
+                            buttons: {
+                                'leave': {
+                                    text: '結束'
+                                }            
+                            }
+                        },           
+                    }
+                };
+                
+                Events.startEvent(juqing);   
+                this.act = hostile.bind(this);                         
+            }
 
-        for (let i=0;i<dice(7);++i) {            
-            let p = pop_random(this.free_cells);
-            let r = new Rat(p[0], p[1]);
-            this.agents.push(r);
-        }
-        for (let i=0;i<dice(5);++i) {            
-            let p = pop_random(this.free_cells);
-            let r = new Snake(p[0], p[1]);
-            this.agents.push(r);
-        }
-
-        for (let i=0;i<rand(3);++i) {
-            let p = pop_random(this.free_cells);
-            let r = new Slime(p[0], p[1]);
-            this.agents.push(r);
-        }
+        }.bind(lee);
 
         for (let i=0;i<dice(2);++i) {
             let p = pop_random(this.free_cells);
@@ -143,19 +269,5 @@ export class Map0 extends Map {
             if (a.z > b.z) return 1;
             return 0;
         });
-
-        for (let i=0;i<2;++i) {
-            let p = pop_random(this.free_cells);
-            let t = new Upstair();
-            let key = p[0]+','+p[1];
-            this.layer[key] = t;
-        }
-
-        for (let i=0;i<1;++i) {
-            let p = pop_random(this.free_cells);
-            let t = new Box();
-            let key = p[0]+','+p[1];
-            this.layer[key] = t;
-        }
     }
 }

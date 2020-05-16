@@ -277,6 +277,36 @@ div.tooltip:hover {
 	display: block;
 }
 
+/* Menu */
+
+.characterMenu {
+	background: none repeat scroll 0 0 white;
+	border: 2px solid transparent;
+	left: 10px;
+	padding: 20px;
+	position: absolute;
+	top: 10px;
+	width: 435px;
+	z-index: 20;
+}
+
+.characterMenuTitle {
+	display: inline-block;
+	font-weight: bold;
+	position: absolute;
+	top: -12px;
+}
+
+.characterMenuTitle:after {
+	background-color: white;
+	bottom: 32%;
+	content: " ";
+	height: 15px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	z-index: -1;
+}
 
 /* Events */
 
@@ -301,6 +331,7 @@ div.tooltip:hover {
 	width: 435px;
 	z-index: 20;
 }
+
 
 body.noMask .eventPanel {
 	background-color: black;

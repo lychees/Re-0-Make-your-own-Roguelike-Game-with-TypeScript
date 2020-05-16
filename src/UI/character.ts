@@ -22,12 +22,13 @@ export class CharacterMenu {
 	}
 
 	open(p: Creature) {
-		let t = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
+
+		let t = $('<div>').attr('id', 'characterMenu').addClass('characterMenu').css('opacity', '0');
 		t.animate({opacity: 1}, 200, 'linear');
 	
-		t.css('width', 1200);
+		t.css('width', 800);
 	
-		$('<div>').addClass('eventTitle').text(p.name).appendTo(t);
+		$('<div>').addClass('characterMenuTitle').text(p.name).appendTo(t);
 	
 		let detail = p.abilities_detail();
 		
@@ -85,6 +86,10 @@ export class CharacterMenu {
 		$('<div>').addClass('row_key').text("CHA:" + p.cha).appendTo(cha);
 		$('<div>').addClass('tooltip bottom right').text(detail.cha.join("\n")).appendTo(cha);
 		cha.appendTo(t);
+
+
+		p.inventory.getDom().appendTo(t);
+
 		$('#wrapper').append(t);
 		this.menu = t;
 		this.opened = true;
@@ -102,67 +107,4 @@ export class CharacterMenu {
 			this.open(p);
 		}
 	}
-}
-
-
-export function openCharacterMenu(p: Creature) {
-
-	/*
-	let z = {
-		title: null,
-		scenes: null
-	};
-
-	z.title = p.name;
-	z.scenes = {
-        'start': {
-            text: [
-                'test'
-            ],
-            buttons: {
-                'open': {
-                    text: '123',
-                    nextScene: {1: 'open'}
-                },
-                'destroy': {
-                    text: '暴力破壞',
-                    nextScene: {1: 'destory'}
-                },
-                'leave': {
-                    text: '離開它，這或許是一個陷阱。',
-                    nextScene: 'end'
-                }
-            }
-		}
-	}
-	return z;
-	*/
-
-
-
-
-/*
-
-	$("#DEF > .row_key").text("DEF:" + this.player.def);
-	$("#DEF > .tooltip").text(this.player.parse_def_buffs());
-
-	$("#STR > .row_key").text("STR:" + this.player.str);
-	$("#STR > .tooltip").text(detail.str.join("\n"));
-	$("#DEX > .row_key").text("DEX:" + this.player.dex);
-	$("#DEX > .tooltip").text(detail.dex.join("\n"));
-	$("#CON > .row_key").text("CON:" + this.player.con);
-	$("#CON > .tooltip").text(detail.con.join("\n"));
-	$("#INT > .row_key").text("INT:" + this.player.int);
-	$("#INT > .tooltip").text(detail.int.join("\n"));
-	$("#WIS > .row_key").text("WIS:" + this.player.wis);
-	$("#WIS > .tooltip").text(detail.wis.join("\n"));
-	$("#CHA > .row_key").text("CHA:" + this.player.cha);
-	$("#CHA > .tooltip").text(detail.cha.join("\n"));	*/
-
-
-	/*
-	$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
-	$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
-	Events.loadScene('start');*/
-
 }
