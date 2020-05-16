@@ -159,6 +159,51 @@ export class Buff {
 }
 
 
+export class Int_Talent extends Buff {    
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.int = lv;
+        if (lv > 0) {
+            this.name = "天資聰穎";
+            this.description = "這個單位的智力異於常人";
+        } else {
+            this.name = "頭腦簡單";
+            this.description = "這個單位的智力弱於常人";
+        }        
+    }
+}
+
+export class Dex_Talent extends Buff {
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.dex = lv;
+        if (lv > 0) {
+            this.name = "身輕如燕";
+            this.description = "這個單位的敏捷異於常人";
+        } else {
+            this.name = "四肢僵硬";
+            this.description = "這個單位的敏捷弱於常人";
+        }        
+    }    
+}
+
+export class Sickly extends Buff {
+    lv : number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.name = "體弱多病";
+        this.description = "這個單位身嬌體弱";
+        this.str = -lv;
+        this.con = -lv;
+    }
+}
+
+
 
 export class Ability {
     name: string;
@@ -307,12 +352,8 @@ export class Elf_Race extends Buff {
     constructor() {
         super();
         this.name = "精靈";
-        //owner.str += 4; owner.dex += 6; owner.modify_con(4);
-        //owner.wis += 6; owner.cha += 6; owner.modify_int(5);
-
         this.str = 4; this.dex = 6; this.con = 4;
         this.int = 5; this.wis = 6; this.cha = 6; 
-
         this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
     }
 }
@@ -338,36 +379,7 @@ export class Magic_Talent extends Ability {
     }
 }
 
-export class Int_Talent extends Ability {
-    lv : number;
-    
-    int() : string {
-        return "+" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "天資聰穎";
-        this.description = "這個單位的領悟能力異於常人，增加 " + lv + " 點智力";        
-        owner.modify_int(lv);
-    }
-}
-
-
-export class Dex_Talent extends Ability {    
-    lv: number;
-    dex() : string {
-        return "+" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "身輕如燕";                
-        this.description = "這個單位的敏捷異於常人，增加 " + lv + " 點敏捷";
-        owner.dex += lv;
-    }
-}
-
+/*
 export class Sickly extends Ability {
     lv : number;
     
@@ -385,4 +397,4 @@ export class Sickly extends Ability {
         owner.str -= lv;
         owner.modify_con(lv);
     }
-}
+}*/

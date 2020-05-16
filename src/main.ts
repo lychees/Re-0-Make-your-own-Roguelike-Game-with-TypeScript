@@ -130,7 +130,7 @@ class Game {
             let b = p.buffs[i];
             let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
             let name =$('<div>').addClass('row_key').text(b.name);
-            let tip = $('<div>').addClass("tooltip bottom right").text(b.description);
+            let tip = $('<div>').addClass("tooltip bottom right").text(b.description + "\n" + b.parse());
             tip.appendTo(dom);
             name.appendTo(dom);            
             dom.appendTo('div#abilities');
@@ -152,13 +152,15 @@ class Game {
 
         this.draw_attributes(this.player);
         
+        /*
         let d = new Date();
         d.setTime(Math.floor(this.scheduler.getTime()));
         $("#TIME > .row_key").text(d.toUTCString());
         $("#SCORE > .row_key").text("SCORE:" + game.score);
+        */
 
-        this.player.inventory.draw();        
-        this.draw_abilities(this.player);
+        //this.player.inventory.draw();        
+        //this.draw_abilities(this.player);
     }
 };
 

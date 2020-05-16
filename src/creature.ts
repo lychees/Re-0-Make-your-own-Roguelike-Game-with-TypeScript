@@ -1,14 +1,17 @@
 import * as ROT from "rot-js";
-
+import $ from "jquery";
 import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
-import { Buff, Ability, Elf_Race, Human_Race, Injured } from "./buff";
+import { Buff, Ability, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, Sickly } from "./buff";
+
+
+
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -45,6 +48,45 @@ function attack(alice, bob) {
     }
 }
 
+
+export class Equipment {
+    weapon: Weapon;
+    armor: Armor;
+    accessory: Accessory;
+
+    getDom() {
+        let z = $('<div>').addClass('equipment');            
+        let weapon_dom = $('<div>').addClass('inventoryRow');
+        let weapon_name =$('<div>').addClass('row_key').text('武器 ' + (this.weapon ? this.weapon.name : "無"));
+        let weapon_tip = $('<div>').addClass("tooltip bottom right").text(this.weapon ? this.weapon.description : "");
+        weapon_tip.appendTo(weapon_dom);
+        weapon_name.appendTo(weapon_dom);            
+        weapon_dom.appendTo(z);
+
+        let armor_dom = $('<div>').addClass('inventoryRow');                
+        let armor_name =$('<div>').addClass('row_key').text('護甲 ' + (this.armor ? this.armor.name : "無"));
+        let armor_tip = $('<div>').addClass("tooltip bottom right").text(this.armor ? this.armor.description : "");
+        armor_tip.appendTo(armor_dom);
+        armor_name.appendTo(armor_dom);            
+        armor_dom.appendTo(z);
+
+        let accessory_dom = $('<div>').addClass('inventoryRow');                
+        let accessory_name =$('<div>').addClass('row_key').text('飾品 ' + (this.accessory ? this.accessory.name : "無"));
+        let accessory_tip = $('<div>').addClass("tooltip bottom right").text(this.accessory ? this.accessory.description : "");
+        accessory_tip.appendTo(accessory_dom);
+        accessory_name.appendTo(accessory_dom);            
+        accessory_dom.appendTo(z);        
+        
+        return z;        
+    }
+
+    constructor() {
+        this.weapon = null;
+        this.armor = null;
+        this.accessory = null;
+    }
+}
+
 export class Creature {
     name: string;
     x: number;
@@ -66,11 +108,12 @@ export class Creature {
 
     logs: Logs;
     inventory: Inventory;
+    equipment: Equipment;
     abilities : Array<Ability>;
     buffs : Array<Buff>;
 
     run_buff: Buff;
-    weapon: Weapon;
+    
     
     constructor(x: number, y: number) {
         this.name = "生物";
@@ -91,7 +134,10 @@ export class Creature {
         this.str = 0; this.dex = 0; this.con = 0;
         this.int = 0; this.wis = 0; this.cha = 0;        
         this.logs = new Logs();
+        
         this.inventory = new Inventory(); this.inventory.owner = this;
+        this.equipment = new Equipment(); // this.inventory.owner = this;
+
         this.abilities = new Array<Ability>();
         this.buffs = new Array<Buff>();
         this.run_buff = new Buff();
@@ -165,12 +211,61 @@ export class Creature {
         for (const b of this.buffs) {
             let t = b.parse_sp();
             if (t != "") {
-                t += " 來自 " + b.name;
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+
+    parse_str_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_str();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+
+    parse_dex_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_dex();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+    
+    parse_con_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_con();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
+                z += t;
+            }
+        }
+        return z;
+    }
+    
+    parse_int_buffs() {
+        let z = "";
+        for (const b of this.buffs) {
+            let t = b.parse_int();
+            if (t != "") {
+                t += " 來自 " + b.name + "\n";
                 z += t;
             }
         }
         return z;
     }    
+
 
     parse_buffs() {
         let z = "";
@@ -411,7 +506,7 @@ export class Elf extends Creature {
         super(x, y);
         this.name = "精靈";
         this.ch = "精";
-        (new Elf_Race()).append(this);        
+        (new Elf_Race()).append(this);
     }
 }
 
@@ -458,6 +553,10 @@ export class Player extends Elf {
         //this.inventory.push(new Apple());
         //this.inventory.push(new Water_Mirror());
         //this.inventory.push(new Necklace());
+
+        (new Dex_Talent(1)).append(this);
+        (new Int_Talent(1)).append(this);
+        (new Sickly(1)).append(this);        
         
         this.inventory.push(new Axes());
         let t = new Sword();

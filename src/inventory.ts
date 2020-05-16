@@ -55,7 +55,6 @@ export class Equip extends Item {
         this.equipped = false;     
     }
     equip() {
-        // this.ability.append(this.owner);
         if (this.owner.weapon != null) {
             this.owner.weapon.unequip();            
         }
@@ -76,6 +75,79 @@ export class Equip extends Item {
     }
 }
 
+export class Armor extends Equip {            
+    unequip() {
+        this.buff.remove();
+        this.owner.equipment.armor = null;
+        this.equipped = false;     
+    }
+    equip() {
+        if (this.owner.equipment.armor != null) {
+            this.owner.equipment.armor.unequip();            
+        }
+        this.buff.append(this.owner);
+        this.owner.equipment.armor = this;
+        this.equipped = true;        
+    }
+    constructor() {
+        super();        
+        this.name = "護甲";        
+        this.description = "一件護甲";      
+    }    
+}
+
+export class Accessory extends Equip {        
+    unequip() {
+        this.buff.remove();
+        this.owner.equipment.accessory = null;
+        this.equipped = false;     
+    }
+    equip() {
+        if (this.owner.equipment.accessory != null) {
+            this.owner.equipment.accessory.unequip();            
+        }
+        this.buff.append(this.owner);
+        this.owner.equipment.accessory = this;
+        this.equipped = true;        
+    }
+    constructor() {
+        super();        
+        this.name = "飾品";        
+        this.description = "一件飾品";
+    }    
+}
+
+export class Weapon extends Equip {    
+    cd: number;    
+    parse_atk() : string {
+        let z = "";        
+        for (let a in this.buff.atk) {
+            z += this.buff.atk[a] + "d" + a + "\n";
+        }
+        return z;
+    }
+    unequip() {
+        this.buff.remove();
+        this.owner.equipment.weapon = null;
+        this.equipped = false;     
+    }
+    equip() {
+        if (this.owner.equipment.weapon != null) {
+            this.owner.equipment.weapon.unequip();            
+        }
+        this.buff.append(this.owner);
+        this.owner.equipment.weapon = this;
+        this.equipped = true;        
+    }    
+    constructor() {
+        super();        
+        this.cd = 20;
+        this.name = "武器";        
+        this.description = "一把武器";      
+    }    
+}
+
+/*
 export class Weapon extends Equip {    
     cd: number;
     buff: any;
@@ -92,7 +164,7 @@ export class Weapon extends Equip {
         this.name = "武器";        
         this.description = "一把武器";      
     }    
-}
+}*/
 
 export class Axes extends Weapon {    
     constructor() {
@@ -200,13 +272,13 @@ export class Inventory {
             dom.appendTo('div#inventory');
         }
 
-        let p = game.player;
+        /*let p = game.player;
         if (p) {
             let weapon_name = p.weapon ? p.weapon.name : "無";
             let weapon_description = p.weapon ? p.weapon.description : "";
             $("#weapon > .row_key").text("武器 " + weapon_name);
             $("#weapon > .tooltip").text(weapon_description);
-        }
+        }*/
     }
 
     open() {        

@@ -281,7 +281,7 @@ div.tooltip:hover {
 
 .characterMenu {
 	background: none repeat scroll 0 0 white;
-	border: 2px solid transparent;
+	border: 2px solid;
 	left: 10px;
 	padding: 20px;
 	position: absolute;
@@ -307,6 +307,45 @@ div.tooltip:hover {
 	width: 100%;
 	z-index: -1;
 }
+
+/* Abilities */
+
+.abilitiesMenu {	
+	background: none repeat scroll 0 0 white;
+	border: 2px solid;
+	left: 10px;
+	
+	padding-top: 0px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+
+	position: relative;
+	top: 10px;
+	width: 235px;
+	z-index: 20;
+}
+
+
+
+.abilitiesMenuTitle {
+	display: inline-block;
+	font-weight: bold;
+	position: relative;
+	top: -10px;
+}
+
+.abilitiesMenuTitle:after {
+	background-color: white;
+	bottom: 32%;
+	content: " ";
+	height: 15px;
+	left: 0;
+	position: absolute;
+	width: 100%;
+	z-index: -1;
+}
+
 
 /* Events */
 
