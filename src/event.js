@@ -136,10 +136,6 @@ export var Button = {
  */
 export let Events = {
 
-
-
-
-
 	init: function() {
 
 		this._EVENT_TIME_RANGE = [3, 6], // range, in minutes
@@ -234,47 +230,14 @@ export let Events = {
 	},
 
 	buttonClick: function(btn) {
-        var info = Events.activeEvent().scenes[Events.activeScene].buttons[btn.attr('id')];
-        
-        console.log(info);
-
-		// Cost
-		var costMod = {};
-
-
+        var info = Events.activeEvent().scenes[Events.activeScene].buttons[btn.attr('id')];            
 		if(typeof info.onChoose == 'function') {
-			var textarea = Events.eventPanel().find('textarea');
-			info.onChoose(textarea.length > 0 ? textarea.val() : null);
+			info.onChoose();
 		}
-
 		Events.updateButtons();
-
-		// Notification
-		if(info.notification) {
-//			Notifications.notify(null, info.notification);
-		}
-
 		// Next Scene
-		if(info.nextScene) {
-
-			if(info.nextScene == 'end') {
-				Events.endEvent();
-			} else {
-				var r = Math.random();
-				var lowestMatch = null;
-				for(var i in info.nextScene) {
-					if(r < i && (lowestMatch == null || i < lowestMatch)) {
-						lowestMatch = i;
-					}
-				}
-				if(lowestMatch != null) {
-					Events.loadScene(info.nextScene[lowestMatch]);
-					return;
-				}
-		//		Engine.log('ERROR: no suitable scene found');
-				Events.endEvent();
-			}
-		}
+		if (!info.nextScene) Events.endEvent();
+		else Events.loadScene(info.nextScene);			
 	},
 
 	drawButtons: function(scene) {
@@ -311,39 +274,20 @@ export let Events = {
 		for(var i in scene.text) {
 			$('<div>').text(scene.text[i]).appendTo(desc);
         }
-        
-
-		if(scene.textarea != null) {
-			var ta = $('<textarea>').val(scene.textarea).appendTo(desc);
-			if(scene.readonly) {
-//				ta.attr('readonly', true);
-			}
-			//Engine.autoSelect('#description textarea');
-		}
-
-        // Draw any loot
-    
-        
-		var takeETbtn;
-		if(scene.loot) {
-//			takeETbtn = Events.drawLoot(scene.loot);
-		}
+		
+        // Draw any loot        
+//		var takeETbtn;
 
 		// Draw the buttons
-		var exitBtns = $('<div>').attr('id','exitButtons').appendTo($('#buttons', Events.eventPanel()));
+		var exitBtns = $('<div>').attr('id','exitButtons').appendTo($('#description', Events.eventPanel()));		
 		leaveBtn = Events.drawButtons(scene);
 		$('<div>').addClass('clear').appendTo(exitBtns);
-		Events.allowLeave(takeETbtn, leaveBtn);
+//		Events.allowLeave(takeETbtn, leaveBtn);
 	},    
     
-
 	loadScene: function(name) {
-
-		console.log(this.eventStack);
-
-//        Engine.log('loading scene: ' + name);
+//		console.log(this.eventStack);
 		Events.activeScene = name;
-
 
 		var scene = Events.activeEvent().scenes[name];
 
@@ -352,56 +296,24 @@ export let Events = {
 			scene.onLoad();
 		}
 
-		// Notify the scene change
-		if(scene.notification) {
-//			Notifications.notify(null, scene.notification);
-		}
-
-		// Scene reward
-		if(scene.reward) {
-//			$SM.addM('stores', scene.reward);
-		}
-
 		$('#description', Events.eventPanel()).empty();
 		$('#buttons', Events.eventPanel()).empty();
 
-        if(scene.combat) {
-//			Events.startCombat(scene);
-		} else {
-			Events.startStory(scene);
-		}
-	},    
+		Events.startStory(scene);
+	},
 
 	startEvent: function(event, options) {
-		if(event) {
-
-//			Engine.event('game event', 'event');
-//			Engine.keyLock = true;
-//			Engine.tabNavigation = false;
-//			Button.saveCooldown = false;
-			Events.eventStack.unshift(event);
-
-			event.eventPanel = $('<div>').attr('id', 'event').addClass('eventPanel').css('opacity', '0');
-			if(options != null && options.width != null) {
-				Events.eventPanel().css('width', options.width);
-			}
-			$('<div>').addClass('eventTitle').text(Events.activeEvent().title).appendTo(Events.eventPanel());
-			$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
-			$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
-
-            Events.loadScene('start');
-
-//$('body').append(Events.eventPanel());
-
-//console.log(Events.eventPanel());
-
-			$('#wrapper').append(Events.eventPanel());
-			Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
-			/*var currentSceneInformation = Events.activeEvent().scenes[Events.activeScene];
-			if (currentSceneInformation.blink) {
-				Events.blinkTitle();
-			}*/
+		Events.eventStack.unshift(event);
+		event.eventPanel = $('<div>').attr('id', 'event').addClass('dialogPanel').css('opacity', '0');
+		if(options != null && options.width != null) {
+			Events.eventPanel().css('width', options.width);
 		}
+		$('<div>').addClass('eventTitle').text(Events.activeEvent().title).appendTo(Events.eventPanel());
+		$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
+		$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
+		Events.loadScene('start');
+		$('#wrapper').append(Events.eventPanel());
+		Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
 	},    
 }
 

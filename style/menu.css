@@ -93,7 +93,7 @@ div.button {
 	position: relative;
 	text-align: center;
 	border: 1px solid black;
-	width: 100px;
+	width: 1050px;
 	margin-bottom: 5px;
 	padding: 5px 10px;
 	cursor: pointer;
@@ -280,6 +280,17 @@ div.tooltip:hover {
 
 /* Events */
 
+.dialogPanel {
+	background: none repeat scroll 0 0 white;
+	border: 2px solid transparent;
+	left: 10px;
+	padding: 20px;
+	position: absolute;
+	bottom: 0px;
+	width: 1200px;
+	z-index: 20;
+}
+
 .eventPanel {
 	background: none repeat scroll 0 0 white;
 	border: 2px solid transparent;
@@ -365,7 +376,7 @@ body.noMask .eventTitle:after {
 
 #description {
 	position: relative;
-	min-height: 100px;
+	min-height: 200px;
 }
 
 #description textarea {
