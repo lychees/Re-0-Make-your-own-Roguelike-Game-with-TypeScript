@@ -1,3 +1,4 @@
+import * as ROT from "rot-js";
 import $ from "jquery";
 import { game } from "../main";
 import { Creature } from "../creature";
@@ -15,14 +16,19 @@ export function get_avg_atk(atk: any) {
 export class CharacterMenu {
 
 	opened: boolean;
+	owner: Creature;
 	menu: any;
 	
 	constructor() {
 		this.opened = false;
 	}
 
-	open(p: Creature) {
-
+	draw() {
+		let p = this.owner;
+		if (this.menu) {
+			this.menu.remove();
+		}		
+		
 		let t = $('<div>').attr('id', 'characterMenu').addClass('characterMenu').css('opacity', '0');
 		t.animate({opacity: 1}, 200, 'linear');
 	
@@ -99,7 +105,7 @@ export class CharacterMenu {
             let b = p.buffs[i];
             let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
             let name =$('<div>').addClass('row_key').text(b.name);
-            let tip = $('<div>').addClass("tooltip bottom right").text(b.description + "\n" + b.parse());
+            let tip = $('<div>').addClass("tooltip bottom right").text(b.description);
             tip.appendTo(dom);
             name.appendTo(dom);            
             dom.appendTo(abiBox);
@@ -113,7 +119,7 @@ export class CharacterMenu {
 
 		$(t).append($('</br>'));
 
-		let equ = $('<div>').addClass('abilitiesMenu');
+		let equ = $('<div>').addClass('equipmentMenu');
 		$('<div>').addClass('abilitiesMenuTitle').text('裝備').appendTo(equ);
 		let equBox = $('<div>').css('top', '-20px');
 		p.equipment.getDom().appendTo(equBox);
@@ -122,7 +128,7 @@ export class CharacterMenu {
 
 		$(t).append($('</br>'));
 
-		let inv = $('<div>').addClass('abilitiesMenu');
+		let inv = $('<div>').addClass('inventoryMenu');
 		$('<div>').addClass('abilitiesMenuTitle').text('物品').appendTo(inv);
 		let invBox = $('<div>').css('top', '-20px');
 		p.inventory.getDom().appendTo(invBox);
@@ -135,23 +141,48 @@ export class CharacterMenu {
 
 
 		$('#wrapper').append(t);
-		
-
-		
-
 		this.menu = t;
+	}
+
+	open(p: Creature) {
+		this.owner = p;
+		this.draw();
 		this.opened = true;
-		game.SE.playSE("Wolf RPG Maker/[01S]cursor.ogg");
+		//game.SE.playSE("Wolf RPG Maker/[01S]cursor.ogg");
+		game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");
+
+		window.removeEventListener("keydown", game.player);
+		window.addEventListener("keydown", this);			
 	}
 	close() {
 		this.menu.remove();
 		this.opened = false;
 		game.SE.playSE("Wolf RPG Maker/[01S]cancel.ogg");
+		window.removeEventListener("keydown", this);
+        window.addEventListener("keydown", game.player);        
 	}
+
+    handleEvent(e: any) {
+        let code = e.keyCode;
+        if (ROT.KEYS.VK_A <= code && code <= ROT.KEYS.VK_Z) {            
+			let idx = code - ROT.KEYS.VK_A;
+			if (idx < this.owner.inventory.items.length) {
+            	let item = this.owner.inventory.items[idx];
+				item.use(this.owner);
+				if (item.durability == 0) {                
+					this.owner.inventory.items.splice(idx, 1);                
+				}
+			}
+            
+        }
+        this.close();        
+    }
+
 	toggle(p: Creature) {
 		if (this.opened) {
 			this.close(); 
 		} else {
+			
 			this.open(p);
 		}
 	}

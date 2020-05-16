@@ -8,7 +8,7 @@ import { Creature } from "./creature"
 export function parse_atk(atk: any) {
     let z = "";
     for (let a in atk) {
-        if (z != "") z += ", ";
+        if (z != "") z += ",";
         z += atk[a] > 0 ? "+" : "";
         z += atk[a] + a;
     }
@@ -91,7 +91,7 @@ export class Buff {
         if (this.wis == 0) return "";
         return (this.wis > 0 ? "+" : "") + this.wis + " WIS";
     }            
-    parse_cha() : string {
+    parse_cha() : string {  
         if (this.cha == 0) return "";
         return (this.cha > 0 ? "+" : "") + this.cha + " CHA";
     }
@@ -167,11 +167,12 @@ export class Int_Talent extends Buff {
         this.int = lv;
         if (lv > 0) {
             this.name = "天資聰穎";
-            this.description = "這個單位的智力異於常人";
+            this.description = "這個單位的智力異於常人\n";
         } else {
             this.name = "頭腦簡單";
-            this.description = "這個單位的智力弱於常人";
+            this.description = "這個單位的智力弱於常人\n";
         }        
+        this.description += this.parse();
     }
 }
 
@@ -183,11 +184,12 @@ export class Dex_Talent extends Buff {
         this.dex = lv;
         if (lv > 0) {
             this.name = "身輕如燕";
-            this.description = "這個單位的敏捷異於常人";
+            this.description = "這個單位的敏捷異於常人\n";
         } else {
             this.name = "四肢僵硬";
-            this.description = "這個單位的敏捷弱於常人";
+            this.description = "這個單位的敏捷弱於常人\n";
         }        
+        this.description += this.parse();
     }    
 }
 
@@ -195,11 +197,12 @@ export class Sickly extends Buff {
     lv : number;
     constructor(lv: number) {
         super();
-        this.lv = lv;
-        this.name = "體弱多病";
-        this.description = "這個單位身嬌體弱";
+        this.lv = lv;        
         this.str = -lv;
         this.con = -lv;
+        this.name = "體弱多病";
+        this.description = "這個單位身嬌體弱\n";
+        this.description += this.parse();
     }
 }
 
@@ -291,70 +294,25 @@ export class Injured extends Ability {
     }
 }
 
-export class Human_Race extends Ability {   
-    str() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }  
-    dex() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }      
-    con() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }            
-    int() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }
-    wis() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }            
-    cha() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }   
-    constructor(owner: Creature) {
-        super(owner);
-        this.name = "人類"; 
-        owner.str += 5; owner.dex += 5; owner.modify_con(5);
-        owner.wis += 5; owner.cha += 5; owner.modify_int(5);        
-        this.description = "在大部分世界的創世史裡，人類都是最年輕的常見種族，姍姍來遲兼且比矮人、精靈、巨龍都要短壽。也許是因為他們的有限歲月，他們會盡力燃燒僅存的有限年日。又或者也許他們覺得需要證明自己給宗祖種族看，為此用搶掠和貿易建立強大的王國。不論是甚麼原因，人類是眾世界的革新者、登峰者、先驅者。";
-    }
-}
-
-/*
-export class Elf_Race extends Ability {    
-    str() : string {
-        return "+" + 4 + " 來自 " + this.name;
-    }  
-    dex() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }      
-    con() : string {
-        return "+" + 4 + " 來自 " + this.name;
-    }            
-    int() : string {
-        return "+" + 5 + " 來自 " + this.name;
-    }
-    wis() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }            
-    cha() : string {
-        return "+" + 6 + " 來自 " + this.name;
-    }   
-    constructor(owner: Creature) {
-        super(owner);
-        this.name = "精靈";
-        owner.str += 4; owner.dex += 6; owner.modify_con(4);
-        owner.wis += 6; owner.cha += 6; owner.modify_int(5);
-        this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
-    }
-} */
-
 export class Elf_Race extends Buff {    
     constructor() {
         super();
         this.name = "精靈";
         this.str = 4; this.dex = 6; this.con = 4;
         this.int = 5; this.wis = 6; this.cha = 6; 
-        this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事。";
+        this.description = "精靈是帶超凡氣質的魔法民族，活在世上但又不完全屬世。他們居於飄逸之地，在古代森林之中或在閃耀妖火的銀色尖塔之中，柔和音樂乘風而轉，輕柔芳香隨風飄盪。精靈喜歡自然與魔法、美術與藝術、詩詞與歌賦、及世上一切美好之事\n";
+        this.description += this.parse();
+    }
+}
+
+export class Human_Race extends Buff {    
+    constructor() {
+        super();
+        this.name = "人類";
+        this.str = 5; this.dex = 5; this.con = 5;
+        this.int = 5; this.wis = 5; this.cha = 5; 
+        this.description = "普通的人類\n";
+        this.description += this.parse();
     }
 }
 
@@ -378,23 +336,3 @@ export class Magic_Talent extends Ability {
         this.modify_int(int);
     }
 }
-
-/*
-export class Sickly extends Ability {
-    lv : number;
-    
-    str() : string {
-        return "-" + this.lv + " 來自 " + this.name;
-    }
-    con() : string {
-        return "-" + this.lv + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.lv = lv;
-        this.name = "體弱多病";
-        this.description = "這個單位身嬌體弱，減少 " + lv + " 點力量與體質";        
-        owner.str -= lv;
-        owner.modify_con(lv);
-    }
-}*/

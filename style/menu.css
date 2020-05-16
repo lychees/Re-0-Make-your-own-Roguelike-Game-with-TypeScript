@@ -308,6 +308,8 @@ div.tooltip:hover {
 	z-index: -1;
 }
 
+
+
 /* Abilities */
 
 .abilitiesMenu {	
@@ -324,6 +326,40 @@ div.tooltip:hover {
 	top: 10px;
 	width: 235px;
 	z-index: 20;
+}
+
+
+
+.equipmentMenu {
+	background: none repeat scroll 0 0 white;
+	border: 2px solid;
+	left: 10px;
+	
+	padding-top: 0px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+
+	position: relative;
+	top: 10px;
+	width: 235px;
+	z-index: 19;
+}
+
+.inventoryMenu {
+	background: none repeat scroll 0 0 white;
+	border: 2px solid;
+	left: 10px;
+	
+	padding-top: 0px;
+	padding-right: 20px;
+	padding-bottom: 10px;
+	padding-left: 20px;
+
+	position: relative;
+	top: 10px;
+	width: 235px;
+	z-index: 18;
 }
 
 

@@ -4,7 +4,7 @@ import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Light_Armor, HP_Ring, MP_Ring } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
@@ -497,7 +497,8 @@ export class Human extends Creature {
         super(x, y);
         this.name = "人類";
         this.ch = "人";
-        this.abilities.push(new Human_Race(this));
+        //this.abilities.push(new Human_Race(this));
+        (new Human_Race()).append(this);
     }
 }
 
@@ -558,10 +559,15 @@ export class Player extends Elf {
         (new Int_Talent(1)).append(this);
         (new Sickly(1)).append(this);        
         
-        this.inventory.push(new Axes());
+        this.inventory.push(new Axes());    
         let t = new Sword();
         this.inventory.push(t);
         t.equip();
+
+        this.inventory.push(new Light_Armor());
+        this.inventory.push(new HP_Ring());
+        this.inventory.push(new MP_Ring());
+
     }
     dead(murderer: any) {
         super.dead(murderer);
@@ -597,9 +603,10 @@ export class Player extends Elf {
             return;
         }
         
-        if (code == 73 || code == 105) {
-            window.removeEventListener("keydown", this);
-            this.inventory.open();
+        if (code == ROT.KEYS.VK_I) {                        
+            // this.inventory.open();
+            game.characterMenu.toggle(game.player);
+
             return;
         }
 

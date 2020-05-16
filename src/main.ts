@@ -116,21 +116,12 @@ class Game {
         $('#abilities div').each(function() {            
             $(this).remove();					
         });
-        for (let i=0;i<p.abilities.length;++i) {
-            let a = p.abilities[i];
-            let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
-            let name =$('<div>').addClass('row_key').text(a.name);
-            let tip = $('<div>').addClass("tooltip bottom right").text(a.description);
-            tip.appendTo(dom);
-            name.appendTo(dom);            
-            dom.appendTo('div#abilities');
-        }
 
         for (let i=0;i<p.buffs.length;++i) {
             let b = p.buffs[i];
             let dom = $('<div>').addClass('inventoryRow').addClass('abilitiesRow');
             let name =$('<div>').addClass('row_key').text(b.name);
-            let tip = $('<div>').addClass("tooltip bottom right").text(b.description + "\n" + b.parse());
+            let tip = $('<div>').addClass("tooltip bottom right").text(b.description);
             tip.appendTo(dom);
             name.appendTo(dom);            
             dom.appendTo('div#abilities');
@@ -172,7 +163,7 @@ Events.init();
 //openCharacterMenu(game.player);
 
 
-$( "#character" ).click(function() {    
+$( "#character" ).click(function() {
     game.characterMenu.toggle(game.player);
 });
 
