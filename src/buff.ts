@@ -213,7 +213,7 @@ export class Injured extends Buff {
         this.name = "轻傷"; 
         this.lv = lv;
         this.str = -rand(lv+1);
-        this.dex = lv+this.str;
+        this.dex = -(lv+this.str);
         this.description = "這個單位受傷了\n";
         this.description += this.parse();
     }
