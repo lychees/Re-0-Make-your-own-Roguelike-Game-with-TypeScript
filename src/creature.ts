@@ -8,7 +8,7 @@ import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, A
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
-import { Buff, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, Sickly } from "./buff";
+import { Buff, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "./buff";
 
 
 
@@ -184,6 +184,9 @@ export class Creature {
 
     parse_hp_buffs() {
         let z = "";
+                
+        z += "+" + (this.con * 5) + " HP 來自 體質\n";
+        
         for (const b of this.buffs) {
             let t = b.parse_hp();
             if (t != "") {
@@ -208,6 +211,7 @@ export class Creature {
     
     parse_sp_buffs() {
         let z = "";
+        z += "+" + (this.con) + " HP 來自 體質\n";
         for (const b of this.buffs) {
             let t = b.parse_sp();
             if (t != "") {
@@ -509,8 +513,9 @@ export class Player extends Elf {
         //this.inventory.push(new Necklace());
 
         (new Dex_Talent(1)).append(this);
-        (new Int_Talent(1)).append(this);
-        (new Sickly(1)).append(this);        
+        (new Int_Talent(1)).append(this);              
+        (new MP_Talent(10)).append(this);        
+        (new Sickly(1)).append(this);
         
         this.inventory.push(new Axes());    
         let t = new Sword();

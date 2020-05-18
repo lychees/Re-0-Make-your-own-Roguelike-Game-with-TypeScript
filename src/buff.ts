@@ -158,6 +158,14 @@ export class Buff {
     }
 }
 
+export class MP_Talent extends Buff {        
+    constructor(lv: number) {
+        super();
+        this.mp = lv;
+        this.name = "魔法天賦";
+        this.description = "這個單位擁有與生俱來的魔法天賦";
+    }
+}
 
 export class Int_Talent extends Buff {    
     lv: number;
@@ -201,7 +209,7 @@ export class Sickly extends Buff {
         this.str = -lv;
         this.con = -lv;
         this.name = "體弱多病";
-        this.description = "這個單位身嬌體弱\n";
+        this.description = "這個單位從小體弱多病\n";
         this.description += this.parse();
     }
 }
