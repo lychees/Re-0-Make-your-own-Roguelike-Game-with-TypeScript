@@ -208,89 +208,17 @@ export class Sickly extends Buff {
 
 
 
-export class Ability {
-    name: string;
-    description: string;    
-    owner: Creature;
 
-    atk = {};
-
-    parse_atk() : string {
-        return "";
-    }
-    parse_def() : string {
-        return "";
-    }
-    modify_int(d: number) {
-    }
-    hp() : string {
-        return "";
-    }
-    mp() : string {
-        return "";        
-    }
-    sp() : string {
-        return "";        
-    }
-    str() : string {        
-        return "";
-    }  
-    dex() : string {
-        return "";
-    }      
-    con() : string {
-        return "";
-    }            
-    int() : string {
-        return "";
-    }
-    wis() : string {
-        return "";
-    }            
-    cha() : string {
-        return "";
-    }
-
-    append(owner: any) {
-        this.owner = owner;
-        owner.abilities.push(this);
-    }
-    remove() {
-        let idx = this.owner.abilities.findIndex((a) => a == this);        
-        this.owner.abilities.splice(idx, 1);
-    }
-
-    constructor(owner?: Creature) {        
-        this.owner = owner;
-        this.name = "???";
-        this.description = "???";
-    }
-}
-
-export class Injured extends Ability {
+export class Injured extends Buff {
     lv : number;
-    str_penalty: number;
-    dex_penalty: number;
-
-    str() : string {
-        if (this.str_penalty == 0) return;
-        return "-" + this.str_penalty + " 來自 " + this.name;
-    }  
-    dex() : string {
-        if (this.dex_penalty == 0) return;
-        return "-" + this.dex_penalty + " 來自 " + this.name;
-    }
-    constructor(owner: Creature, lv: number) {
-        super(owner);
-        this.name = "受傷"; 
+    constructor(lv: number) {
+        super();
+        this.name = "轻傷"; 
         this.lv = lv;
-        this.str_penalty = rand(lv+1);
-        this.dex_penalty = lv - this.str_penalty;
-        owner.str -= this.str_penalty;
-        owner.dex -= this.dex_penalty;
-        this.description = "這個單位受傷了";
-        if (this.str_penalty > 0) this.description += "，力量 -" + this.str_penalty;
-        if (this.dex_penalty > 0) this.description += "，力量 -" + this.dex_penalty;        
+        this.str = -rand(lv+1);
+        this.dex = lv+this.str;
+        this.description = "這個單位受傷了\n";
+        this.description += this.parse();
     }
 }
 
@@ -317,6 +245,7 @@ export class Human_Race extends Buff {
 }
 
 
+/*
 export class Magic_Talent extends Ability {
     lv : number;
     modify_int(d: number) {
@@ -336,3 +265,4 @@ export class Magic_Talent extends Ability {
         this.modify_int(int);
     }
 }
+*/

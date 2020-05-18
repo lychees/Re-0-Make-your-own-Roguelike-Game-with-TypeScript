@@ -8,7 +8,7 @@ import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, A
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
-import { Buff, Ability, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, Sickly } from "./buff";
+import { Buff, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, Sickly } from "./buff";
 
 
 
@@ -109,7 +109,7 @@ export class Creature {
     logs: Logs;
     inventory: Inventory;
     equipment: Equipment;
-    abilities : Array<Ability>;
+    //abilities : Array<Ability>;
     buffs : Array<Buff>;
 
     run_buff: Buff;
@@ -138,7 +138,7 @@ export class Creature {
         this.inventory = new Inventory(); this.inventory.owner = this;
         this.equipment = new Equipment(); // this.inventory.owner = this;
 
-        this.abilities = new Array<Ability>();
+        //this.abilities = new Array<Ability>();
         this.buffs = new Array<Buff>();
         this.run_buff = new Buff();
         this.run_buff.name = "跑";
@@ -296,11 +296,11 @@ export class Creature {
     }
     modify_int(d: number) {
         this.int += d;
-        for (let i=0;i<this.abilities.length;++i) {
+        /*for (let i=0;i<this.abilities.length;++i) {
             if (this.abilities[i].modify_int) {
                 this.abilities[i].modify_int(d);
             }
-        }
+        }*/
     } 
     
     hp_healing(d: number): number {
@@ -320,7 +320,8 @@ export class Creature {
     }
     injured(d: number) {
         this.logs.notify(this.name + "受傷了");
-        this.abilities.push(new Injured(this, d));
+        //this.abilities.push(new Injured(this, d));
+        (new Injured(d)).append(this.buffs);
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];        
@@ -362,54 +363,6 @@ export class Creature {
         }
     }
 
-    abilities_detail() {
-        let detail = {
-            hp: ['生命值'],
-            mp: ['魔法值'],
-            sp: ['體力值'],
-            str: ['力量代表肌肉力量、運動訓練、及能發揮多少肉體潛能'],
-            dex: ['敏捷代表機敏度、反射速度、平衡力'],
-            con: ['體魄代表健康、耐力、生命力'],
-            int: ['智力代表思考速度、記憶力、邏輯能力'],
-            wis: ['感知代表你對外在環境的觸覺，反映觀察力和洞察力'],
-            cha: ['魅力量度你跟他人有效地交流的能力。它代表了信心、口才，也能代表迷人或有力的個性'],
-        };
-
-        detail.hp.push("+" + this.con*5 + " 來自 體質");
-        detail.sp.push("+" + this.con*1 + " 來自 體質");
-
-        for (let i=0;i<this.abilities.length;++i) {
-            let a = this.abilities[i];
-            if (a.hp() !== "") {
-                detail.str.push(a.hp());
-            }
-            if (a.mp() !== "") {
-                detail.mp.push(a.mp());   
-            }
-            if (a.sp() !== "") {
-                detail.sp.push(a.sp());
-            }
-            if (a.str() !== "") {
-                detail.str.push(a.str());   
-            }
-            if (a.dex() !== "") {
-                detail.dex.push(a.dex());   
-            }
-            if (a.con() !== "") {
-                detail.con.push(a.con());   
-            }
-            if (a.int() !== "") {
-                detail.int.push(a.int());   
-            }
-            if (a.wis() !== "") {
-                detail.wis.push(a.wis());   
-            }
-            if (a.cha() !== "") {
-                detail.cha.push(a.cha());   
-            }
-        }
-        return detail;
-    }
     act() {
 
     }

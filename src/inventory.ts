@@ -1,7 +1,7 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
 import { game, rand, dice } from "./main";
-import { Ability, Buff } from "./buff";
+import { Buff } from "./buff";
 
 export class Item {
     name: string;
@@ -26,8 +26,7 @@ export class Item {
 
 
 export class Equip extends Item {
-    equipped: boolean;
-    ability: Ability;
+    equipped: boolean;    
     buff: Buff;
     unequip() {
         this.buff.remove();
@@ -158,9 +157,6 @@ export class Axes extends Weapon {
         this.name = "斧";
         this.ch = "斧";
         this.description = "一把斧頭\n";
-        this.ability = new Ability();
-        this.ability.name = this.name;
-        this.ability.name = this.name;
 
         let b = new Buff();
         b.name = "斧";
@@ -196,8 +192,9 @@ export class Sword extends Weapon {
         this.name = "短劍";
         this.ch = "劍";
         this.description = "一把短劍\n";
-        this.ability = new Ability();
-        this.ability.name = this.name;
+        
+        //this.ability = new Ability();
+        //this.ability.name = this.name;
 
         let b = new Buff();
         b.name = "短劍";        

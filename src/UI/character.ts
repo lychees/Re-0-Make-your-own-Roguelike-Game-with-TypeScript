@@ -36,21 +36,20 @@ export class CharacterMenu {
 	
 		$('<div>').addClass('characterMenuTitle').text(p.name).appendTo(t);
 	
-		let detail = p.abilities_detail();
 		
 		let hp = $('<div>').attr('id', 'HP').addClass('perkRow');
 		$('<div>').addClass('row_key').text("HP:" + p.hp + "/" + p.HP).appendTo(hp);
-		$('<div>').addClass('tooltip bottom right').text(detail.hp.join("\n") + p.parse_hp_buffs()).appendTo(hp);
+		$('<div>').addClass('tooltip bottom right').text(p.parse_hp_buffs()).appendTo(hp);
 		hp.appendTo(t);	
 	
 		let mp = $('<div>').attr('id', 'MP').addClass('perkRow');
 		$('<div>').addClass('row_key').text("MP:" + p.mp + "/" + p.MP).appendTo(mp);
-		$('<div>').addClass('tooltip bottom right').text(detail.mp.join("\n") + p.parse_mp_buffs()).appendTo(mp);
+		$('<div>').addClass('tooltip bottom right').text(p.parse_mp_buffs()).appendTo(mp);
 		mp.appendTo(t);	
 	
 		let sp = $('<div>').attr('id', 'SP').addClass('perkRow');
 		$('<div>').addClass('row_key').text("SP:" + p.sp + "/" + p.SP).appendTo(sp);
-		$('<div>').addClass('tooltip bottom right').text(detail.sp.join("\n") + p.parse_sp_buffs()).appendTo(sp);
+		$('<div>').addClass('tooltip bottom right').text(p.parse_sp_buffs()).appendTo(sp);
 		sp.appendTo(t);	
 	
 		let atk = $('<div>').attr('id', 'ATK').addClass('perkRow');
@@ -83,7 +82,7 @@ export class CharacterMenu {
 		$('<div>').addClass('tooltip bottom right').text(p.parse_int_buffs()).appendTo(int);
 		int.appendTo(t);	
 		
-		let wis = $('<div>').attr('id', 'wis').addClass('perkRow');
+		/*let wis = $('<div>').attr('id', 'wis').addClass('perkRow');
 		$('<div>').addClass('row_key').text("WIS:" + p.wis).appendTo(wis);
 		$('<div>').addClass('tooltip bottom right').text(detail.wis.join("\n")).appendTo(wis);
 		wis.appendTo(t);	
@@ -91,7 +90,7 @@ export class CharacterMenu {
 		let cha = $('<div>').attr('id', 'cha').addClass('perkRow');
 		$('<div>').addClass('row_key').text("CHA:" + p.cha).appendTo(cha);
 		$('<div>').addClass('tooltip bottom right').text(detail.cha.join("\n")).appendTo(cha);
-		cha.appendTo(t);
+		cha.appendTo(t);*/
 
 		let abi = $('<div>').addClass('abilitiesMenu');		
 		$('<div>').addClass('abilitiesMenuTitle').text('能力').appendTo(abi);

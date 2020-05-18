@@ -129,13 +129,14 @@ class Game {
     }
 
     draw_attributes(p: any) {
-        let detail = this.player.abilities_detail();
+        
+        //let p = this.player;
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
-        $("#HP > .tooltip").text(detail.hp.join("\n"));
+        $("#HP > .tooltip").text(p.parse_hp_buffs());
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
-        $("#MP > .tooltip").text(detail.mp.join("\n"));
+        $("#MP > .tooltip").text(p.parse_mp_buffs());
         $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
-        $("#SP > .tooltip").text(detail.sp.join("\n"));
+        $("#SP > .tooltip").text(p.parse_sp_buffs()); 
     }
 
     draw() {     
