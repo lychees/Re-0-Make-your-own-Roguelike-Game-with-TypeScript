@@ -265,6 +265,24 @@ export class MP_Ring extends Accessory {
     }
 }
 
+export class Shield extends Armor {
+    constructor() {
+        super();
+        this.name = "盾牌";
+        this.description = "提供輕便防御的盾牌\n";
+
+        let b = new Buff();
+        b.name = "盾牌";                
+        b.def = 1;
+        b.description = "這個單位裝備了盾牌\n";
+        b.description += b.parse();
+        this.buff = b;
+        this.description += b.parse();         
+    }
+}
+
+
+
 export class Light_Armor extends Armor {
     constructor() {
         super();

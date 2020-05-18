@@ -206,9 +206,6 @@ export class Sickly extends Buff {
     }
 }
 
-
-
-
 export class Injured extends Buff {
     lv : number;
     constructor(lv: number) {

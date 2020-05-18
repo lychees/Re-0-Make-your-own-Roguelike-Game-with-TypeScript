@@ -321,7 +321,7 @@ export class Creature {
     injured(d: number) {
         this.logs.notify(this.name + "受傷了");
         //this.abilities.push(new Injured(this, d));
-        (new Injured(d)).append(this.buffs);
+        (new Injured(d)).append(this);
     }
     draw() {
         let s = game.map.shadow[this.x+','+this.y];        

@@ -86,8 +86,8 @@ class Game {
         this.characterMenu = new CharacterMenu();
 
         //this.map = new Map();
-//        this.map = new Map0();
-         this.map = new Ch0_Boss();
+        this.map = new Map0();
+         //this.map = new Ch0_Boss();
         this.score = 0;
         let p = pop_random(this.map.free_cells);
         game.player = new Player(p[0], p[1]);
@@ -129,8 +129,6 @@ class Game {
     }
 
     draw_attributes(p: any) {
-        
-        //let p = this.player;
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
         $("#HP > .tooltip").text(p.parse_hp_buffs());
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
@@ -150,9 +148,6 @@ class Game {
         $("#TIME > .row_key").text(d.toUTCString());
         $("#SCORE > .row_key").text("SCORE:" + game.score);
         */
-
-        //this.player.inventory.draw();        
-        //this.draw_abilities(this.player);
     }
 };
 
@@ -168,15 +163,8 @@ $( "#character" ).click(function() {
     game.characterMenu.toggle(game.player);
 });
 
-
-
-
-
-
 //import { genCharacterUI } from "./UI/character"
 //Events.startEvent(genCharacterUI(game.player));
-
-
 
 /*
 Events.startEvent({

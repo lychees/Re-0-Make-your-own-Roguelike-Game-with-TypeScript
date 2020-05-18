@@ -2,6 +2,7 @@ import * as ROT from "rot-js";
 import { game, pop_random, dice, rand } from "../main";
 import { Player, Rat, Snake, Orc, Slime } from "../creature";
 import { Map, Box, Tile, add_shadow } from "../map";
+import * as Undead from "../monster/undead";
 
 const MAP_WIDTH = 80;
 const MAP_HEIGHT = 60;
@@ -185,6 +186,7 @@ export class Dungeon extends Map {
             if (value) return; 
             var key = x + "," + y;
             this.layer[key] = new Stone();
+            this.free_cells.push([x, y]);
         });
 
         for (let x=0;x<this.width;++x) {
@@ -192,8 +194,6 @@ export class Dungeon extends Map {
                 if (this.isDoor(x, y) && dice(6) < 3) {
                     let key = x+','+y;
                     this.layer[key] = new Door();
-                } else {                    
-                    this.free_cells.push([x, y]);
                 }
             }
         }
@@ -204,11 +204,10 @@ export class Dungeon extends Map {
                 if (this.layer[key] && this.layer[key].ch == "門") {
                     this.layer[key].trigger('god');
                 }
+                this.shadow[key] = '#fff';
             }
         }
 
-
-        
         this.agents = Array<any>();
 
         for (let i=0;i<dice(15);++i) {            
@@ -283,6 +282,7 @@ export class Map0 extends Map {
 
         this.agents = Array<any>();
 
+        /*
         for (let i=0;i<dice(7);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
@@ -298,7 +298,19 @@ export class Map0 extends Map {
             let p = pop_random(this.free_cells);
             let r = new Orc(p[0], p[1]);
             this.agents.push(r);
+        }*/
+
+        for (let i=0;i<10;++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Undead.Skeleton(p[0], p[1]);
+            this.agents.push(r);
         }
+        for (let i=0;i<10;++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Undead.Walking_Dead(p[0], p[1]);
+            this.agents.push(r);
+        }
+
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
