@@ -210,20 +210,15 @@ export class Dungeon extends Map {
 
         this.agents = Array<any>();
 
-        for (let i=0;i<dice(15);++i) {            
-            let p = pop_random(this.free_cells);
-            let r = new Rat(p[0], p[1]);
-            this.agents.push(r);
-        }
-        for (let i=0;i<dice(5);++i) {            
-            let p = pop_random(this.free_cells);
-            let r = new Snake(p[0], p[1]);
-            this.agents.push(r);
-        }
 
-        for (let i=0;i<dice(2);++i) {
+        for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
-            let r = new Orc(p[0], p[1]);
+            let r = new Undead.Skeleton(p[0], p[1]);
+            this.agents.push(r);
+        }
+        for (let i=0;i<dice(5);++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Undead.Walking_Dead(p[0], p[1]);
             this.agents.push(r);
         }
         
@@ -282,7 +277,7 @@ export class Map0 extends Map {
 
         this.agents = Array<any>();
 
-        /*
+        
         for (let i=0;i<dice(7);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
@@ -297,17 +292,6 @@ export class Map0 extends Map {
         for (let i=0;i<dice(2);++i) {
             let p = pop_random(this.free_cells);
             let r = new Orc(p[0], p[1]);
-            this.agents.push(r);
-        }*/
-
-        for (let i=0;i<10;++i) {
-            let p = pop_random(this.free_cells);
-            let r = new Undead.Skeleton(p[0], p[1]);
-            this.agents.push(r);
-        }
-        for (let i=0;i<10;++i) {
-            let p = pop_random(this.free_cells);
-            let r = new Undead.Walking_Dead(p[0], p[1]);
             this.agents.push(r);
         }
 
