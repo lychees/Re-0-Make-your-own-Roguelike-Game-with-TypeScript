@@ -87,6 +87,27 @@ span.customSelectOptions {
 	font-weight: bold;
 }
 
+/* Inventory Sub Menu */
+
+.inventory_sub_menu {
+	display: none;
+	position: absolute;
+    box-shadow: -1px 3px 2px #666;
+	background: white;	
+	z-index: 1;
+	left: 180px;
+}
+
+.inventory_sub_menu > .button {
+	position: relative;
+	text-align: center;
+	border: 1px solid black;
+	width: 80px;	
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
 /* Button */
 
 div.button {
@@ -325,7 +346,7 @@ div.tooltip:hover {
 	position: relative;
 	top: 10px;
 	width: 235px;
-	z-index: 20;
+	z-index: 17;
 }
 
 

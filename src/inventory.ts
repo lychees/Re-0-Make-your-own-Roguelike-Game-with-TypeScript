@@ -2,15 +2,61 @@ import * as ROT from "rot-js";
 import $ from "jquery";
 import { game, rand, dice } from "./main";
 import { Buff } from "./buff";
+import { Menu } from "./UI/character";
 
-function gen_sub_menu(info) {
-    let dom = $('<div>');
-    let text = "";
-    for (let i of info) {
-        text += i.title + '\n';
-    }
-    dom.text(text);
-    return dom;
+export class ItemMenu extends Menu {
+	parent: any;
+	constructor() {
+		super();
+	}
+	init(item: Item) {
+
+        let info = [];
+    
+        if (item instanceof Equip) {
+            if (item.equipped) {
+                info.push({
+                    title: "卸下",
+                    click: item.unequip.bind(item)
+                });
+            } else {
+                info.push({
+                    title: "裝備",
+                    click: item.equip.bind(item)
+                });
+            }
+        }
+
+        if (item instanceof Apple) {
+            info.push({
+                title: "吃",
+                click: item.eat.bind(item)
+            });
+        }
+
+        info.push({
+            title: "丟棄",
+            click: item.drop.bind(item)
+        });
+
+        let dom = $('<div>').addClass('inventory').addClass('inventory_sub_menu');            
+        for (let i of info) {
+            let button = $('<div>').addClass('button');
+            button.text(i.title);
+            button.click(()=>{
+                i.click();
+                this.menu.remove();
+                this.close();                
+                this.parent.refresh();
+            });
+            button.appendTo(dom);
+        }
+        //dom.text(text);
+        this.menu = dom;
+	}
+    handleEvent(e) {
+        this.close();           
+    }	
 }
 
 
@@ -23,6 +69,15 @@ export class Item {
     ch: string;
     color: string;
     owner: any;
+
+    drop() {
+        if (this.owner) {
+            let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
+            this.owner.inventory.items.splice(idx, 1);                        
+            this.owner = null;
+        }
+    }
+
     constructor() {
         this.name = "？？？";
         this.description = "";
@@ -40,7 +95,9 @@ export class Equip extends Item {
     equipped: boolean;    
     buff: Buff;
     drop() {
-    }    
+        if (this.equipped) this.unequip();
+        super.drop();        
+    }
     unequip() {
         this.buff.remove();
         this.owner.weapon = null;
@@ -143,7 +200,8 @@ export class Weapon extends Equip {
 
 export class Apple extends Item {    
     eat() {
-        game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");           
+        //game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");           
+        this.use(this.owner);
     }
     use(who: any) {
         //game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");
@@ -338,32 +396,14 @@ export class Inventory {
             tip.appendTo(dom);
             name.appendTo(dom);
 
-            let menu_info = [];
-
-            if (item instanceof Equip) {
-                if (item.equipped) {
-                    menu_info.push({
-                        title: "卸下",
-                        click: item.unequip
-                    });
-                } else {
-                    menu_info.push({
-                        title: "裝備",
-                        click: item.equip
-                    });
-                }
-            }
-
-            menu_info.push({
-                title: "丟棄",
-                click: item.drop()
-            });
-
-            gen_sub_menu(menu_info).appendTo(dom);
+            let sub_menu = new ItemMenu(); 
+            sub_menu.init(item);
+            sub_menu.parent = game.characterMenu;
+            sub_menu.menu.appendTo(dom);
         
-            /*dom.click(function() {
-                sub_dom.show();
-            });*/
+            dom.click(function() {
+                sub_menu.open();                
+            });
 
             dom.appendTo(z);
         }
@@ -398,8 +438,7 @@ export class Inventory {
 
 
     open() {        
-        game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");
-        window.addEventListener("keydown", this);
+        
     }
 
     handleEvent(e: any) {
@@ -412,8 +451,7 @@ export class Inventory {
                 this.items.splice(idx, 1);
                 this.draw();
             }
-        }
-        game.SE.playSE("Wolf RPG Maker/[01S]cancel.ogg");
+        }        
         window.removeEventListener("keydown", this);
         window.addEventListener("keydown", game.player);        
     }

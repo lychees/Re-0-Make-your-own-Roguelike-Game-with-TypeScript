@@ -84,6 +84,7 @@ class Game {
         document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));
         this.SE = new Sound();
         this.characterMenu = new CharacterMenu();
+        
 
         //this.map = new Map();
         this.map = new Map0();
@@ -91,6 +92,7 @@ class Game {
         this.score = 0;
         let p = pop_random(this.map.free_cells);
         game.player = new Player(p[0], p[1]);
+        this.characterMenu.parent = game.player;
         this.map.agents.push(game.player);
 
         this.camera = new Camera();

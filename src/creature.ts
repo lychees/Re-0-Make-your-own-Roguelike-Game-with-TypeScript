@@ -53,6 +53,7 @@ export class Equipment {
     weapon: Weapon;
     armor: Armor;
     accessory: Accessory;
+    owner: any;
 
     getDom() {
         let z = $('<div>').addClass('equipment');            
@@ -136,7 +137,7 @@ export class Creature {
         this.logs = new Logs();
         
         this.inventory = new Inventory(); this.inventory.owner = this;
-        this.equipment = new Equipment(); // this.inventory.owner = this;
+        this.equipment = new Equipment(); this.equipment.owner = this;
 
         //this.abilities = new Array<Ability>();
         this.buffs = new Array<Buff>();
@@ -521,6 +522,9 @@ export class Player extends Elf {
         let t = new Sword();
         this.inventory.push(t);
         t.equip();
+
+        console.log(t.owner);
+
 
         this.inventory.push(new Light_Armor());
         this.inventory.push(new HP_Ring());
