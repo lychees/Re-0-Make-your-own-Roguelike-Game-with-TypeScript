@@ -3,6 +3,17 @@ import $ from "jquery";
 import { game, rand, dice } from "./main";
 import { Buff } from "./buff";
 
+function gen_sub_menu(info) {
+    let dom = $('<div>');
+    let text = "";
+    for (let i of info) {
+        text += i.title + '\n';
+    }
+    dom.text(text);
+    return dom;
+}
+
+
 export class Item {
     name: string;
     description: string;
@@ -28,6 +39,8 @@ export class Item {
 export class Equip extends Item {
     equipped: boolean;    
     buff: Buff;
+    drop() {
+    }    
     unequip() {
         this.buff.remove();
         this.owner.weapon = null;
@@ -323,7 +336,35 @@ export class Inventory {
             let name =$('<div>').addClass('row_key').text(item.name + (item.equipped ?  "*" : ""));
             let tip = $('<div>').addClass("tooltip bottom right").text(item.description);
             tip.appendTo(dom);
-            name.appendTo(dom);            
+            name.appendTo(dom);
+
+            let menu_info = [];
+
+            if (item instanceof Equip) {
+                if (item.equipped) {
+                    menu_info.push({
+                        title: "卸下",
+                        click: item.unequip
+                    });
+                } else {
+                    menu_info.push({
+                        title: "裝備",
+                        click: item.equip
+                    });
+                }
+            }
+
+            menu_info.push({
+                title: "丟棄",
+                click: item.drop()
+            });
+
+            gen_sub_menu(menu_info).appendTo(dom);
+        
+            /*dom.click(function() {
+                sub_dom.show();
+            });*/
+
             dom.appendTo(z);
         }
         return z;
@@ -353,6 +394,8 @@ export class Inventory {
             $("#weapon > .tooltip").text(weapon_description);
         }*/
     }
+
+
 
     open() {        
         game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");

@@ -135,10 +135,6 @@ export class CharacterMenu {
 		$(inv).append(invBox);
 		$(t).append(inv);
 
-
-		
-
-
 		$('#wrapper').append(t);
 		this.menu = t;
 	}
