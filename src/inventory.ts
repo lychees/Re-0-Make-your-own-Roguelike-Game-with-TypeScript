@@ -210,6 +210,11 @@ export class Apple extends Item {
         let d_sp = who.sp_healing(1+rand(2));
         who.logs.notify(who.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
         this.durability -= 1;
+
+        if (this.durability == 0) {            
+            this.drop();
+        }
+
         //console.log(this.durability);
         game.draw();
     }
@@ -442,6 +447,7 @@ export class Inventory {
     }
 
     handleEvent(e: any) {
+        /*
         let code = e.keyCode;
         if (ROT.KEYS.VK_A <= code && code <= ROT.KEYS.VK_Z) {            
             let idx = code - ROT.KEYS.VK_A;
@@ -454,5 +460,6 @@ export class Inventory {
         }        
         window.removeEventListener("keydown", this);
         window.addEventListener("keydown", game.player);        
+        */
     }
 }

@@ -523,12 +523,11 @@ export class Player extends Elf {
         this.inventory.push(t);
         t.equip();
 
-        console.log(t.owner);
-
-
         this.inventory.push(new Light_Armor());
         this.inventory.push(new HP_Ring());
         this.inventory.push(new MP_Ring());
+        this.inventory.push(new Apple());
+        this.inventory.push(new Apple());
 
     }
     dead(murderer: any) {
