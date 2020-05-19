@@ -91,6 +91,8 @@ export class Item {
             let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
             this.owner.inventory.items.splice(idx, 1);                                    
         }
+
+        taker.logs.notify(taker.name + " 從 " + this.owner.name + " 身上拿走了 " + this.name);        
         taker.inventory.push(this);
     }
 

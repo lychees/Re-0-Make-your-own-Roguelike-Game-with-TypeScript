@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import { game, pop_random } from "./main";
+import { game, event, pop_random } from "./main";
 import { Player, Rat, Snake, Creature } from "./creature";
 import { Apple } from "./inventory";
 
@@ -98,7 +98,30 @@ export class Map {
             l[e[0]].enter(p);
             return;
         }        
-        alert("multi events");
+        //alert("to be test: multi events");
+
+        let btns = {};
+
+        for (let i=0;i<e.length;++i){            
+            btns[i] = {
+                text: l[e[i]].name,
+                onChoose: l[e[i]].enter.bind(l[e[i]], p)
+            }
+        }
+
+        let options = {
+            title: p.name,
+            scenes: {
+                'start': {
+                    text: [
+                        '...',
+                    ],
+                    buttons: btns
+                },       
+            }
+        };
+
+        event.startEvent(options);
     }
     touch() {
 

@@ -8,6 +8,7 @@ export class Corpse extends Tile {
     corpse: Creature.Creature;
     constructor(c: Creature.Creature) {
         super();
+        this.name = c.name;
         this.corpse = c;
         this.ch = c.ch;
         this.color = c.color;
