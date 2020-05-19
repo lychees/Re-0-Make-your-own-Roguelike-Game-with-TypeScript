@@ -191,11 +191,28 @@ export class Dex_Talent extends Buff {
         this.lv = lv;
         this.dex = lv;
         if (lv > 0) {
-            this.name = "身輕如燕";
-            this.description = "這個單位的敏捷異於常人\n";
+            this.name = "敏捷";
+            this.description = "這個單位動若脫兔\n";
         } else {
-            this.name = "四肢僵硬";
-            this.description = "這個單位的敏捷弱於常人\n";
+            this.name = "僵硬";
+            this.description = "這個單位動作僵硬\n";
+        }        
+        this.description += this.parse();
+    }    
+}
+
+export class Con_Talent extends Buff {
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.con = lv;
+        if (lv > 0) {
+            this.name = "強壯";
+            this.description = "這個單位看起來很強壯\n";
+        } else {
+            this.name = "瘦弱";
+            this.description = "這個單位看起來很瘦弱\n";
         }        
         this.description += this.parse();
     }    

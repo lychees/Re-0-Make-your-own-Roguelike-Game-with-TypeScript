@@ -311,7 +311,7 @@ Events.startEvent({
 });
 */
 
-       
+       /*
 let juqing = {
     title: _('伊莎貝拉'),
     scenes: {
@@ -375,4 +375,4 @@ let juqing = {
     }
 };
 
-event.startEvent(juqing);
+event.startEvent(juqing);*/

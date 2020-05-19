@@ -4,7 +4,7 @@ import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
 import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Light_Armor, HP_Ring, MP_Ring } from "./inventory";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "./inventory";
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
@@ -25,8 +25,6 @@ function attack(alice, bob) {
     let dice = rand;
 
     let miss = dice(6) + dice(6) + 2;
-
-    //console.log(miss, bob.dex);
 
     if (miss < bob.dex) {
         game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
@@ -214,7 +212,7 @@ export class Creature {
     
     parse_sp_buffs() {
         let z = "";
-        z += "+" + (this.con) + " HP 來自 體質\n";
+        z += "+" + (this.con) + " SP 來自 體質\n";
         for (const b of this.buffs) {
             let t = b.parse_sp();
             if (t != "") {
@@ -389,31 +387,70 @@ export class Enemy extends Creature {
         super(x, y);
         this.act = hostile.bind(this);
     }
-    get_atk() {
-        return dice(this.str) + dice(this.str);
-    }
 }
 
 export class Rat extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
-        this.name = "碩鼠";        
-        this.str = 1; this.dex = 6;
-        this.wis = 6; this.cha = 5;
-        this.modify_con(1);
+        this.name = "老鼠";
         this.ch = "鼠";
         this.color = "#777";
+
+        let Rat_Race = new Buff.Buff();            
+        Rat_Race.name = "鼠類";
+        Rat_Race.description = "這種鼠類是地下城中的常客\n";
+        Rat_Race.atk['d4'] = 1;
+        Rat_Race.str = 3; Rat_Race.dex = 3; Rat_Race.con = 2;
+        Rat_Race.int = 2; Rat_Race.wis = 5; Rat_Race.cha = 4;
+        Rat_Race.description += Rat_Race.parse();
+        Rat_Race.append(this);
+
+        if (dice(2) == 1) {
+            (new Buff.Dex_Talent(1)).append(this);
+        }
+        if (dice(2) == 1) {
+            (new Buff.Con_Talent(1)).append(this);
+        }
+        if (dice(3) == 1) {
+            let t = new Buff.Buff();
+            t.name = "尖牙利爪";
+            t.description = "這個單位的攻擊被加強了\n";
+            t.atk['d2'] = dice(3);
+            t.description += t.parse();
+        }
+        
     }
 }
 
 export class Snake extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
-        this.name = "蛇";
-        this.str = 2; this.dex = 7;
-        this.modify_con(1);
+        this.name = "蛇";        
         this.ch = "蛇";        
         this.color = "#191";
+
+        let Snake_Race = new Buff.Buff();            
+        Snake_Race.name = "蛇類";
+        Snake_Race.description = "這種蛇類是地下城中的常客\n";
+        Snake_Race.atk['d6'] = 1;
+        Snake_Race.str = 3; Snake_Race.dex = 4; Snake_Race.con = 3;
+        Snake_Race.int = 4; Snake_Race.wis = 6; Snake_Race.cha = 6;
+        Snake_Race.description += Snake_Race.parse();
+        Snake_Race.append(this);
+
+        if (dice(2) == 1) {
+            (new Buff.Dex_Talent(1)).append(this);
+        }
+        if (dice(2) == 1) {
+            (new Buff.Con_Talent(1)).append(this);
+        }
+        if (dice(3) == 1) {
+            let t = new Buff.Buff();
+            t.name = "尖牙";
+            t.description = "這個單位的攻擊被加強了\n";
+            Snake_Race.atk['d2'] = dice(3);
+            t.description += this.parse_buffs();
+        }
     }
 }
 
@@ -421,12 +458,39 @@ export class Snake extends Enemy {
 export class Orc extends Enemy {
     constructor(x: number, y: number) {
         super(x, y);
-        this.name = "獸人步兵";
-        this.hp = 25; this.HP = 25;
-        this.str = 8; this.dex = 6;
-        this.modify_con(5);
+        this.name = "半獸人";        
         this.ch = "獸";
-        this.color = "#4e4";        
+        this.color = "#4e4";       
+        
+        let Orc_Race = new Buff.Buff();            
+        Orc_Race.name = "半獸人";
+        Orc_Race.description = "為了部落\n";
+        Orc_Race.atk['d1'] = 1;
+        Orc_Race.str = 6; Orc_Race.dex = 5; Orc_Race.con = 6;
+        Orc_Race.int = 4; Orc_Race.wis = 4; Orc_Race.cha = 4;
+        Orc_Race.description += Orc_Race.parse();
+        Orc_Race.append(this);
+
+        
+        if (dice(6) == 1) {
+            let sword = new Sword();
+            this.inventory.push(sword);
+            sword.equip();
+        }
+
+                
+        if (dice(3) == 1) {
+            let axes = new Axes();
+            this.inventory.push(axes);
+            axes.equip();
+        }
+
+        if (dice(3) == 1) {
+            let shield = new Shield();
+            this.inventory.push(shield);
+            shield.equip();
+        }
+
     }
 }
 
@@ -466,7 +530,6 @@ export class Human extends Creature {
         super(x, y);
         this.name = "人類";
         this.ch = "人";
-        //this.abilities.push(new Human_Race(this));
         (new Human_Race()).append(this);
     }
 }

@@ -2,6 +2,7 @@ import * as ROT from "rot-js";
 import { game } from "../main";
 import { Tile } from "../map"
 import * as Creature from "../creature"
+import { CharacterMenu } from "../UI/character";
 
 export class Corpse extends Tile {
     corpse: Creature.Creature;
@@ -14,7 +15,9 @@ export class Corpse extends Tile {
         this.light = true;        
     }
     enter(who: any) {
-        alert(123);
+        // alert(123);
         who.logs.notify("你看了眼地上的尸體");
+        game.characterMenu.toggle(this.corpse);
+        //CharacterMenu
     }
 }

@@ -3,6 +3,7 @@ import $ from "jquery";
 import { game, rand, dice } from "./main";
 import { Buff } from "./buff";
 import { Menu } from "./UI/character";
+import * as Creature from "./creature"
 
 export class ItemMenu extends Menu {
 	parent: any;
@@ -38,6 +39,14 @@ export class ItemMenu extends Menu {
             title: "丟棄",
             click: item.drop.bind(item)
         });
+
+        
+        if (item.owner !== game.player && item.owner.hp <= 0) {
+            info.push({
+                title: "拿走",
+                click: item.take.bind(item, game.player)
+            });
+        }
 
         let dom = $('<div>').addClass('inventory').addClass('inventory_sub_menu');            
         for (let i of info) {
@@ -77,6 +86,13 @@ export class Item {
             this.owner = null;
         }
     }
+    take(taker: Creature.Creature) {
+        if (this.owner) {
+            let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
+            this.owner.inventory.items.splice(idx, 1);                                    
+        }
+        taker.inventory.push(this);
+    }
 
     constructor() {
         this.name = "？？？";
@@ -94,6 +110,11 @@ export class Item {
 export class Equip extends Item {
     equipped: boolean;    
     buff: Buff;
+
+    take(taker: Creature.Creature) {
+        if (this.equipped) this.unequip();
+        super.take(taker);
+    }
     drop() {
         if (this.equipped) this.unequip();
         super.drop();        
