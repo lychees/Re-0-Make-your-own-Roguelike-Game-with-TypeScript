@@ -448,7 +448,7 @@ export class Snake extends Enemy {
             let t = new Buff.Buff();
             t.name = "尖牙";
             t.description = "這個單位的攻擊被加強了\n";
-            Snake_Race.atk['d2'] = dice(3);
+            t.atk['d2'] = dice(3);
             t.description += this.parse_buffs();
         }
     }
@@ -477,7 +477,6 @@ export class Orc extends Enemy {
             this.inventory.push(sword);
             sword.equip();
         }
-
                 
         if (dice(3) == 1) {
             let axes = new Axes();
@@ -490,7 +489,6 @@ export class Orc extends Enemy {
             this.inventory.push(shield);
             shield.equip();
         }
-
     }
 }
 
@@ -519,11 +517,6 @@ export class Dog extends Enemy {
         this.act = hostile.bind(this);
     }
 }
-
-
-/*
-export class Orc extends Creature {
-}*/
 
 export class Human extends Creature {
     constructor(x: number, y: number) {

@@ -10,7 +10,7 @@ const MAP_HEIGHT = 60;
 
 class Wall extends Tile {
     constructor() {
-        super();
+        super();        
         this.ch = "墻"
         this.color = "#fff";
         this.pass = false;
@@ -30,7 +30,7 @@ class Stone extends Tile {
 
 class Grass extends Tile {
     constructor() {
-        super();
+        super();        
         this.ch = "."
         this.color = "#2f2";
         this.pass = true;
@@ -85,6 +85,7 @@ class Stair extends Tile {
 
     constructor() {
         super();
+        this.name = "階梯";
         this.color = "#bbf";
         this.pass = true;
         this.light = true;
