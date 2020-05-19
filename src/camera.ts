@@ -40,10 +40,11 @@ export class Camera {
 
         if (dx > 0 && this.x < ww || dx < 0 && this.x > game.map.width - ww) {
         	this.ox += dx; 
-        } else if (dy > 0 && this.y < hh || dy < 0 && this.y > game.map.height - hh){
-        	this.oy += dy;
-        } else {
-        	this.adjust();	
         }
+        if (dy > 0 && this.y < hh || dy < 0 && this.y > game.map.height - hh) {
+        	this.oy += dy;
+        }
+        
+        this.adjust();	        
     }
 }
