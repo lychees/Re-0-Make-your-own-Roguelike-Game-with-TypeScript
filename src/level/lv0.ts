@@ -137,12 +137,10 @@ export class Ch0_Boss extends Map {
     free_cells: Array<[number, number]>;
 
     constructor() {
-        super();       
-
-        this.width = MAP_WIDTH;
-        this.height = MAP_HEIGHT;
-        this.layer = {};
-        this.shadow = {};
+        let w = MAP_WIDTH;
+        let h = MAP_HEIGHT;
+        super(w, h);
+            
         this.free_cells = [];
         let forest = new ROT.Map.Cellular(this.width, this.height);
 

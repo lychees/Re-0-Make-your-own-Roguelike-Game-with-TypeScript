@@ -7,6 +7,17 @@ import * as Undead from "../monster/undead";
 const MAP_WIDTH = 80;
 const MAP_HEIGHT = 60;
 
+
+class Wall extends Tile {
+    constructor() {
+        super();
+        this.ch = "墻"
+        this.color = "#fff";
+        this.pass = false;
+        this.light = false;
+    }
+}
+
 class Stone extends Tile {
     constructor() {
         super();
@@ -174,42 +185,40 @@ export class Dungeon extends Map {
     }
 
     constructor() {
-        super();       
-        this.width = MAP_WIDTH;
-        this.height = MAP_HEIGHT;
-        this.layer = {};
-        this.shadow = {};
+        let w = MAP_WIDTH;
+        let h = MAP_HEIGHT;
+        super(w, h);
         this.free_cells = [];
 
         let dungeon = new ROT.Map.Digger(this.width, this.height);
         dungeon.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
-            this.layer[key] = new Stone();
+            this.layer[key].push(new Stone());
             this.free_cells.push([x, y]);
         });
 
-        for (let x=0;x<this.width;++x) {
-            for (let y=0;y<this.height;++y) {
-                if (this.isDoor(x, y) && dice(6) < 3) {
-                    let key = x+','+y;
-                    this.layer[key] = new Door();
+        for (let x=0;x<w;++x) {
+            for (let y=0;y<h;++y) {
+                let key = x+','+y;
+                if (this.layer[key].length == 0) {
+                    this.layer[key].push(new Wall());
+                } else if (this.isDoor(x, y) && dice(6) < 3) {                    
+                    this.layer[key].push(new Door());
                 }
             }
         }
 
-        for (let x=0;x<this.width;++x) {
-            for (let y=0;y<this.height;++y) {
+        // Close all doors at the beginning
+        for (let x=0;x<w;++x) {
+            for (let y=0;y<h;++y) {
                 let key = x + "," + y;
-                if (this.layer[key] && this.layer[key].ch == "門") {
-                    this.layer[key].trigger('god');
-                }
+                let t = this.layer[key][this.layer[key].length - 1];
+                if (t.ch == "門") t.trigger('god');
+                // Light the dungeon for debug
                 this.shadow[key] = '#fff';
             }
         }
-
-        this.agents = Array<any>();
-
 
         for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
@@ -237,18 +246,18 @@ export class Dungeon extends Map {
             return 0;
         });
 
-        for (let i=0;i<2;++i) {
+        /*for (let i=0;i<2;++i) {
             let p = pop_random(this.free_cells);
             let t = new Upstair();
             let key = p[0]+','+p[1];
             this.layer[key] = t;
-        }
+        }*/
 
         for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
-            this.layer[key] = t;
+            this.layer[key].push(t);
         }
     }
 
@@ -261,31 +270,36 @@ export class Map0 extends Map {
     dungeon: Map;
 
     constructor() {
-        super();       
+        let w = MAP_WIDTH;
+        let h = MAP_HEIGHT;
+        super(w, h);
 
-        this.dungeon = new Dungeon();
-
-        this.width = MAP_WIDTH;
-        this.height = MAP_HEIGHT;
-        this.layer = {};
-        this.shadow = {};
+        this.dungeon = new Dungeon();                
         this.free_cells = [];
         let forest = new ROT.Map.Arena(this.width, this.height);
         forest.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
-            this.layer[key] = new Grass();
+            this.layer[key].push(new Grass());
             this.free_cells.push([x, y]);
         });
 
-        for (let i=0;i<10+rand(40);++i) {            
+        for (let x=0;x<w;++x) {
+            for (let y=0;y<h;++y) {
+                let key = x+','+y;
+                if (this.layer[key].length == 0) {
+                    this.layer[key].push(new Wall());
+                }
+            }
+        }
+
+        /*for (let i=0;i<10+rand(40);++i) {            
             let p = pop_random(this.free_cells);                        
             let key = p[0]+','+p[1];
             this.layer[key] = new Tree();
-        }
+        }*/
 
         this.agents = Array<any>();
-
         
         for (let i=0;i<dice(7);++i) {            
             let p = pop_random(this.free_cells);
@@ -303,7 +317,6 @@ export class Map0 extends Map {
             let r = new Orc(p[0], p[1]);
             this.agents.push(r);
         }
-
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
@@ -314,7 +327,9 @@ export class Map0 extends Map {
         for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
             let key = p[0]+','+p[1];
-            if (this.dungeon.layer[key] == null) {
+
+            let d = this.dungeon.layer[key][this.dungeon.layer[key].length - 1];
+            if (d.ch != '.') {
                 --i;
                 continue;
             }
@@ -330,15 +345,15 @@ export class Map0 extends Map {
             up.target.x = p[0];
             up.target.y = p[1];
 
-            this.layer[key] = down;
-            this.dungeon.layer[key] = up;            
+            this.layer[key].push(down);
+            this.dungeon.layer[key].push(up); 
         }
 
         for (let i=0;i<5;++i) {
             let p = pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
-            this.layer[key] = t;
+            this.layer[key].push(t);
         }
     }
 }

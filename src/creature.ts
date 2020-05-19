@@ -349,6 +349,7 @@ export class Creature {
         agents.splice(idx, 1);
 
         let layer = game.map.layer[this.x+','+this.y];
+
         layer.push(new Corpse.Corpse(this));
     }
     moveTo(x: number, y: number) {
@@ -554,9 +555,6 @@ export class Player extends Elf {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
-
-        console.log(this.name, this.x, this.y);
-
         let keyMap = {};
 
         keyMap[ROT.KEYS.VK_UP] = 0; 
@@ -594,15 +592,15 @@ export class Player extends Elf {
 
 
         if (code == 13 || code == 32) {
-            var key = this.x + "," + this.y;
-
-            let t = game.map.layer[key];                       
-            if (t) {
+            //var key = this.x + "," + this.y;
+            //let t = game.map.layer[key];
+            game.map.enter(this.x, this.y, this);
+            /*if (t) {                
                 if (t.enter) {
                     t.enter(this);
                 } else {
                 }
-            }
+            }*/
             return;
         }
 

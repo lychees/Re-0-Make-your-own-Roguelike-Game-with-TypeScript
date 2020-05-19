@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import { game, pop_random } from "./main";
-import { Player, Rat, Snake } from "./creature";
+import { Player, Rat, Snake, Creature } from "./creature";
 import { Apple } from "./inventory";
 
 const MAP_WIDTH = 15;
@@ -70,10 +70,38 @@ export class Map {
     shadow: {};
     agents: Array<any>;
     
-    constructor() {
-        this.layer = {};
+    constructor(w: number, h: number) {
+        this.width = w;
+        this.height = h;        
+        this.layer = {};        
+        for (let i=0;i<w;++i) {
+            for (let j=0;j<h;++j) {
+                let key = i+','+j;
+                this.layer[key] = [];
+            }
+        }
         this.shadow = {};
         this.agents = new Array<any>();
+    }
+
+    enter(x: number, y: number, p: Creature) {        
+        let l = this.layer[x+','+y];        
+        let e = [];
+        for (let i=0;i<l.length;++i){            
+            if (l[i].enter) e.push(i);
+        }
+
+        if (e.length == 0) {
+            return;
+        }
+        if (e.length == 1) {
+            l[e[0]].enter(p);
+            return;
+        }        
+        alert("multi events");
+    }
+    touch() {
+
     }
 
     move(agent: any, target: any) {                
@@ -98,64 +126,56 @@ export class Map {
 
     pass_without_agents(x: number, y: number) {
         let key = x+','+y;
+        for (let t of this.layer[key]) {
+            if (!t.pass) return false;
+        }
+        return true;
 
-
-        if (typeof(this.layer[key]) === "object") {
+        /*if (typeof(this.layer[key]) === "object") {
             let t = this.layer[key];
             return t.pass;
         }
-
-
-        if (this.layer[key] !== "　") return false;
-        return true;
+        //if (this.layer[key] !== "　") return false;
+        return true;*/
     }    
-    
-    pass(x: number, y: number) {
-        let key = x+','+y;
 
+    outside(x: number, y: number) {        
+        return x < 0 || y < 0 || x >= this.width || y >= this.height;
+    }
+    
+    pass(x: number, y: number) {        
+        if (this.outside(x, y)) return false;
         for (let i=0;i<this.agents.length;++i) {
             let a = this.agents[i];
             if (a.x === x && a.y === y  && a.hp > 0) {
                 return false;
             }
         }
-
-        if (typeof(this.layer[key]) === "object") {
-            let t = this.layer[key];
-            return t.pass;
-        }
-
-
-        if (this.layer[key] !== "　") return false;
-        return true;
+        return this.pass_without_agents(x, y);
     }
 
     light(x: number, y: number) {     
-        let key = x+','+y;  
-
-        if (typeof(this.layer[key]) === "object") {
-            let t = this.layer[key];
-            return t.light;
+        if (this.outside(x, y)) return false;
+        let key = x+','+y;
+        for (let t of this.layer[key]) {
+            if (!t.light) return false;
         }
-
-        let t = this.layer[key];
-        return t === "　";        
+        return true;
     }
     gen_shadow(p: Player, color: string) {
         let fov = new ROT.FOV.RecursiveShadowcasting((x, y) => {
             return this.light(x, y);
         });
-
         fov.compute90(p.x, p.y, 9, p.dir, (x, y, r, visibility) => {            
             const key = x+','+y;   
             this.shadow[key] = color;
         });
     }
-    draw_tile_at(x: number, y: number, key: string) {
-
+    draw_tile_at(x: number, y: number, key: string) {        
         game.display.draw(x, y, null);
-
-        if (typeof(this.layer[key]) === "object") {            
+        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key]);
+        //this.layer[key].draw(x, y, this.shadow[key]);
+        /*if (typeof(this.layer[key]) === "object") {            
             let t = this.layer[key];
             this.layer[key].draw(x, y, this.shadow[key]);
             return;
@@ -169,7 +189,7 @@ export class Map {
             } else {
                 game.display.draw(x, y, null);
             }
-        }
+        }*/
     }    
     draw() {
         const o = game.display.getOptions(); 
@@ -179,6 +199,7 @@ export class Map {
         	for (let y=0;y<h;++y) {
                 let xx = x + game.camera.x - game.camera.ox;
                 let yy = y + game.camera.y - game.camera.oy;
+                if (this.outside(xx, yy)) continue;
                 let key = xx+','+yy;
                 this.draw_tile_at(x, y, key);
         	}
