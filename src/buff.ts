@@ -158,12 +158,23 @@ export class Buff {
     }
 }
 
+export class HP_Talent extends Buff {        
+    constructor(lv: number) {
+        super();
+        this.hp = lv;
+        this.name = "皮糙肉厚";
+        this.description = "這個單位看起來比較經打\n";
+        this.description += this.parse();
+    }
+}
+
 export class MP_Talent extends Buff {        
     constructor(lv: number) {
         super();
         this.mp = lv;
         this.name = "魔法天賦";
-        this.description = "這個單位擁有與生俱來的魔法天賦";
+        this.description = "這個單位擁有與生俱來的魔法天賦\n";
+        this.description += this.parse();
     }
 }
 
