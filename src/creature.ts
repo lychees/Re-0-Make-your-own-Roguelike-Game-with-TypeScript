@@ -13,7 +13,7 @@ import { Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickl
 import * as Buff from "./buff";
 
 
-
+import * as Corpse from "./tile/corpse"
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -346,11 +346,10 @@ export class Creature {
 
         let agents = game.map.agents;
         let idx = agents.findIndex((e) => e == this);
-        agents.splice(idx, 1);                        
+        agents.splice(idx, 1);
 
-        /*let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
-        this.owner.inventory.items.splice(idx, 1);                        
-        this.owner = null;*/
+        let layer = game.map.layer[this.x+','+this.y];
+        layer.push(new Corpse.Corpse(this));
     }
     moveTo(x: number, y: number) {
         if (game.map.pass(x, y)) {
