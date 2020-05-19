@@ -156,13 +156,13 @@ class Game {
 export let game = new Game();
 
 game.init();
-let event = new Events();
+export let event = new Events();
 event.init();
 
 //openCharacterMenu(game.player);
 
 
-$( "#character" ).click(function() {
+$( "#character" ).click(function() {    
     game.characterMenu.toggle(game.player);
 });
 
@@ -181,6 +181,70 @@ $( "#inventory" ).click(function() {
     ]);
     menu.menu.appendTo($('#wrapper'));
     menu.open();*/
+
+    let juqing = {
+        title: _('伊莎貝拉'),
+        scenes: {
+            'start': {
+                text: [
+                    _('到此為止吧，伊莎貝拉殿下。'),
+                ],
+                buttons: {
+                    'continue': {
+                        text: _('繼續'),
+                        nextScene: 'p0'
+                    },
+                }
+            },
+            'p0': {
+                text: [
+                    _('李、李貝爾隊長，為什麼連你也會在這裏。'),
+                ],
+                buttons: {
+                    'continue': {
+                        text: _('繼續'),
+                        nextScene: 'p1'
+                    },
+                }
+            },
+            'p1': {
+                text: [
+                    _('你的亂來已經給安琪拉造成很多困擾了，現在必須把你抓回去。'),
+                ],
+                buttons: {
+                    'p21': {
+                        text: _('1. 安琪拉是我生長的地方，無論如何我也不想離開。'),
+                        nextScene: 'p21'
+                    },
+                    'p22': {
+                        text: _('2. 我已經不是當初的那個小女孩了，我的劍可不會手下留情。'),
+                        nextScene: 'p22'
+                    },                
+                }
+            },        
+            'p21': {
+                text: [
+                    _('為了安琪拉的未來，只有讓公主委屈一下了。'),
+                ],
+                buttons: {
+                    'leave': {
+                        text: '結束'
+                    }            
+                }
+            },           
+            'p22': {
+                text: [
+                    _('那就讓我來檢驗一下公主殿下的成長吧。'),
+                ],
+                buttons: {
+                    'leave': {
+                        text: '結束'
+                    }            
+                }
+            },           
+        }
+    };
+    event.startEvent(juqing);
 });
 
 

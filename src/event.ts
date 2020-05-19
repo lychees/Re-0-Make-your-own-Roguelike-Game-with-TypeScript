@@ -165,6 +165,8 @@ export class Events {
 	eventStack : Array<any>;
 	btnsList: Array<any>;
 	activeScene : "";
+
+	tempFun: any;
 	
 
 	constructor() {
@@ -191,10 +193,10 @@ export class Events {
     }
     
 	endEvent() {
-		this.eventPanel().animate({opacity:0}, this._PANEL_FADE, 'linear', function() {
+		this.eventPanel().animate({opacity:0}, this._PANEL_FADE, 'linear', () => {
 			this.eventPanel().remove();
 			this.activeEvent().eventPanel = null;
-			this.thistack.shift();
+			this.eventStack.shift();
 		//	Engine.log(this.thistack.length + ' this remaining');
 	//		Engine.keyLock = false;
 	//		Engine.tabNavigation = true;
@@ -205,12 +207,13 @@ export class Events {
 			// Force refocus on the body. I hate you, IE.
 			$('body').focus();
 		});
+		
 		this.close();
 	}
     
 	activeEvent(): any {
 
-		console.log(this.eventStack);
+		//console.log(this.eventStack);
 
 		if(this.eventStack && this.eventStack.length > 0) {
 			return this.eventStack[0];
@@ -261,9 +264,11 @@ export class Events {
 		}
 	}
 
-	buttonClick(btn) {
-		//alert(123);
-        var info = this.activeEvent().scenes[this.activeScene].buttons[btn.attr('id')];            
+	buttonClick(btn: any) {
+		
+		var info = this.activeEvent().scenes[this.activeScene].buttons[btn.attr('id')];
+		if (info.text) game.player.logs.notify(info.text);
+
 		if(typeof info.onChoose == 'function') {
 			info.onChoose();
 		}
@@ -309,6 +314,8 @@ export class Events {
 		var leaveBtn = false;
 		for(var i in scene.text) {
 			$('<div>').text(scene.text[i]).appendTo(desc);
+
+			game.player.logs.notify(scene.text[i]);
         }
 		
         // Draw any loot        
@@ -341,6 +348,9 @@ export class Events {
 	close() {
 		window.addEventListener("keydown", game.player);
 		window.removeEventListener("keydown", this);
+		//event.eventPanel.eventPanel()();
+		this.eventPanel().remove();
+		game.player.handleEvent = this.tempFun.bind(game.player);
 	}
 	
 
@@ -356,6 +366,12 @@ export class Events {
 			//if (this.menu) this.menu.show();
 			//game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");
 		//if (this.parent) 
+
+
+		this.tempFun = game.player.handleEvent;
+		game.player.handleEvent = function(){};
+
+		
 		window.removeEventListener("keydown", game.player);
 		window.addEventListener("keydown", this);
 		//}
@@ -372,6 +388,7 @@ export class Events {
 		this.loadScene('start');
 		$('#wrapper').append(this.eventPanel());
 		this.eventPanel().animate({opacity: 1}, this._PANEL_FADE, 'linear');
+		
 	}   
 	
     handleEvent(e) {		

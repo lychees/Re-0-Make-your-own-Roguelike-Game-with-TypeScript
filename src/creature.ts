@@ -8,7 +8,9 @@ import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, A
 import { hostile } from "./AI/hostile";
 import { slime_hostile } from "./AI/slime_hostile";
 
-import { Buff, Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "./buff";
+import { Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "./buff";
+
+import * as Buff from "./buff";
 
 
 
@@ -111,9 +113,9 @@ export class Creature {
     inventory: Inventory;
     equipment: Equipment;
     //abilities : Array<Ability>;
-    buffs : Array<Buff>;
+    buffs : Array<Buff.Buff>;
 
-    run_buff: Buff;
+    run_buff: Buff.Buff;
     
     
     constructor(x: number, y: number) {
@@ -140,8 +142,8 @@ export class Creature {
         this.equipment = new Equipment(); this.equipment.owner = this;
 
         //this.abilities = new Array<Ability>();
-        this.buffs = new Array<Buff>();
-        this.run_buff = new Buff();
+        this.buffs = new Array<Buff.Buff>();
+        this.run_buff = new Buff.Buff();
         this.run_buff.name = "跑";
         this.run_buff.description = "移動速度加快 4 倍，但每次移動有 10% 的概率消耗一點體力，當沒有體力時此狀態無效。";
     }
@@ -526,6 +528,9 @@ export class Player extends Elf {
         (new Int_Talent(1)).append(this);              
         (new MP_Talent(10)).append(this);        
         (new Sickly(1)).append(this);
+
+
+        (new Buff.Cheating()).append(this);
         
         this.inventory.push(new Axes());    
         let t = new Sword();
@@ -550,6 +555,9 @@ export class Player extends Elf {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
+
+        console.log(this.name, this.x, this.y);
+
         let keyMap = {};
 
         keyMap[ROT.KEYS.VK_UP] = 0; 

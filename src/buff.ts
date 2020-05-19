@@ -249,6 +249,19 @@ export class Human_Race extends Buff {
     }
 }
 
+export class Cheating extends Buff {
+    constructor() {
+        super();
+        this.name = "作弊";
+        this.hp = 25; this.mp = 25;
+        this.atk['d6'] = 10;
+        this.str = 5; this.dex = 5; this.con = 5;
+        this.int = 5; this.wis = 5; this.cha = 5; 
+        this.description = "這個單位正在作弊\n";
+        this.description += this.parse();
+    }
+}
+
 
 /*
 export class Magic_Talent extends Ability {

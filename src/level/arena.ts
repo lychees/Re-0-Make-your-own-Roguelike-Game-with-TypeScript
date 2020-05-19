@@ -221,6 +221,15 @@ export class Dungeon extends Map {
             let r = new Undead.Walking_Dead(p[0], p[1]);
             this.agents.push(r);
         }
+        for (let i=0;i<dice(5);++i) {
+            let p = pop_random(this.free_cells);
+            let r = new Undead.Zombie(p[0], p[1]);
+            this.agents.push(r);
+        }        
+
+        let p = pop_random(this.free_cells);
+        let r = new Undead.Corpsefire(p[0], p[1]);
+        this.agents.push(r);
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
