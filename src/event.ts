@@ -1,10 +1,15 @@
 import $ from "jquery";
 import { game } from "./main";
 
+export class Button {
 
+	data_cooldown: any;
+	data_remaining: any;
+	data_handler: any;
+	saveCooldown: any;
+	dom: any;
 
-export var Button = {
-	Button: function(options) {
+	constructor(options: any) {
 		if(typeof options.cooldown == 'number') {
 			this.data_cooldown = options.cooldown;
 		}
@@ -13,24 +18,32 @@ export var Button = {
 			this.data_handler = options.click;
 		}
 
-		var el = $('<div>')
-			.attr('id', typeof(options.id) != 'undefined' ? options.id : "BTN_" + Engine.getGuid())
-			.addClass('button')
-			.text(typeof(options.text) != 'undefined' ? options.text : "button")
+		let el = $('<div>')
+			.attr('id', typeof(options.id) != 'undefined' ? options.id : "undefined")
+			.addClass('button')		
+			.text(options.text)
 			.click(function() {
+				//if(!$(this).hasClass('disabled')) {
+					//Button.cooldown($(this));
+					$(this).data("handler")($(this));
+				//}
+			})
+			.data("handler",  typeof options.click == 'function' ? options.click : function() { console.log("click"); });
+			
+			/*.click(function() {
 				if(!$(this).hasClass('disabled')) {
-					Button.cooldown($(this));
+					//Button.cooldown($(this));
 					$(this).data("handler")($(this));
 				}
-			})
-			.data("handler",  typeof options.click == 'function' ? options.click : function() { Engine.log("click"); })
+			})*/
+			/*.data("handler",  typeof options.click == 'function' ? options.click : function() { Engine.log("click"); })
 			.data("remaining", 0)
-			.data("cooldown", typeof options.cooldown == 'number' ? options.cooldown : 0);
+			.data("cooldown", typeof options.cooldown == 'number' ? options.cooldown : 0);*/
 
 		el.append($("<div>").addClass('cooldown'));
 
 		// waiting for expiry of residual cooldown detected in state
-		Button.cooldown(el, 'state');
+		//Button.cooldown(el, 'state');
 
 		if(options.cost) {
 			var ttPos = options.ttPos ? options.ttPos : "bottom right";
@@ -48,12 +61,13 @@ export var Button = {
 			el.css('width', options.width);
 		}
 
-		return el;
-	},
+		this.dom = el;
 
-	saveCooldown: true,
+		//return el;
+	}
 
-	setDisabled: function(btn, disabled) {
+
+	setDisabled(btn: any, disabled: any) {
 		if(btn) {
 			if(!disabled && !btn.data('onCooldown')) {
 				btn.removeClass('disabled');
@@ -62,16 +76,17 @@ export var Button = {
 			}
 			btn.data('disabled', disabled);
 		}
-	},
+	}
 
-	isDisabled: function(btn) {
+	isDisabled(btn) {
 		if(btn) {
 			return btn.data('disabled') === true;
 		}
 		return false;
-	},
+	}
 
-	cooldown: function(btn, option) {
+	cooldown(btn : any, option? : any) {
+		/*
 		var cd = btn.data("cooldown");
 		var id = 'cooldown.'+ btn.attr('id');
 		if(cd > 0) {
@@ -112,9 +127,10 @@ export var Button = {
 			btn.addClass('disabled');
 			btn.data('onCooldown', true);
 		}
-	},
+		*/
+	}
 
-	clearCooldown: function(btn, cooldownEnded) {
+	clearCooldown(btn : any, cooldownEnded : any) {
 		var ended = cooldownEnded || false;
 		if(!ended){
 			$('div.cooldown', btn).stop(true, true);
@@ -136,144 +152,160 @@ export var Button = {
 /**
  * Module that handles the random event system
  */
-export let Events = {
+export class Events {
 
-	init: function() {
+	_EVENT_TIME_RANGE: any;
+	_PANEL_FADE: any;
+	_FIGHT_SPEED: any;
+	_EAT_COOLDOWN : 5;
+	_MEDS_COOLDOWN : 7;
+	_LEAVE_COOLDOWN : 1;
+	STUN_DURATION : 4000;
+	BLINK_INTERVAL : false;
+	eventStack : Array<any>;
+	btnsList: Array<any>;
+	activeScene : "";
+	
 
-		this._EVENT_TIME_RANGE = [3, 6], // range, in minutes
-		this._PANEL_FADE = 200,
-		this._FIGHT_SPEED = 100,
-		this._EAT_COOLDOWN = 5,
-		this._MEDS_COOLDOWN = 7,
-		this._LEAVE_COOLDOWN = 1,
-		this.STUN_DURATION = 4000,
-		this.BLINK_INTERVAL = false,    
-		this.eventStack = [],
-		this.activeScene = "",
+	constructor() {
+		this.btnsList = new Array<any>();
+		this.eventStack = new Array<any>();
+		this.init();
+	}
 
-		this.eventStack = [];
-    },    
+	init() {
+		this._EVENT_TIME_RANGE = [3, 6]; // range, in minutes
+		this._PANEL_FADE = 200;
+		this._FIGHT_SPEED = 100;
+		this._EAT_COOLDOWN = 5;
+		this._MEDS_COOLDOWN = 7;
+		this._LEAVE_COOLDOWN = 1;
+		this.STUN_DURATION = 4000;
+		this.BLINK_INTERVAL = false;
+		this.activeScene = "";
+    }
     
-
-
-	stopTitleBlink: function() {
-		clearInterval(this.BLINK_INTERVAL);
-		Events.BLINK_INTERVAL = false;
-    },
+	stopTitleBlink() {
+		//clearInterval(this.BLINK_INTERVAL);
+		//this.BLINK_INTERVAL = false;
+    }
     
-	endEvent: function() {
-		Events.eventPanel().animate({opacity:0}, Events._PANEL_FADE, 'linear', function() {
-			Events.eventPanel().remove();
-			Events.activeEvent().eventPanel = null;
-			Events.eventStack.shift();
-		//	Engine.log(Events.eventStack.length + ' events remaining');
+	endEvent() {
+		this.eventPanel().animate({opacity:0}, this._PANEL_FADE, 'linear', function() {
+			this.eventPanel().remove();
+			this.activeEvent().eventPanel = null;
+			this.thistack.shift();
+		//	Engine.log(this.thistack.length + ' this remaining');
 	//		Engine.keyLock = false;
 	//		Engine.tabNavigation = true;
-			Button.saveCooldown = true;
-			if (Events.BLINK_INTERVAL) {
-				Events.stopTitleBlink();
+			//Button.saveCooldown = true;
+			if (this.BLINK_INTERVAL) {
+				this.stopTitleBlink();
 			}
 			// Force refocus on the body. I hate you, IE.
 			$('body').focus();
 		});
 		this.close();
-	},    
+	}
     
+	activeEvent(): any {
 
-	activeEvent: function() {
+		console.log(this.eventStack);
+
 		if(this.eventStack && this.eventStack.length > 0) {
 			return this.eventStack[0];
 		}
 		return null;
-    },
+    }
         
 
-	eventPanel: function() {
+	eventPanel() {
 		return this.activeEvent().eventPanel;
-    },
+    }
     
-
-	// blinks the browser window title
-	blinkTitle: function() {
+	blinkTitle() {
         return;
-    },    
+    }
 
 
-	allowLeave: function(takeETbtn, leaveBtn){
+	allowLeave(takeETbtn, leaveBtn){
 		if(takeETbtn){
 			if(leaveBtn){
 				takeETbtn.data('leaveBtn', leaveBtn);
 			}
-			Events.canLeave(takeETbtn);
+			this.canLeave(takeETbtn);
 		}
-	},
+	}
 
-	canLeave: function(btn){
+	canLeave(btn){
 		var basetext = (btn.data('canTakeEverything')) ? _('take everything') : _('take all you can');
 		var textbox = btn.children('span');
 		var takeAndLeave = (btn.data('leaveBtn')) ? btn.data('canTakeEverything') : false;
 		var text = _(basetext);
-		if(takeAndLeave){
+		/*if(takeAndLeave){
 			Button.cooldown(btn);
 			text += _(' and ') + btn.data('leaveBtn').text();
-		}
+		}*/
 		textbox.text( text );
 		btn.data('canLeave', takeAndLeave);
-	},    
+	}
 
-	updateButtons: function() {
-		var btns = Events.activeEvent().scenes[Events.activeScene].buttons;
+	updateButtons() {
+		var btns = this.activeEvent().scenes[this.activeScene].buttons;
 		for(var bId in btns) {
 			var b = btns[bId];
-			var btnEl = $('#'+bId, Events.eventPanel());
-			if(typeof b.available == 'function' && !b.available()) {
+			var btnEl = $('#'+bId, this.eventPanel());
+			/*if(typeof b.available == 'function' && !b.available()) {
 				Button.setDisabled(btnEl, true);
-			}
+			}*/
 		}
-	},
+	}
 
-	buttonClick: function(btn) {
-        var info = Events.activeEvent().scenes[Events.activeScene].buttons[btn.attr('id')];            
+	buttonClick(btn) {
+		//alert(123);
+        var info = this.activeEvent().scenes[this.activeScene].buttons[btn.attr('id')];            
 		if(typeof info.onChoose == 'function') {
 			info.onChoose();
 		}
-		Events.updateButtons();
+		this.updateButtons();
 		// Next Scene
-		if (!info.nextScene) Events.endEvent();
-		else Events.loadScene(info.nextScene);			
-	},
+		if (!info.nextScene) this.endEvent();
+		else this.loadScene(info.nextScene);			
+	}
 
-	drawButtons: function(scene) {
-		var btns = $('#exitButtons', Events.eventPanel());
+	drawButtons(scene) {
+		var btns = $('#exitButtons', this.eventPanel());
 		var btnsList = [];
 		for(var id in scene.buttons) {
 			var info = scene.buttons[id];
-				var b = new Button.Button({
+				var b = new Button({
 					id: id,
 					text: info.text,
 					cost: info.cost,
-					click: Events.buttonClick,
+					click: this.buttonClick.bind(this),
 					cooldown: info.cooldown
-				}).appendTo(btns);
-			if(typeof info.available == 'function' && !info.available()) {
+				});
+				
+				b.dom.appendTo(btns);
+			/*if(typeof info.available == 'function' && !info.available()) {
 				Button.setDisabled(b, true);
 			}
 			if(typeof info.cooldown == 'number') {
 				Button.cooldown(b);
-			}
-			btnsList.push(b);
+			}*/
+			btnsList.push(b.dom);
 		}
 
 		this.btnsList = btnsList;
-		Events.updateButtons();
+		this.updateButtons();
 		return (btnsList.length == 1) ? btnsList[0] : false;
-	},
+	}
 
 
-	startStory: function(scene) {
+	startStory(scene: any) {
 
 		// Write the text
-		var desc = $('#description', Events.eventPanel());
+		var desc = $('#description', this.eventPanel());
 		var leaveBtn = false;
 		for(var i in scene.text) {
 			$('<div>').text(scene.text[i]).appendTo(desc);
@@ -283,36 +315,36 @@ export let Events = {
 //		var takeETbtn;
 
 		// Draw the buttons
-		var exitBtns = $('<div>').attr('id','exitButtons').appendTo($('#description', Events.eventPanel()));		
-		leaveBtn = Events.drawButtons(scene);
+		var exitBtns = $('<div>').attr('id','exitButtons').appendTo($('#description', this.eventPanel()));		
+		leaveBtn = this.drawButtons(scene);
 		$('<div>').addClass('clear').appendTo(exitBtns);
-//		Events.allowLeave(takeETbtn, leaveBtn);
-	},    
+//		this.allowLeave(takeETbtn, leaveBtn);
+	}
     
-	loadScene: function(name) {
-//		console.log(this.eventStack);
-		Events.activeScene = name;
+	loadScene(name) {
+//		console.log(this.thistack);
+		this.activeScene = name;
 
-		var scene = Events.activeEvent().scenes[name];
+		var scene = this.activeEvent().scenes[name];
 
 		// onLoad
 		if(scene.onLoad) {
 			scene.onLoad();
 		}
 
-		$('#description', Events.eventPanel()).empty();
-		$('#buttons', Events.eventPanel()).empty();
+		$('#description', this.eventPanel()).empty();
+		$('#buttons', this.eventPanel()).empty();
 
-		Events.startStory(scene);
-	},
+		this.startStory(scene);
+	}
 
 	close() {
 		window.addEventListener("keydown", game.player);
 		window.removeEventListener("keydown", this);
-	},
+	}
 	
 
-	startEvent: function(event, options) {
+	startEvent(event: any, options? : any) {
 
 		/*close() {
 			game.SE.playSE("Wolf RPG Maker/[01S]cancel.ogg");
@@ -329,22 +361,26 @@ export let Events = {
 		//}
 
 
-		Events.eventStack.unshift(event);
+		this.eventStack.unshift(event);
 		event.eventPanel = $('<div>').attr('id', 'event').addClass('dialogPanel').css('opacity', '0');
 		if(options != null && options.width != null) {
-			Events.eventPanel().css('width', options.width);
+			this.eventPanel().css('width', options.width);
 		}
-		$('<div>').addClass('eventTitle').text(Events.activeEvent().title).appendTo(Events.eventPanel());
-		$('<div>').attr('id', 'description').appendTo(Events.eventPanel());
-		$('<div>').attr('id', 'buttons').appendTo(Events.eventPanel());
-		Events.loadScene('start');
-		$('#wrapper').append(Events.eventPanel());
-		Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
-	},   
+		$('<div>').addClass('eventTitle').text(this.activeEvent().title).appendTo(this.eventPanel());
+		$('<div>').attr('id', 'description').appendTo(this.eventPanel());
+		$('<div>').attr('id', 'buttons').appendTo(this.eventPanel());
+		this.loadScene('start');
+		$('#wrapper').append(this.eventPanel());
+		this.eventPanel().animate({opacity: 1}, this._PANEL_FADE, 'linear');
+	}   
 	
     handleEvent(e) {		
-		//let scene = Events.activeEvent().scenes[name];
-		this.btnsList[0].click();
+		//let scene = this.activeEvent().scenes[name];
+		if (this.btnsList.length > 0) {
+			if (this.btnsList[0]) {
+				this.btnsList[0].click();
+			}
+		}
     }	
 }
 

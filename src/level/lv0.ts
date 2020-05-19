@@ -246,7 +246,7 @@ export class Ch0_Boss extends Map {
                     }
                 };
                 
-                Events.startEvent(juqing);   
+                //.startEvent(juqing);   
                 this.act = hostile.bind(this);
             }
         }.bind(lee);

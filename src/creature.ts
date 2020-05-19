@@ -337,9 +337,18 @@ export class Creature {
         }
     }
     dead(murderer: any) {        
+        
         this.logs.push(this.name + '被' + murderer.name + "殺死了"); 
         this.color = '#222';
         this.z = 0;
+
+        let agents = game.map.agents;
+        let idx = agents.findIndex((e) => e == this);
+        agents.splice(idx, 1);                        
+
+        /*let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
+        this.owner.inventory.items.splice(idx, 1);                        
+        this.owner = null;*/
     }
     moveTo(x: number, y: number) {
         if (game.map.pass(x, y)) {

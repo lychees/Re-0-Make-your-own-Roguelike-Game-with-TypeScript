@@ -156,7 +156,8 @@ class Game {
 export let game = new Game();
 
 game.init();
-Events.init();
+let event = new Events();
+event.init();
 
 //openCharacterMenu(game.player);
 
@@ -310,4 +311,4 @@ let juqing = {
     }
 };
 
-Events.startEvent(juqing);
+event.startEvent(juqing);
