@@ -55,7 +55,7 @@ export class ItemMenu extends Menu {
         this.menu = dom;
 	}
     handleEvent(e) {
-        this.close();           
+        
     }	
 }
 

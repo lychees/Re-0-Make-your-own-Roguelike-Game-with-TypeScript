@@ -1,4 +1,6 @@
-import * as $ from "jquery";
+import $ from "jquery";
+import { game } from "./main";
+
 
 
 export var Button = {
@@ -174,6 +176,7 @@ export let Events = {
 			// Force refocus on the body. I hate you, IE.
 			$('body').focus();
 		});
+		this.close();
 	},    
     
 
@@ -261,6 +264,7 @@ export let Events = {
 			btnsList.push(b);
 		}
 
+		this.btnsList = btnsList;
 		Events.updateButtons();
 		return (btnsList.length == 1) ? btnsList[0] : false;
 	},
@@ -302,7 +306,29 @@ export let Events = {
 		Events.startStory(scene);
 	},
 
+	close() {
+		window.addEventListener("keydown", game.player);
+		window.removeEventListener("keydown", this);
+	},
+	
+
 	startEvent: function(event, options) {
+
+		/*close() {
+			game.SE.playSE("Wolf RPG Maker/[01S]cancel.ogg");
+			window.removeEventListener("keydown", this);
+			if (this.parent) window.addEventListener("keydown", this.parent);
+			if (this.menu) this.menu.remove();
+		}
+		open() {*/
+			//if (this.menu) this.menu.show();
+			//game.SE.playSE("Wolf RPG Maker/[System]Enter02_Koya.ogg");
+		//if (this.parent) 
+		window.removeEventListener("keydown", game.player);
+		window.addEventListener("keydown", this);
+		//}
+
+
 		Events.eventStack.unshift(event);
 		event.eventPanel = $('<div>').attr('id', 'event').addClass('dialogPanel').css('opacity', '0');
 		if(options != null && options.width != null) {
@@ -314,7 +340,12 @@ export let Events = {
 		Events.loadScene('start');
 		$('#wrapper').append(Events.eventPanel());
 		Events.eventPanel().animate({opacity: 1}, Events._PANEL_FADE, 'linear');
-	},    
+	},   
+	
+    handleEvent(e) {		
+		//let scene = Events.activeEvent().scenes[name];
+		this.btnsList[0].click();
+    }	
 }
 
 export function _(s){

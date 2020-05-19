@@ -19,7 +19,23 @@ export class Menu {
 	menu: any;
     constructor() {
 
-    }
+	}
+	init(info: any) {		
+        let dom = $('<div>').addClass('inventory').addClass('inventory_sub_menu');            
+        for (let i of info) {
+            let button = $('<div>').addClass('button');
+            button.text(i.title);
+            button.click(()=>{
+                i.click();
+                this.menu.remove();
+                this.close();                
+                if (this.parent) this.parent.refresh();
+            });
+            button.appendTo(dom);
+        }
+        this.menu = dom;
+	}
+
     close() {
         game.SE.playSE("Wolf RPG Maker/[01S]cancel.ogg");
         window.removeEventListener("keydown", this);
@@ -32,9 +48,9 @@ export class Menu {
 		if (this.parent) window.removeEventListener("keydown", this.parent);
 		window.addEventListener("keydown", this);		
     }
-    handleEvent(e) {                
+    handleEvent(e) {    
+		this.close();               
     }
-
 }
 
 
