@@ -144,7 +144,7 @@ export class Corpsefire extends Zombie {
         this.act = ()=>{ // wait Isabella
             game.scheduler.setDuration( 5000 );
             
-            if (game.player && event && Math.abs(this.x - game.player.x) + Math.abs(this.y - game.player.y) <= 1000) {                
+            if (game.player && event && Math.abs(this.x - game.player.x) + Math.abs(this.y - game.player.y) <= 7) {                
                 let dialog = {
                     title: _('伊莎貝拉'),
                     scenes: {

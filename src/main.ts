@@ -167,6 +167,7 @@ $( "#character" ).click(function() {
 });
 
 $( "#inventory" ).click(function() {
+});
     //game.characterMenu.toggle(game.player);
     /*let menu = new Menu();
     menu.init([
@@ -182,6 +183,7 @@ $( "#inventory" ).click(function() {
     menu.menu.appendTo($('#wrapper'));
     menu.open();*/
 
+        /*
     let juqing = {
         title: _('伊莎貝拉'),
         scenes: {
@@ -244,8 +246,38 @@ $( "#inventory" ).click(function() {
             },           
         }
     };
-    event.startEvent(juqing);
-});
+    event.startEvent(juqing); */
+//});
+
+
+let quest = {
+    title: _('邪惡洞窟'),
+    scenes: {
+        'start': {
+            text: [
+                _('在荒地中有一个极度邪恶的地方。卡夏的萝格斥候已经告诉我们那个洞穴附近到处都是影子般的生物。以及从坟墓中爬出来的怪物。'),
+            ],
+            buttons: {
+                'continue': {
+                    text: _('繼續'),
+                    nextScene: 'p0'
+                },
+            }
+        },
+        'p0': {
+            text: [
+                _('我害怕这些生物会群聚并攻击我们的营地。如果你真的要帮助我们，找到这个黑暗的迷宫并摧毁所有邪恶的怪物。愿伟大之眼眷顾你们。'),
+            ],
+            buttons: {
+                'leave': {
+                    text: _('結束'),
+                },
+            }
+        },            
+    }
+};
+
+event.startEvent(quest);
 
 
 /*
