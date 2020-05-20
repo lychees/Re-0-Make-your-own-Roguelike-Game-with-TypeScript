@@ -29,11 +29,14 @@ export class Tile {
 
     constructor() {        
     }
-    draw(x: number, y: number, s: string){
+    draw(x: number, y: number, s: string, bg?: string){
+
+        if (!bg) bg = '#000';
+
         if (s === '#fff') {
-            game.display.draw(x, y, this.ch, this.color);
+            game.display.draw(x, y, this.ch, this.color, bg);
         } else if (s === '#555') {
-            game.display.draw(x, y, this.ch, add_shadow(this.color));
+            game.display.draw(x, y, this.ch, add_shadow(this.color), bg);
         }
     }
 }
@@ -62,6 +65,14 @@ export class Box extends Tile {
     }
 }
 
+export class Particle {
+    x: number;
+    y: number;
+    dx: number;
+    dy: number;
+    dmg: number;    
+}
+
 export class Map {
     
     width: number;
@@ -69,6 +80,7 @@ export class Map {
     layer: {};
     shadow: {};
     agents: Array<any>;
+    particles: Array<Particle>;
     
     constructor(w: number, h: number) {
         this.width = w;
@@ -82,6 +94,7 @@ export class Map {
         }
         this.shadow = {};
         this.agents = new Array<any>();
+        this.particles = new Array<Particle>();
     }
 
     enter(x: number, y: number, p: Creature) {        
@@ -153,14 +166,7 @@ export class Map {
             if (!t.pass) return false;
         }
         return true;
-
-        /*if (typeof(this.layer[key]) === "object") {
-            let t = this.layer[key];
-            return t.pass;
-        }
-        //if (this.layer[key] !== "　") return false;
-        return true;*/
-    }    
+    }
 
     outside(x: number, y: number) {        
         return x < 0 || y < 0 || x >= this.width || y >= this.height;
@@ -193,27 +199,11 @@ export class Map {
             const key = x+','+y;   
             this.shadow[key] = color;
         });
-    }
-    draw_tile_at(x: number, y: number, key: string) {        
-        game.display.draw(x, y, null);
-        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key]);
-        //this.layer[key].draw(x, y, this.shadow[key]);
-        /*if (typeof(this.layer[key]) === "object") {            
-            let t = this.layer[key];
-            this.layer[key].draw(x, y, this.shadow[key]);
-            return;
-        }
-
-        if (this.layer[key] === '　') {
-            game.display.draw(x, y, this.layer[key]);
-        } else {
-            if (this.shadow[key]) {
-                game.display.draw(x, y, "牆", this.shadow[key]);
-            } else {
-                game.display.draw(x, y, null);
-            }
-        }*/
     }    
+    draw_tile_at(x: number, y: number, key: string, bg?: string) {
+        game.display.draw(x, y, null);
+        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key], bg);
+    }
     draw() {
         const o = game.display.getOptions(); 
         let w = o.width, h = o.height; 
@@ -226,9 +216,15 @@ export class Map {
                 let key = xx+','+yy;
                 this.draw_tile_at(x, y, key);
         	}
+        }        
+        for (let a of this.agents) {
+            a.draw();
         }
-        for (let i=0;i<this.agents.length;++i) {
-            this.agents[i].draw();
+        for (let p of this.particles) {
+            let x = Math.floor(p.x);
+            let y = Math.floor(p.y);
+            let key = x + '+' + 'y';
+            this.draw_tile_at(x, y, key, '#ee1');
         }
         this.gen_shadow(game.player, '#555');
     }
