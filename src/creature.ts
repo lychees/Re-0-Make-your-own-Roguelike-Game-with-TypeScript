@@ -662,6 +662,7 @@ export class Fireball extends Skill {
         let x = alice.x;
         let y = alice.y;
 
+        alice.dir = dir;
         alice.logs.notify(alice.name + "施放了火球術");
 
         for (let i=1;i<=5;++i) {
@@ -687,6 +688,7 @@ export class Fireball extends Skill {
             if (dmged) break; 
         }
         this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);     
+        game.draw();
     }
 }
 
