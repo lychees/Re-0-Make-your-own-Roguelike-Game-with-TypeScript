@@ -114,8 +114,7 @@ export class Creature {
     buffs : Array<Buff.Buff>;
 
     run_buff: Buff.Buff;
-    
-    
+        
     constructor(x: number, y: number) {
         this.name = "生物";
         this.x = x;
@@ -380,6 +379,10 @@ export class Creature {
     act() {
 
     }
+
+    handleEvent(e) {
+        
+    }
 }
 
 export class Enemy extends Creature {
@@ -563,8 +566,7 @@ export class Lee extends Elf {
     }
 }
 
-export class Player extends Elf {
-
+export class Isabella extends Elf {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "伊莎貝拉";
@@ -572,19 +574,10 @@ export class Player extends Elf {
         this.color = "#0be";        
         this.z = 100;
 
-        /*this.abilities.push(new Dex_Talent(this, 1));
-        this.abilities.push(new Int_Talent(this, 1));        
-        this.abilities.push(new Magic_Talent(this, 3));
-        this.abilities.push(new Sickly(this, 1));*/       
-        //this.inventory.push(new Apple());
-        //this.inventory.push(new Water_Mirror());
-        //this.inventory.push(new Necklace());
-
         (new Dex_Talent(1)).append(this);
         (new Int_Talent(1)).append(this);              
         (new MP_Talent(10)).append(this);        
         (new Sickly(1)).append(this);
-
 
         (new Buff.Cheating()).append(this);
         
@@ -598,7 +591,109 @@ export class Player extends Elf {
         this.inventory.push(new MP_Ring());
         this.inventory.push(new Apple());
         this.inventory.push(new Apple());
+    }
+    /*
+    fireball() {
+        let keyMap = {};
+        keyMap[ROT.KEYS.VK_UP] = 0; 
+        keyMap[33] = 1;
+        keyMap[ROT.KEYS.VK_RIGHT] = 2;
+        keyMap[34] = 3;
+        keyMap[ROT.KEYS.VK_DOWN] = 4;
+        keyMap[35] = 5;
+        keyMap[ROT.KEYS.VK_LEFT] = 6;
+        keyMap[36] = 7;
 
+        keyMap[ROT.KEYS.VK_W] = 0;
+        keyMap[ROT.KEYS.VK_D] = 2;
+        keyMap[ROT.KEYS.VK_S] = 4;
+        keyMap[ROT.KEYS.VK_A] = 6;
+
+        if ()
+
+
+    }
+    handleFireball() {
+
+    }*/
+}
+
+export class Skill {
+    hp: number;
+    mp: number;
+    sp: number;
+    ready_duration: number;
+    launch_duration: number;
+    caster: Creature;
+    constructor() {
+
+    }
+}
+
+export class Fireball extends Skill {
+    cacheHandleEvent: any;
+    handleEvent(e) {
+
+        let keyMap = {};
+
+        keyMap[ROT.KEYS.VK_UP] = 0; 
+//        keyMap[33] = 1;
+        keyMap[ROT.KEYS.VK_RIGHT] = 2;
+  //      keyMap[34] = 3;
+        keyMap[ROT.KEYS.VK_DOWN] = 4;
+    //    keyMap[35] = 5;
+        keyMap[ROT.KEYS.VK_LEFT] = 6;
+      //  keyMap[36] = 7;
+
+        keyMap[ROT.KEYS.VK_W] = 0;
+        keyMap[ROT.KEYS.VK_D] = 2;
+        keyMap[ROT.KEYS.VK_S] = 4;
+        keyMap[ROT.KEYS.VK_A] = 6;
+
+        let code = e.keyCode;
+        if (!keyMap[code]) {
+            this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);
+            return;
+        }
+
+        let dir = keyMap[code];
+        let d = ROT.DIRS[8][dir];
+        let alice = this.caster;
+        let x = alice.x;
+        let y = alice.y;
+
+        alice.logs.notify(alice.name + "施放了火球術");
+
+        for (let i=1;i<=5;++i) {
+            let dx = i * d[0];
+            let dy = i * d[1];
+            let xx = x + dx;
+            let yy = y + dy;
+            let dmged = false;
+            if (!game.map.pass_without_agents(xx, yy)) break;
+            for (let bob of game.map.agents) {
+                if (bob.x == xx && bob.y == yy) {
+                    let dmg = 1000;
+                    bob.hp -= dmg; 
+                    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點火焰傷害'); 
+                    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點火焰傷害'); 
+                    if (bob.hp <= 0) {
+                        bob.dead(alice);
+                    }
+                    dmged = true;
+                    break;
+                }
+            }
+            if (dmged) break; 
+        }
+        this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);     
+    }
+}
+
+export class Player extends Isabella {
+
+    constructor(x: number, y: number) {
+        super(x, y);
     }
     dead(murderer: any) {
         super.dead(murderer);
@@ -621,6 +716,7 @@ export class Player extends Elf {
         keyMap[35] = 5;
         keyMap[ROT.KEYS.VK_LEFT] = 6;
         keyMap[36] = 7;
+        
 
 
         let code = e.keyCode;
@@ -637,7 +733,6 @@ export class Player extends Elf {
         if (code == ROT.KEYS.VK_I) {                        
             // this.inventory.open();
             game.characterMenu.toggle(game.player);
-
             return;
         }
 
@@ -645,6 +740,14 @@ export class Player extends Elf {
             this.run();
             return;
         }
+
+        if (code == ROT.KEYS.VK_F) {
+            let t = new Fireball();
+            t.caster = this;
+            t.cacheHandleEvent = this.handleEvent;
+            this.handleEvent = t.handleEvent.bind(t);
+            return;
+        }        
 
 
         if (code == 13 || code == 32) {
@@ -659,8 +762,6 @@ export class Player extends Elf {
             }*/
             return;
         }
-
-
 
         keyMap[ROT.KEYS.VK_W] = 0;
         keyMap[ROT.KEYS.VK_D] = 2;
