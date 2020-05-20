@@ -11,7 +11,7 @@ import { slime_hostile } from "./AI/slime_hostile";
 import { Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "./buff";
 
 import * as Buff from "./buff";
-
+import * as Particle from "./particle/particle";
 
 import * as Corpse from "./tile/corpse"
 
@@ -344,6 +344,7 @@ export class Creature {
         let agents = game.map.agents;
         let idx = agents.findIndex((e) => e == this);
         agents.splice(idx, 1);
+        game.scheduler.remove(this);
 
         let layer = game.map.layer[this.x+','+this.y];
 
@@ -651,7 +652,8 @@ export class Fireball extends Skill {
         keyMap[ROT.KEYS.VK_A] = 6;
 
         let code = e.keyCode;
-        if (!keyMap[code]) {
+
+        if (!(code in keyMap)) {
             this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);
             return;
         }
@@ -663,9 +665,13 @@ export class Fireball extends Skill {
         let y = alice.y;
 
         alice.dir = dir;
+        game.SE.playSE("Wolf RPG Maker/[Effect]Fire1_panop.ogg");
         alice.logs.notify(alice.name + "施放了火球術");
 
-        for (let i=1;i<=5;++i) {
+        game.map.particles.push(new Particle.Fireball(alice, x+0.5, y+0.5, d[0], d[1], 12, 1000));
+
+
+        /*for (let i=1;i<=5;++i) {
             let dx = i * d[0];
             let dy = i * d[1];
             let xx = x + dx;
@@ -686,7 +692,7 @@ export class Fireball extends Skill {
                 }
             }
             if (dmged) break; 
-        }
+        }*/
         this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);     
         game.draw();
     }
@@ -746,6 +752,7 @@ export class Player extends Isabella {
         if (code == ROT.KEYS.VK_F) {
             let t = new Fireball();
             t.caster = this;
+            game.SE.playSE("Wolf RPG Maker/[Effect]Mystic1_panop.ogg");
             t.cacheHandleEvent = this.handleEvent;
             this.handleEvent = t.handleEvent.bind(t);
             return;

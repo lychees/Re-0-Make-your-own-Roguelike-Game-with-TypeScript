@@ -2,6 +2,7 @@ import * as ROT from "rot-js";
 import { game, event, pop_random } from "./main";
 import { Player, Rat, Snake, Creature } from "./creature";
 import { Apple } from "./inventory";
+import * as Particle from "./particle/particle"
 
 const MAP_WIDTH = 15;
 const MAP_HEIGHT = 15;
@@ -30,9 +31,7 @@ export class Tile {
     constructor() {        
     }
     draw(x: number, y: number, s: string, bg?: string){
-
         if (!bg) bg = '#000';
-
         if (s === '#fff') {
             game.display.draw(x, y, this.ch, this.color, bg);
         } else if (s === '#555') {
@@ -65,14 +64,6 @@ export class Box extends Tile {
     }
 }
 
-export class Particle {
-    x: number;
-    y: number;
-    dx: number;
-    dy: number;
-    dmg: number;    
-}
-
 export class Map {
     
     width: number;
@@ -80,7 +71,7 @@ export class Map {
     layer: {};
     shadow: {};
     agents: Array<any>;
-    particles: Array<Particle>;
+    particles: Array<Particle.Particle>;
     
     constructor(w: number, h: number) {
         this.width = w;
@@ -94,7 +85,7 @@ export class Map {
         }
         this.shadow = {};
         this.agents = new Array<any>();
-        this.particles = new Array<Particle>();
+        this.particles = new Array<Particle.Particle>();
     }
 
     enter(x: number, y: number, p: Creature) {        
@@ -201,9 +192,18 @@ export class Map {
         });
     }    
     draw_tile_at(x: number, y: number, key: string, bg?: string) {
-        game.display.draw(x, y, null);
-        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key], bg);
+        game.display.draw(x, y, null);        
+        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key]);
     }
+
+    draw_tile_at2(x: number, y: number, key: string, bg?: string) {
+        game.display.draw(x, y, null);
+        console.log(x, y, key, bg);
+        //if (this.layer[key].length == 0) return;
+        console.log(this.layer[key]);
+        this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key], '#aaa');
+    }
+
     draw() {
         const o = game.display.getOptions(); 
         let w = o.width, h = o.height; 
@@ -221,10 +221,7 @@ export class Map {
             a.draw();
         }
         for (let p of this.particles) {
-            let x = Math.floor(p.x);
-            let y = Math.floor(p.y);
-            let key = x + '+' + 'y';
-            this.draw_tile_at(x, y, key, '#ee1');
+            p.draw();            
         }
         this.gen_shadow(game.player, '#555');
     }

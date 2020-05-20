@@ -3,6 +3,11 @@ import * as ROT from "rot-js";
 import { game, dice } from "../main";
 import { random_move } from "./random_move";
 
+export function wait() {
+    
+    random_move.bind(this)();
+}
+
 export function hostile() {
     if (this.hp <= 0) return;
 
