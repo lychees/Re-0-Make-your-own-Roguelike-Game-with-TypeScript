@@ -151,6 +151,45 @@ class Game {
         $("#SCORE > .row_key").text("SCORE:" + game.score);
         */
     }
+
+
+    saveGame() {
+        if(typeof Storage != 'undefined' && localStorage) {
+
+/*            if(Engine._saveTimer != null) {
+                clearTimeout(Engine._saveTimer);
+            }
+            if(typeof Engine._lastNotify == 'undefined' || Date.now() - Engine._lastNotify > Engine.SAVE_DISPLAY){
+                $('#saveNotify').css('opacity', 1).animate({opacity: 0}, 1000, 'linear');
+                Engine._lastNotify = Date.now();
+            }*/
+
+//            console.log(game.player);
+            
+  //          localStorage.gameState = JSON.stringify(game.player);
+            localStorage.gameState = JSON.stringify(game.player.logs);  
+            return localStorage.gameState;
+        }
+        return "?";    
+    }
+
+    loadGame() {
+        try {
+            /*var savedState = JSON.parse(localStorage.gameState);
+            if(savedState) {
+                State = savedState;
+                $SM.updateOldState();
+                Engine.log("loaded save!");
+            }*/
+        } catch(e) {
+            /*
+            State = {};
+            $SM.set('version', Engine.VERSION);
+            Engine.event('progress', 'new game');
+            */
+        }
+    }  
+    
 };
 
 export let game = new Game();
@@ -160,6 +199,8 @@ export let event = new Events();
 event.init();
 
 //openCharacterMenu(game.player);
+
+
 
 
 $( "#character" ).click(function() {    
@@ -192,7 +233,7 @@ $( "#inventory" ).click(function() {
                 },
                 'inputExport': {
                     text: [_('save this.')],
-                    textarea: "111", //Engine.export64(),
+                    textarea: game.saveGame, //Engine.export64(),
                     onLoad: function() {
                     //     Engine.event('progress', 'export');
                         alert(123)

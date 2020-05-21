@@ -318,6 +318,16 @@ export class Events {
 			game.player.logs.notify(scene.text[i]);
         }
 		
+
+		if(scene.textarea != null) {
+			var ta = $('<textarea>').val(scene.textarea).appendTo(desc);
+			if(scene.readonly) {
+				ta.attr('readonly', 'true');
+			}
+			$('textarea').focus().select();
+			//Engine.autoSelect('#description textarea');
+		}
+
         // Draw any loot        
 //		var takeETbtn;
 
