@@ -593,30 +593,6 @@ export class Isabella extends Elf {
         this.inventory.push(new Apple());
         this.inventory.push(new Apple());
     }
-    /*
-    fireball() {
-        let keyMap = {};
-        keyMap[ROT.KEYS.VK_UP] = 0; 
-        keyMap[33] = 1;
-        keyMap[ROT.KEYS.VK_RIGHT] = 2;
-        keyMap[34] = 3;
-        keyMap[ROT.KEYS.VK_DOWN] = 4;
-        keyMap[35] = 5;
-        keyMap[ROT.KEYS.VK_LEFT] = 6;
-        keyMap[36] = 7;
-
-        keyMap[ROT.KEYS.VK_W] = 0;
-        keyMap[ROT.KEYS.VK_D] = 2;
-        keyMap[ROT.KEYS.VK_S] = 4;
-        keyMap[ROT.KEYS.VK_A] = 6;
-
-        if ()
-
-
-    }
-    handleFireball() {
-
-    }*/
 }
 
 export class Skill {
@@ -627,7 +603,6 @@ export class Skill {
     launch_duration: number;
     caster: Creature;
     constructor() {
-
     }
 }
 
@@ -669,30 +644,6 @@ export class Fireball extends Skill {
         alice.logs.notify(alice.name + "施放了火球術");
 
         game.map.particles.push(new Particle.Fireball(alice, x+0.5, y+0.5, d[0], d[1], 12, 1000));
-
-
-        /*for (let i=1;i<=5;++i) {
-            let dx = i * d[0];
-            let dy = i * d[1];
-            let xx = x + dx;
-            let yy = y + dy;
-            let dmged = false;
-            if (!game.map.pass_without_agents(xx, yy)) break;
-            for (let bob of game.map.agents) {
-                if (bob.x == xx && bob.y == yy) {
-                    let dmg = 1000;
-                    bob.hp -= dmg; 
-                    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點火焰傷害'); 
-                    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點火焰傷害'); 
-                    if (bob.hp <= 0) {
-                        bob.dead(alice);
-                    }
-                    dmged = true;
-                    break;
-                }
-            }
-            if (dmged) break; 
-        }*/
         this.caster.handleEvent = this.cacheHandleEvent.bind(this.caster);     
         game.draw();
     }
