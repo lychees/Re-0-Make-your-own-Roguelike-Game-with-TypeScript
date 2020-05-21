@@ -167,7 +167,80 @@ $( "#character" ).click(function() {
 });
 
 $( "#inventory" ).click(function() {
+
+        event.startEvent({
+            title: _('Export / Import'),
+            scenes: {
+                start: {
+                    text: [
+                        _('export or import save data, for backing up'),
+                        _('or migrating computers')
+                    ],
+                    buttons: {
+                        'export': {
+                            text: _('export'),
+                            nextScene: 'inputExport'
+                        },
+                        'import': {
+                            text: _('import'),
+                            nextScene: 'confirm'
+                        },
+                        'cancel': {
+                            text: _('cancel')
+                        }
+                    }
+                },
+                'inputExport': {
+                    text: [_('save this.')],
+                    textarea: "111", //Engine.export64(),
+                    onLoad: function() {
+                    //     Engine.event('progress', 'export');
+                        alert(123)
+                    },
+                    readonly: true,
+                    buttons: {
+                        'done': {
+                            text: _('got it'),
+                            onChoose: alert(123)
+                        }
+                    }
+                },
+                'confirm': {
+                    text: [
+                        _('are you sure?'),
+                        _('if the code is invalid, all data will be lost.'),
+                        _('this is irreversible.')
+                    ],
+                    buttons: {
+                        'yes': {
+                            text: _('yes'),
+                            nextScene: 'inputImport',
+                            onChoose: alert(123)
+                        },
+                        'no': {
+                            text: _('no'),
+                            nextScene:  'start'
+                        }
+                    }
+                },
+                'inputImport': {
+                    text: [_('put the save code here.')],
+                    textarea: '',
+                    buttons: {
+                        'okay': {
+                            text: _('import'),
+                            onChoose: alert(123)
+                        },
+                        'cancel': {
+                            text: _('cancel')
+                        }
+                    }
+                }
+            }
+        });
 });
+
+
     //game.characterMenu.toggle(game.player);
     /*let menu = new Menu();
     menu.init([
