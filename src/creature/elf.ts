@@ -1,7 +1,7 @@
 
 import { Creature } from "./creature";
 import * as Buff from "../buff";
-import * as Item from "../item/inventory";
+import * as Item from "../item/item";
 import { hostile } from "../AI/hostile";
 
 export class Elf extends Creature {
@@ -20,9 +20,9 @@ export class Elf_Guard extends Elf {
         this.ch = "衛";
         this.color = "#c11";        
         this.z = 3;
-        let t = new Item.Sword();
+        /*let t = new Item.Equip.Weapon.Sword();
         this.inventory.push(t);
-        t.equip();
+        t.equip();*/
         this.act = hostile.bind(this);
     }
 }
@@ -34,9 +34,9 @@ export class Lee extends Elf {
         this.ch = "李";
         this.color = "#ca3";        
         this.z = 3;
-        let t = new Item.Sword();
+        /*let t = new Item.Equip.Weapon.Sword();
         this.inventory.push(t);
-        t.equip();
+        t.equip();*/
     }
 }
 
@@ -54,14 +54,14 @@ export class Isabella extends Elf {
         (new Buff.Sickly(1)).append(this);
         (new Buff.Cheating()).append(this);
         
-        this.inventory.push(new Item.Axes());    
-        let t = new Item.Sword();
+        /*this.inventory.push(new Item.Equip.Weapon.Axes());    
+        let t = new Item.Equip.Weapon.Sword();
         this.inventory.push(t);
-        t.equip();
+        t.equip();*/
 
-        this.inventory.push(new Item.Light_Armor());
-        this.inventory.push(new Item.HP_Ring());
-        this.inventory.push(new Item.MP_Ring());
+        //this.inventory.push(new Item.Light_Armor());
+        //this.inventory.push(new Item.HP_Ring());
+        //this.inventory.push(new Item.MP_Ring());
         //this.inventory.push(new Item.Apple());
         //this.inventory.push(new Item.Apple());
     }

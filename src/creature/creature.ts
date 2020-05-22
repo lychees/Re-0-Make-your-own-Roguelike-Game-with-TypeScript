@@ -4,7 +4,8 @@ import { game, rand, dice } from "../main";
 import { add_shadow } from "../map";
 
 import { Logs } from "../logs";
-import { Inventory, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../item/inventory";
+import { Inventory } from "../item/inventory";
+import * as Item from "../item/item";
 import { hostile } from "../AI/hostile";
 import { slime_hostile } from "../AI/slime_hostile";
 
@@ -48,9 +49,9 @@ function attack(alice, bob) {
 }
 
 export class Equipment {
-    weapon: Weapon;
-    armor: Armor;
-    accessory: Accessory;
+    weapon: Item.Weapon;
+    armor: Item.Armor;
+    accessory: Item.Accessory;
     owner: any;
 
     getDom() {
@@ -463,23 +464,24 @@ export class Orc extends Enemy {
         Orc_Race.append(this);
 
         
+        /*
         if (dice(6) == 1) {
-            let sword = new Sword();
+            let sword = new Item.Equip.Weapon.Sword();
             this.inventory.push(sword);
             sword.equip();
         }
                 
         if (dice(3) == 1) {
-            let axes = new Axes();
+            let axes = new Item.Equip.Weapon.Axes();
             this.inventory.push(axes);
             axes.equip();
         }
 
         if (dice(3) == 1) {
-            let shield = new Shield();
+            let shield = new Item.Equip.Armor.Shield();
             this.inventory.push(shield);
             shield.equip();
-        }
+        }*/
     }
 }
 

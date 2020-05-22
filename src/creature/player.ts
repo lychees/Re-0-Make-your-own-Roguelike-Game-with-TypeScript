@@ -1,14 +1,10 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
 import { game, rand, dice } from "../main";
-import { add_shadow } from "../map";
 
-import { Logs } from "../logs";
-import { Inventory, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../item/inventory";
-import { hostile } from "../AI/hostile";
-import { slime_hostile } from "../AI/slime_hostile";
+
+import * as Item from "../item/item";
 import * as Elf from "./elf";
-
 import * as Buff from "../buff";
 import * as Particle from "../particle/particle";
 import * as Corpse from "../tile/corpse"
@@ -47,47 +43,6 @@ function attack(alice, bob) {
         bob.dead(alice);
     }
 }
-
-
-export class Equipment {
-    weapon: Weapon;
-    armor: Armor;
-    accessory: Accessory;
-    owner: any;
-
-    getDom() {
-        let z = $('<div>').addClass('equipment');            
-        let weapon_dom = $('<div>').addClass('inventoryRow');
-        let weapon_name =$('<div>').addClass('row_key').text('武器 ' + (this.weapon ? this.weapon.name : "無"));
-        let weapon_tip = $('<div>').addClass("tooltip bottom right").text(this.weapon ? this.weapon.description : "");
-        weapon_tip.appendTo(weapon_dom);
-        weapon_name.appendTo(weapon_dom);            
-        weapon_dom.appendTo(z);
-
-        let armor_dom = $('<div>').addClass('inventoryRow');                
-        let armor_name =$('<div>').addClass('row_key').text('護甲 ' + (this.armor ? this.armor.name : "無"));
-        let armor_tip = $('<div>').addClass("tooltip bottom right").text(this.armor ? this.armor.description : "");
-        armor_tip.appendTo(armor_dom);
-        armor_name.appendTo(armor_dom);            
-        armor_dom.appendTo(z);
-
-        let accessory_dom = $('<div>').addClass('inventoryRow');                
-        let accessory_name =$('<div>').addClass('row_key').text('飾品 ' + (this.accessory ? this.accessory.name : "無"));
-        let accessory_tip = $('<div>').addClass("tooltip bottom right").text(this.accessory ? this.accessory.description : "");
-        accessory_tip.appendTo(accessory_dom);
-        accessory_name.appendTo(accessory_dom);            
-        accessory_dom.appendTo(z);        
-        
-        return z;        
-    }
-
-    constructor() {
-        this.weapon = null;
-        this.armor = null;
-        this.accessory = null;
-    }
-}
-
 
 export class Skill {
     hp: number;

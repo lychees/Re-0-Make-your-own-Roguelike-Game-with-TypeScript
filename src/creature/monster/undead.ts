@@ -1,9 +1,11 @@
-import { Sword, Shield } from "../../item/inventory";
+
 import { Enemy, Creature } from "../creature";
 import { hostile } from "../../AI/hostile";
 import { game, event, rand, dice } from "../../main";
 import { _, Events } from "../../event";
 import * as Buff from "../../buff";
+
+import * as Item from "../../item/item";
 
 export class Undead extends Creature {
     constructor(x: number, y: number) {
@@ -49,12 +51,12 @@ export class Skeleton extends Undead {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
-        let sword = new Sword();
+        /*let sword = new Item.Equip.Weapon.Sword();
         this.inventory.push(sword);
         sword.equip();        
-        let shield = new Shield();
+        let shield = new Item.Equip.Armor.Shield();
         this.inventory.push(shield);
-        shield.equip();
+        shield.equip();*/
     }
 }
 
@@ -83,12 +85,12 @@ export class Walking_Dead extends Undead {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
-        let sword = new Sword();
+        /*let sword = new Item.Equip.Weapon.Sword();
         this.inventory.push(sword);
         sword.equip();
-        let shield = new Shield();
+        let shield = new Item.Equip.Armor.Shield();
         this.inventory.push(shield);
-        shield.equip();
+        shield.equip();*/
     }
 }
 
@@ -117,12 +119,15 @@ export class Zombie extends Undead {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
-        let sword = new Sword();
+        /*
+        //let sword = new Item.Equip.Weapon.Sword();
+        let sword = new Item.Equip.Sword();
         this.inventory.push(sword);
         sword.equip();
-        let shield = new Shield();
+        //let shield = new Item.Equip.Armor.Shield();
+        let shield = new Item.Equip.Shield();
         this.inventory.push(shield);
-        shield.equip();
+        shield.equip();*/
     }
 }
 
