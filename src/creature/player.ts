@@ -4,7 +4,7 @@ import { game, rand, dice } from "../main";
 import { add_shadow } from "../map";
 
 import { Logs } from "../logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../inventory";
+import { Inventory, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../item/inventory";
 import { hostile } from "../AI/hostile";
 import { slime_hostile } from "../AI/slime_hostile";
 import * as Elf from "./elf";

@@ -1,4 +1,4 @@
-import { Sword, Shield } from "../../inventory";
+import { Sword, Shield } from "../../item/inventory";
 import { Enemy, Creature } from "../creature";
 import { hostile } from "../../AI/hostile";
 import { game, event, rand, dice } from "../../main";

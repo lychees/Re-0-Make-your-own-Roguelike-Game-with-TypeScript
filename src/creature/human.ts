@@ -1,7 +1,7 @@
 
 import { Creature } from "./creature";
 import * as Buff from "../buff";
-import * as Item from "../inventory";
+import * as Item from "../item/inventory";
 import { hostile } from "../AI/hostile";
 
 export class Human extends Creature {

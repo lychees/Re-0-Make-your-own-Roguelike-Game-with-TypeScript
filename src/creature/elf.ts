@@ -1,7 +1,7 @@
 
 import { Creature } from "./creature";
 import * as Buff from "../buff";
-import * as Item from "../inventory";
+import * as Item from "../item/inventory";
 import { hostile } from "../AI/hostile";
 
 export class Elf extends Creature {
@@ -62,7 +62,7 @@ export class Isabella extends Elf {
         this.inventory.push(new Item.Light_Armor());
         this.inventory.push(new Item.HP_Ring());
         this.inventory.push(new Item.MP_Ring());
-        this.inventory.push(new Item.Apple());
-        this.inventory.push(new Item.Apple());
+        //this.inventory.push(new Item.Apple());
+        //this.inventory.push(new Item.Apple());
     }
 }

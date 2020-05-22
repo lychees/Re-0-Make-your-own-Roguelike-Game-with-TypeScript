@@ -1,16 +1,19 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
-import { game, rand, dice } from "./main";
-import { Buff } from "./buff";
-import { Menu } from "./UI/character";
-import * as Creature from "./creature/creature"
+import { game, rand, dice } from "../main";
+import { Buff } from "../buff";
+import { Menu } from "../UI/character";
+import * as Creature from "../creature/creature"
+import * as Item from "./item";
+
+export * as Item from "./item";
 
 export class ItemMenu extends Menu {
 	parent: any;
 	constructor() {
 		super();
 	}
-	init(item: Item) {
+	init(item: Item.Item) {
 
         let info = [];
     
@@ -28,7 +31,7 @@ export class ItemMenu extends Menu {
             }
         }
 
-        if (item instanceof Apple) {
+        if (item instanceof Item.Food) {
             info.push({
                 title: "吃",
                 click: item.eat.bind(item)
@@ -69,47 +72,9 @@ export class ItemMenu extends Menu {
 }
 
 
-export class Item {
-    name: string;
-    description: string;
-    value: number;
-    weight: number;
-    durability: number;        
-    ch: string;
-    color: string;
-    owner: any;
-
-    drop() {
-        if (this.owner) {
-            let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
-            this.owner.inventory.items.splice(idx, 1);                        
-            this.owner = null;
-        }
-    }
-    take(taker: Creature.Creature) {
-        if (this.owner) {
-            let idx = this.owner.inventory.items.findIndex((e: Item) => e==this);            
-            this.owner.inventory.items.splice(idx, 1);                                    
-        }
-
-        taker.logs.notify(taker.name + " 從 " + this.owner.name + " 身上拿走了 " + this.name);        
-        taker.inventory.push(this);
-    }
-
-    constructor() {
-        this.name = "？？？";
-        this.description = "";
-        this.value = 0;
-        this.weight = 0;
-        this.durability = 1;
-        this.ch = "物";
-        this.color = "#fff";
-    }
-}
 
 
-
-export class Equip extends Item {
+export class Equip extends Item.Item {
     equipped: boolean;    
     buff: Buff;
 
@@ -219,35 +184,6 @@ export class Weapon extends Equip {
     }    
 }
 
-
-
-export class Apple extends Item {    
-    eat() {
-        //game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");           
-        this.use(this.owner);
-    }
-    use(who: any) {
-        //game.SE.playSE("Wolf RPG Maker/[Effect]Healing3_default.ogg");
-        game.SE.playSE("吃.wav");
-        let d_hp = who.hp_healing(1+rand(2));
-        let d_sp = who.sp_healing(1+rand(2));
-        who.logs.notify(who.name + "吃下了" + this.name + "，恢復了" + d_hp + "點生命和" + d_sp + "點體力。");
-        this.durability -= 1;
-
-        if (this.durability == 0) {            
-            this.drop();
-        }
-
-        //console.log(this.durability);
-        game.draw();
-    }
-    constructor() {
-        super();
-        this.name = "蘋果";
-        this.durability = 1;
-        this.description = "一個蘋果，每口 1/5 的概率，恢復 1d2 點 HP 和 1d2 點 SP";
-    }
-}
 
 export class Axes extends Weapon {    
     constructor() {

@@ -4,7 +4,7 @@ import { game, rand, dice } from "../main";
 import { add_shadow } from "../map";
 
 import { Logs } from "../logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../inventory";
+import { Inventory, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../item/inventory";
 import { hostile } from "../AI/hostile";
 import { slime_hostile } from "../AI/slime_hostile";
 
@@ -46,7 +46,6 @@ function attack(alice, bob) {
         bob.dead(alice);
     }
 }
-
 
 export class Equipment {
     weapon: Weapon;
@@ -109,9 +108,7 @@ export class Creature {
     logs: Logs;
     inventory: Inventory;
     equipment: Equipment;
-    //abilities : Array<Ability>;
     buffs : Array<Buff.Buff>;
-
     run_buff: Buff.Buff;
         
     constructor(x: number, y: number) {
@@ -137,7 +134,6 @@ export class Creature {
         this.inventory = new Inventory(); this.inventory.owner = this;
         this.equipment = new Equipment(); this.equipment.owner = this;
 
-        //this.abilities = new Array<Ability>();
         this.buffs = new Array<Buff.Buff>();
         this.run_buff = new Buff.Buff();
         this.run_buff.name = "跑";
@@ -155,7 +151,7 @@ export class Creature {
             }        
         }
         return z;
-    }    
+    }
 
     parse_atk_buffs() {
         let z = "攻擊力\n";
@@ -182,10 +178,8 @@ export class Creature {
     }
 
     parse_hp_buffs() {
-        let z = "";
-                
-        z += "+" + (this.con * 5) + " HP 來自 體質\n";
-        
+        let z = "";                
+        z += "+" + (this.con * 5) + " HP 來自 體質\n";        
         for (const b of this.buffs) {
             let t = b.parse_hp();
             if (t != "") {
@@ -298,13 +292,8 @@ export class Creature {
         this.modify_SP(d);
     }
     modify_int(d: number) {
-        this.int += d;
-        /*for (let i=0;i<this.abilities.length;++i) {
-            if (this.abilities[i].modify_int) {
-                this.abilities[i].modify_int(d);
-            }
-        }*/
-    } 
+        this.int += d;        
+    }
     
     hp_healing(d: number): number {
         d = Math.min(d, this.HP - this.hp);
@@ -323,7 +312,6 @@ export class Creature {
     }
     injured(d: number) {
         this.logs.notify(this.name + "受傷了");
-        //this.abilities.push(new Injured(this, d));
         (new Injured(d)).append(this);
     }
     draw() {

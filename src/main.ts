@@ -13,7 +13,6 @@ import { Chat } from "./chat";
 
 
 import { _, Events } from "./event";
-import { Apple, Axes } from "./inventory";
 
 
 export function get_avg_atk(atk: any) {
