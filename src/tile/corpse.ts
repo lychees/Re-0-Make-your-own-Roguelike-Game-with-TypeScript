@@ -1,7 +1,7 @@
 import * as ROT from "rot-js";
 import { game } from "../main";
 import { Tile } from "../map"
-import * as Creature from "../creature"
+import * as Creature from "../creature/creature"
 import { CharacterMenu } from "../UI/character";
 
 export class Corpse extends Tile {

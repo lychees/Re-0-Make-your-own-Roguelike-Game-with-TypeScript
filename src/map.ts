@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import { game, event, pop_random } from "./main";
-import { Player, Rat, Snake, Creature } from "./creature";
+import { Player, Rat, Snake, Creature } from "./creature/creature";
 import { Apple } from "./inventory";
 import * as Particle from "./particle/particle"
 

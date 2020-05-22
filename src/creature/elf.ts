@@ -1,19 +1,22 @@
+
+//import { Creature } from "./creature";
+import * as Buff from "../buff";
+import * as Item from "../inventory";
+import { hostile } from "../AI/hostile";
+
+
 import * as ROT from "rot-js";
 import $ from "jquery";
-import { game, rand, dice } from "./main";
-import { add_shadow } from "./map";
+import { game, rand, dice } from "../main";
+import { add_shadow } from "../map";
 
-import { Logs } from "./logs";
-import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "./inventory";
-import { hostile } from "./AI/hostile";
-import { slime_hostile } from "./AI/slime_hostile";
+import { Logs } from "../logs";
+import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, Accessory, Shield, Light_Armor, HP_Ring, MP_Ring } from "../inventory";
+import { slime_hostile } from "../AI/slime_hostile";
 
-import { Elf_Race, Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "./buff";
-
-import * as Buff from "./buff";
-import * as Particle from "./particle/particle";
-
-import * as Corpse from "./tile/corpse"
+import { Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "../buff";
+import * as Particle from "../particle/particle";
+import * as Corpse from "../tile/corpse"
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -531,70 +534,6 @@ export class Human extends Creature {
     }
 }
 
-export class Elf extends Creature {
-    constructor(x: number, y: number) {
-        super(x, y);
-        this.name = "精靈";
-        this.ch = "精";
-        (new Elf_Race()).append(this);
-    }
-}
-
-export class Elf_Guard extends Elf {
-    constructor(x: number, y: number) {
-        super(x, y);
-        this.name = "衛兵";
-        this.ch = "衛";
-        this.color = "#c11";        
-        this.z = 3;
-        let t = new Sword();
-        this.inventory.push(t);
-        t.equip();
-        this.act = hostile.bind(this);
-    }
-}
-
-export class Lee extends Elf {
-    constructor(x: number, y: number) {
-        super(x, y);
-        this.name = "李貝爾";
-        this.ch = "李";
-        this.color = "#ca3";        
-        this.z = 3;
-        let t = new Sword();
-        this.inventory.push(t);
-        t.equip();
-    }
-}
-
-export class Isabella extends Elf {
-    constructor(x: number, y: number) {
-        super(x, y);
-        this.name = "伊莎貝拉";
-        this.ch = "伊";
-        this.color = "#0be";        
-        this.z = 100;
-
-        (new Dex_Talent(1)).append(this);
-        (new Int_Talent(1)).append(this);              
-        (new MP_Talent(10)).append(this);        
-        (new Sickly(1)).append(this);
-
-        (new Buff.Cheating()).append(this);
-        
-        this.inventory.push(new Axes());    
-        let t = new Sword();
-        this.inventory.push(t);
-        t.equip();
-
-        this.inventory.push(new Light_Armor());
-        this.inventory.push(new HP_Ring());
-        this.inventory.push(new MP_Ring());
-        this.inventory.push(new Apple());
-        this.inventory.push(new Apple());
-    }
-}
-
 export class Skill {
     hp: number;
     mp: number;
@@ -649,146 +588,66 @@ export class Fireball extends Skill {
     }
 }
 
-export class Player extends Isabella {
 
+export class Elf extends Creature {
     constructor(x: number, y: number) {
         super(x, y);
+        this.name = "精靈";
+        this.ch = "精";
+        (new Buff.Elf_Race()).append(this);
     }
-    dead(murderer: any) {
-        super.dead(murderer);
-        this.logs.notify("眼前一片漆黑，你掛了")
-        game.SE.playSE("狂父/[びたちー]少女（悲鳴）.ogg");
+}
+
+export class Elf_Guard extends Elf {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "衛兵";
+        this.ch = "衛";
+        this.color = "#c11";        
+        this.z = 3;
+        let t = new Item.Sword();
+        this.inventory.push(t);
+        t.equip();
+        this.act = hostile.bind(this);
     }
-    act() {
-        game.draw();
-        game.engine.lock();
-        window.addEventListener("keydown", this);
+}
+
+export class Lee extends Elf {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "李貝爾";
+        this.ch = "李";
+        this.color = "#ca3";        
+        this.z = 3;
+        let t = new Item.Sword();
+        this.inventory.push(t);
+        t.equip();
     }
-    handleEvent(e) {
-        let keyMap = {};
+}
 
-        keyMap[ROT.KEYS.VK_UP] = 0; 
-        keyMap[33] = 1;
-        keyMap[ROT.KEYS.VK_RIGHT] = 2;
-        keyMap[34] = 3;
-        keyMap[ROT.KEYS.VK_DOWN] = 4;
-        keyMap[35] = 5;
-        keyMap[ROT.KEYS.VK_LEFT] = 6;
-        keyMap[36] = 7;
+export class Isabella extends Elf {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "伊莎貝拉";
+        this.ch = "伊";
+        this.color = "#0be";        
+        this.z = 100;
+
+        (new Buff.Dex_Talent(1)).append(this);
+        (new Buff.Int_Talent(1)).append(this);              
+        (new Buff.MP_Talent(10)).append(this);        
+        (new Buff.Sickly(1)).append(this);
+        (new Buff.Cheating()).append(this);
         
+        this.inventory.push(new Item.Axes());    
+        let t = new Item.Sword();
+        this.inventory.push(t);
+        t.equip();
 
-
-        let code = e.keyCode;
-       
-        if (keyMap[code] != undefined) {
-            event.preventDefault();
-        }
-
-        if (game.characterMenu.opened == true) {
-            game.characterMenu.close();
-            return;
-        }
-        
-        if (code == ROT.KEYS.VK_I) {                        
-            // this.inventory.open();
-            game.characterMenu.toggle(game.player);
-            return;
-        }
-
-        if (code == ROT.KEYS.VK_R) {
-            this.run();
-            return;
-        }
-
-        if (code == ROT.KEYS.VK_F) {
-            let t = new Fireball();
-            t.caster = this;
-            game.SE.playSE("Wolf RPG Maker/[Effect]Mystic1_panop.ogg");
-            t.cacheHandleEvent = this.handleEvent;
-            this.handleEvent = t.handleEvent.bind(t);
-            return;
-        }        
-
-
-        if (code == 13 || code == 32) {
-            //var key = this.x + "," + this.y;
-            //let t = game.map.layer[key];
-            game.map.enter(this.x, this.y, this);
-            /*if (t) {                
-                if (t.enter) {
-                    t.enter(this);
-                } else {
-                }
-            }*/
-            return;
-        }
-
-        keyMap[ROT.KEYS.VK_W] = 0;
-        keyMap[ROT.KEYS.VK_D] = 2;
-        keyMap[ROT.KEYS.VK_S] = 4;
-        keyMap[ROT.KEYS.VK_A] = 6;
-
-        if (!(code in keyMap)) {
-            return;
-        }
-        
-        let new_dir = keyMap[code];
-        
-        if (e.shiftKey) {                    
-
-            let d = ROT.DIRS[8][new_dir];
-            let xx = this.x + d[0];
-            let yy = this.y + d[1];
-            let door = game.map.layer[xx+','+yy];
-            if (door && (door.ch == "門" || door.ch == "關")) {
-                door.trigger(this);
-                game.scheduler.setDuration( 2000 );
-            } else {
-                this.logs.notify("你向四處張望");
-                if (rand(5) == 0) this.sp_healing(1);            
-                game.scheduler.setDuration( 1000 );
-            }
-        } else {
-            let d = ROT.DIRS[8][new_dir];
-            let xx = this.x + d[0];
-            let yy = this.y + d[1];
-            
-            
-            game.scheduler.setDuration( 4000 );
-
-            if (this.run_buff.owner == this && this.sp > 0) {
-                if (this.dir == new_dir) {
-                    game.scheduler.setDuration( 1000 );
-                } else {
-                    game.scheduler.setDuration( 2000 );
-                }
-                if (rand(10) == 0) this.sp -= 1;
-            } else {                
-                if (rand(10) == 0) this.sp_healing(1);
-            }
-
-            let attacked = false;
-            for (let i=0;i<game.map.agents.length;++i) {
-                let a = game.map.agents[i];
-                if (a.x === xx && a.y === yy && a.hp > 0) {
-                    attack(this, a);
-                    attacked = true;
-                    game.player.logs.printMessage
-                    break;
-                }
-            }
-
-            if (!attacked) {
-                if (game.map.pass(xx, yy)) {
-                    game.camera.move(d[0], d[1]);
-                    this.x = xx;
-                    this.y = yy;
-                }
-            }
-        }
-
-        this.dir = new_dir;
-        window.removeEventListener("keydown", this);
-        game.engine.unlock();
-    }    
+        this.inventory.push(new Item.Light_Armor());
+        this.inventory.push(new Item.HP_Ring());
+        this.inventory.push(new Item.MP_Ring());
+        this.inventory.push(new Item.Apple());
+        this.inventory.push(new Item.Apple());
+    }
 }

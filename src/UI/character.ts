@@ -1,7 +1,7 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
 import { game } from "../main";
-import { Creature } from "../creature";
+import { Creature } from "../creature/creature";
 
 export function get_avg_atk(atk: any) {
     let z = 0;

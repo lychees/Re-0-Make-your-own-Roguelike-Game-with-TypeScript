@@ -1,4 +1,4 @@
-import * as Creature from "../creature";
+import * as Creature from "../creature/creature";
 import * as Map from "../map";
 import { game } from "../main";
 

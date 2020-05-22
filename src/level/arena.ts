@@ -1,8 +1,8 @@
 import * as ROT from "rot-js";
 import { game, pop_random, dice, rand } from "../main";
-import { Player, Rat, Snake, Orc, Slime } from "../creature";
+import { Player, Rat, Snake, Orc, Slime } from "../creature/creature";
 import { Map, Box, Tile, add_shadow } from "../map";
-import * as Undead from "../monster/undead";
+import * as Undead from "../creature/monster/undead";
 
 const MAP_WIDTH = 80;
 const MAP_HEIGHT = 60;
@@ -301,7 +301,7 @@ export class Map0 extends Map {
         }*/
 
         this.agents = Array<any>();
-        
+        /*
         for (let i=0;i<dice(7);++i) {            
             let p = pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
@@ -317,7 +317,7 @@ export class Map0 extends Map {
             let p = pop_random(this.free_cells);
             let r = new Orc(p[0], p[1]);
             this.agents.push(r);
-        }
+        }*/
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;

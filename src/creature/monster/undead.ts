@@ -1,9 +1,9 @@
-import { Sword, Shield } from "../inventory";
+import { Sword, Shield } from "../../inventory";
 import { Enemy, Creature } from "../creature";
-import { hostile } from "../AI/hostile";
-import { game, event, rand, dice } from "../main";
-import { _, Events } from "../event";
-import * as Buff from "../buff";
+import { hostile } from "../../AI/hostile";
+import { game, event, rand, dice } from "../../main";
+import { _, Events } from "../../event";
+import * as Buff from "../../buff";
 
 export class Undead extends Creature {
     constructor(x: number, y: number) {

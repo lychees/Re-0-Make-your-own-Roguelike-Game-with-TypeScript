@@ -3,7 +3,7 @@ import $ from "jquery";
 import { game, rand, dice } from "./main";
 import { Buff } from "./buff";
 import { Menu } from "./UI/character";
-import * as Creature from "./creature"
+import * as Creature from "./creature/creature"
 
 export class ItemMenu extends Menu {
 	parent: any;

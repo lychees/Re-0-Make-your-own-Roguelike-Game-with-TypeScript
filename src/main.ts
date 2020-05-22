@@ -1,13 +1,13 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
 import { Camera } from "./camera";
-import { Player } from "./creature";
+import { Player } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
 
 import { Ch0_Boss } from "./level/lv0";
 
-import { Sound } from "./sound";
+import { Sound } from "./utils/sound";
 import { CharacterMenu, Menu } from "./UI/character";
 import { Chat } from "./chat";
 

@@ -3,7 +3,7 @@ import * as ROT from "rot-js";
 import { game, rand, dice } from "./main";
 import { add_shadow } from "./map";
 
-import { Creature } from "./creature"
+import { Creature } from "./creature/creature"
 
 export function parse_atk(atk: any) {
     let z = "";

@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import { game, pop_random, dice, rand } from "../main";
-import { Player, Rat, Snake, Orc, Slime, Elf_Guard, Lee } from "../creature";
+import { Player, Rat, Snake, Orc, Slime } from "../creature/creature";
 import { Map, Box, Tile, add_shadow } from "../map";
 import { _, Events } from "../event";
 
@@ -173,6 +173,8 @@ export class Ch0_Boss extends Map {
         this.layer[7+','+y] = new Door(); this.layer[7+','+y].trigger();
 
         this.agents = Array<any>();
+
+        /*
         let lee = new Lee(7, 6);
         this.layer[7+','+6] = new Grass();
 
@@ -249,13 +251,15 @@ export class Ch0_Boss extends Map {
             }
         }.bind(lee);
 
+        
         for (let i=0;i<dice(3);++i) {
             let p = pop_random(this.free_cells);
             let r = new Elf_Guard(p[0], p[1]);
             this.agents.push(r);
         }
         this.agents.push(lee);
-        
+        */
+       
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
             if (a.z > b.z) return 1;
