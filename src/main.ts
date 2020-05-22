@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
-import { Camera } from "./camera";
+import { Camera } from "./utils/camera";
 import { Player } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
@@ -12,7 +12,7 @@ import { CharacterMenu, Menu } from "./UI/character";
 import { Chat } from "./chat";
 
 
-import { _, Events } from "./event";
+import { _, Events } from "./utils/event";
 
 
 export function get_avg_atk(atk: any) {
@@ -84,7 +84,6 @@ class Game {
         this.SE = new Sound();
         this.characterMenu = new CharacterMenu();
         
-
         //this.map = new Map();
         this.map = new Map0();
          //this.map = new Ch0_Boss();
@@ -105,7 +104,6 @@ class Game {
         this.engine = new ROT.Engine(this.scheduler);
         this.engine.start();
         this.draw();
-        //this.draw_abilities(this.player);
     }
     reschedule() {
         this.scheduler.clear();

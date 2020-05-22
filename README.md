@@ -72,3 +72,20 @@ Re:0 从 0 开始打造你的 Roguelike 游戏
 
 ## 教程连载？
 [地址](http://www.gamecreator.com.cn/forum.php?mod=viewthread&tid=238&page=1&extra=#pid1026)
+
+
+## 数据结构
+
+```
+Tile：地块  
+    Creature：生物  
+    Item：物品 
+    Particle：粒子
+
+
+Item：物品    
+    Equip 装备
+    Food 食物
+    Potion 药剂
+    ...    
+```

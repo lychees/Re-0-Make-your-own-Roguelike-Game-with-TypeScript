@@ -1,4 +1,4 @@
-import { game } from "./main";
+import { game } from "../main";
 
 export class Camera {
     x: number;

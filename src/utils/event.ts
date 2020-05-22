@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { game } from "./main";
+import { game } from "../main";
 
 export class Button {
 

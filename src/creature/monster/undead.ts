@@ -2,7 +2,7 @@
 import { Enemy, Creature } from "../creature";
 import { hostile } from "../../AI/hostile";
 import { game, event, rand, dice } from "../../main";
-import { _, Events } from "../../event";
+import { _, Events } from "../../utils/event";
 import * as Buff from "../../buff";
 
 import * as Item from "../../item/item";
