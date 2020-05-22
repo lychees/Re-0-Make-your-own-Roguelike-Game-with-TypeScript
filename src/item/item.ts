@@ -8,6 +8,8 @@ import { game } from "../main";
 export * as Food from "./food";
 import * as Buff from "../buff";
 
+
+
 export class Item extends Utils.Thing{
     
     value: number;    
@@ -156,118 +158,6 @@ export class MP_Ring extends Accessory {
 }
 
 
-
-
-
-
-export class Weapon extends Equip {
-    cd: number;    
-    parse_atk() : string {
-        let z = "";        
-        for (let a in this.buff.atk) {
-            z += this.buff.atk[a] + "d" + a + "\n";
-        }
-        return z;
-    }
-    unequip() {
-        this.buff.remove();
-        this.owner.equipment.weapon = null;
-        this.equipped = false;     
-    }
-    equip() {
-        if (this.owner.equipment.weapon != null) {
-            this.owner.equipment.weapon.unequip();            
-        }
-        this.buff.append(this.owner);
-        this.owner.equipment.weapon = this;
-        this.equipped = true;        
-    }    
-    constructor() {
-        super();        
-        this.cd = 20;
-        this.name = "武器";        
-        this.description = "一把武器";      
-    }    
-}
-
-
-
-
-export class Axes extends Weapon {    
-    constructor() {
-        super();        
-        this.cd = 30;
-        this.name = "斧";
-        this.ch = "斧";
-        this.description = "一把斧頭\n";
-
-        let b = new Buff.Buff();
-        b.name = "斧";
-        b.hp = 1;
-        b.atk['d13'] = 1;
-        b.description = "這個單位裝備了一把斧頭\n";
-        b.description += b.parse();
-        this.buff = b;        
-
-        if (Utils.dice(3) <= 2) {
-            this.name += ' 鋒利的';
-            b.atk['d1'] = Utils.dice(3);
-        }
-        
-        if (Utils.dice(3) <= 2) {
-            this.name += ' 狂戰士的';
-            b.atk['d2'] = Utils.dice(5);
-        }
-
-        if (Utils.dice(3) <= 2) {
-            this.name += ' 矮人的';
-            b.hp = Utils.dice(5);
-        }
-
-        this.description += b.parse();
-    }    
-}
-
-export class Sword extends Weapon {
-    constructor() {
-        super();        
-        this.cd = 30;
-        this.name = "短劍";
-        this.ch = "劍";
-        this.description = "一把短劍\n";
-        
-        //this.ability = new Ability();
-        //this.ability.name = this.name;
-
-        let b = new Buff.Buff();
-        b.name = "短劍";        
-        b.atk['d6'] = 2;
-        b.description = "這個單位裝備了一把短劍\n";
-        b.description += b.parse();
-        this.buff = b;
-
-        if (Utils.dice(3) <= 2) {
-            this.name += ' 鋒利的';
-            b.atk['d1'] = Utils.dice(3);
-        }
-
-        if (Utils.dice(3) <= 2) {
-            this.name += ' 矮人的';
-            b.hp = Utils.dice(5);
-        }        
-
-        this.description += b.parse();
-    }        
-}
-
-export class Water_Mirror extends Sword {
-    constructor() {                
-        super();
-        this.name = "水鏡";
-        this.description = "少女慣用的愛劍";        
-    }
-};
-
 export class Armor extends Equip {            
     unequip() {
         this.buff.remove();
@@ -322,4 +212,4 @@ export class Light_Armor extends Armor {
 }
 
 
-
+export * as Weapon from "./weapon";

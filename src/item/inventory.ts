@@ -1,9 +1,6 @@
-import * as ROT from "rot-js";
 import $ from "jquery";
 import { game } from "../main";
-import { Buff } from "../buff";
 import { Menu } from "../UI/character";
-import * as Creature from "../creature/creature";
 import * as Item from "./item";
 import { Equip } from "./item";
 
@@ -66,9 +63,10 @@ export class ItemMenu extends Menu {
         this.menu = dom;
 	}
     handleEvent(e) {
-        
     }	
 }
+
+
 export class Inventory {
     items: Array<any>;
     owner: any;
@@ -85,7 +83,6 @@ export class Inventory {
 
     getDom() {
         let z = $('<div>').addClass('inventory');
-//        $('<div>').addClass('characterMenuTitle').text("物品").appendTo(z);
         for (let i=0;i<this.items.length;++i) {
             let item = this.items[i];            
             let dom = $('<div>').addClass('inventoryRow');
@@ -123,36 +120,14 @@ export class Inventory {
             name.appendTo(dom);            
             dom.appendTo('div#inventory');
         }
-
-        /*let p = game.player;
-        if (p) {
-            let weapon_name = p.weapon ? p.weapon.name : "無";
-            let weapon_description = p.weapon ? p.weapon.description : "";
-            $("#weapon > .row_key").text("武器 " + weapon_name);
-            $("#weapon > .tooltip").text(weapon_description);
-        }*/
     }
 
 
 
-    open() {        
-        
+    open() {                
     }
 
-    handleEvent(e: any) {
-        /*
-        let code = e.keyCode;
-        if (ROT.KEYS.VK_A <= code && code <= ROT.KEYS.VK_Z) {            
-            let idx = code - ROT.KEYS.VK_A;
-            let item = this.items[idx];
-            item.use(this.owner);
-            if (item.durability == 0) {                
-                this.items.splice(idx, 1);
-                this.draw();
-            }
-        }        
-        window.removeEventListener("keydown", this);
-        window.addEventListener("keydown", game.player);        
-        */
+    handleEvent(e: any) {        
+        // TODO(minakokojima): trigger 菜单事件
     }
 }

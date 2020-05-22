@@ -8,6 +8,7 @@ import { Creature } from "./creature/creature"
 export function parse_atk(atk: any) {
     let z = "";
     for (let a in atk) {
+        if (atk[a] == 0) continue;
         if (z != "") z += ",";
         z += atk[a] > 0 ? "+" : "";
         z += atk[a] + a;
@@ -145,6 +146,9 @@ export class Buff {
         this.name = "???";
         this.description = "???";
         this.atk = {};
+        for (let i=1;i<=20;++i) {
+            this.atk['d'+i.toString()] = 0;
+        }
         this.def = 0;
         this.hp = 0;
         this.mp = 0;

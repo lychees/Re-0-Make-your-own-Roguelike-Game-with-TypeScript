@@ -15,6 +15,7 @@ import * as Elf from "./elf";
 import * as Buff from "../buff";
 import * as Particle from "../particle/particle";
 import * as Corpse from "../tile/corpse"
+import { Equipment } from "../item/equipment";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
@@ -45,45 +46,6 @@ function attack(alice, bob) {
     bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
     if (bob.hp <= 0) {
         bob.dead(alice);
-    }
-}
-
-export class Equipment {
-    weapon: Item.Weapon;
-    armor: Item.Armor;
-    accessory: Item.Accessory;
-    owner: any;
-
-    getDom() {
-        let z = $('<div>').addClass('equipment');            
-        let weapon_dom = $('<div>').addClass('inventoryRow');
-        let weapon_name =$('<div>').addClass('row_key').text('武器 ' + (this.weapon ? this.weapon.name : "無"));
-        let weapon_tip = $('<div>').addClass("tooltip bottom right").text(this.weapon ? this.weapon.description : "");
-        weapon_tip.appendTo(weapon_dom);
-        weapon_name.appendTo(weapon_dom);            
-        weapon_dom.appendTo(z);
-
-        let armor_dom = $('<div>').addClass('inventoryRow');                
-        let armor_name =$('<div>').addClass('row_key').text('護甲 ' + (this.armor ? this.armor.name : "無"));
-        let armor_tip = $('<div>').addClass("tooltip bottom right").text(this.armor ? this.armor.description : "");
-        armor_tip.appendTo(armor_dom);
-        armor_name.appendTo(armor_dom);            
-        armor_dom.appendTo(z);
-
-        let accessory_dom = $('<div>').addClass('inventoryRow');                
-        let accessory_name =$('<div>').addClass('row_key').text('飾品 ' + (this.accessory ? this.accessory.name : "無"));
-        let accessory_tip = $('<div>').addClass("tooltip bottom right").text(this.accessory ? this.accessory.description : "");
-        accessory_tip.appendTo(accessory_dom);
-        accessory_name.appendTo(accessory_dom);            
-        accessory_dom.appendTo(z);        
-        
-        return z;        
-    }
-
-    constructor() {
-        this.weapon = null;
-        this.armor = null;
-        this.accessory = null;
     }
 }
 
@@ -144,10 +106,18 @@ export class Creature {
     get_atk() {
         let z = 0;
         for (const a in this.atk) {
+            if (this.atk[a] == 0) continue;
             if (a[0] == 'd') {
                 let t = this.atk[a];
-                while (t--) {
-                    z += Utils.dice(parseInt(a.substr(1)));
+                if (t > 0) {
+                    while (t--) {
+                        z += Utils.dice(parseInt(a.substr(1)));
+                    }
+                } else {
+                    t = -t;
+                    while (t--) {
+                        z -= Utils.dice(parseInt(a.substr(1)));
+                    }
                 }
             }        
         }
