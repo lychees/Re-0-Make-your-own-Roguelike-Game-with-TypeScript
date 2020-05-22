@@ -8,9 +8,8 @@ import { Inventory, Apple, Water_Mirror, Necklace, Axes, Sword, Weapon, Armor, A
 import { hostile } from "../AI/hostile";
 import { slime_hostile } from "../AI/slime_hostile";
 
-import { Human_Race, Injured, Dex_Talent, Int_Talent, MP_Talent, Sickly } from "../buff";
+import { Injured } from "../buff";
 import * as Elf from "./elf";
-
 import * as Buff from "../buff";
 import * as Particle from "../particle/particle";
 import * as Corpse from "../tile/corpse"
@@ -523,3 +522,5 @@ export class Dog extends Enemy {
 }
 
 export { Player } from "./Player";
+export * as Human from "./human";
+export * as Elf from "./elf";
