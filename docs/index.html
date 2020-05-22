@@ -1,0 +1,375 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>re-0-make-your-own-roguelike-game-with-typescript</title>
+	<meta name="description" content="Documentation for re-0-make-your-own-roguelike-game-with-typescript">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">re-0-make-your-own-roguelike-game-with-typescript</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>re-0-make-your-own-roguelike-game-with-typescript</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#re0-从-0-开始打造你的-roguelike-游戏" id="re0-从-0-开始打造你的-roguelike-游戏" style="color: inherit; text-decoration: none;">
+					<h1>Re:0 从 0 开始打造你的 Roguelike 游戏</h1>
+				</a>
+				<a href="#在线试玩" id="在线试玩" style="color: inherit; text-decoration: none;">
+					<h2>在线试玩</h2>
+				</a>
+				<p><a href="https://minakokojima.itch.io/uminouta">itch</a></p>
+				<a href="#如何操作" id="如何操作" style="color: inherit; text-decoration: none;">
+					<h2>如何操作</h2>
+				</a>
+				<ul>
+					<li>移動/攻擊 WASD 上下左右</li>
+					<li>原地轉向 shift + 移動</li>
+					<li>走路/跑步 R 鍵切換，跑步有 1/10 的概率消耗一點體力，體力為 0 時無法跑步</li>
+					<li>裝備/道具 I 鍵打開道具欄（沒做 UI），然後 abcde 使用對應的道具，現在只能吃蘋果和裝備武器 </li>
+				</ul>
+				<a href="#如何運行" id="如何運行" style="color: inherit; text-decoration: none;">
+					<h2>如何運行</h2>
+				</a>
+				<p><a href="https://webpack.js.org/">webpack</a> 不香麼？</p>
+				<ul>
+					<li><code>npm run start</code></li>
+				</ul>
+				<a href="#如何发布" id="如何发布" style="color: inherit; text-decoration: none;">
+					<h2>如何发布</h2>
+				</a>
+				<ul>
+					<li><code>npm run build</code></li>
+				</ul>
+				<a href="#屬性" id="屬性" style="color: inherit; text-decoration: none;">
+					<h2>屬性</h2>
+				</a>
+				<p>本作角色系統參考了 <a href="https://trpgtdnd.weebly.com/25216330212017132057.html">D&amp;D 5E 中文規則書</a>，安琪拉大陸上的所有生物遵循統一的規則。</p>
+				<a href="#力量-strength" id="力量-strength" style="color: inherit; text-decoration: none;">
+					<h3>力量 Strength</h3>
+				</a>
+				<ul>
+					<li>力量將會影響角色的近戰傷害，所有近戰攻擊的攻擊力將會增加一個 力量差（如果為正）傷害的骰子</li>
+					<li>力量將會影響角色的負重</li>
+				</ul>
+				<a href="#敏捷-dexterity" id="敏捷-dexterity" style="color: inherit; text-decoration: none;">
+					<h3>敏捷 Dexterity</h3>
+				</a>
+				<ul>
+					<li>敏捷決定角色的閃避成功概率，用於做攻擊命中時的難度檢定</li>
+					<li>敏捷決定角色的行動力的恢復速度，2 dex 的單位的所有行動速度，將會是 1 dex 單位的兩倍</li>
+				</ul>
+				<a href="#體魄-constitution" id="體魄-constitution" style="color: inherit; text-decoration: none;">
+					<h3>體魄 Constitution</h3>
+				</a>
+				<ul>
+					<li>每點體魄增加角色 5 點生命值</li>
+					<li>每點體魄增加角色 1 點體力值</li>
+				</ul>
+				<a href="#智力-intelligence" id="智力-intelligence" style="color: inherit; text-decoration: none;">
+					<h3>智力 Intelligence</h3>
+				</a>
+				<ul>
+					<li>每點智力增加角色 魔法天賦 點魔法值。</li>
+					<li>智力影響角色閱讀某些書記時的效果。</li>
+				</ul>
+				<a href="#感知-wisdom" id="感知-wisdom" style="color: inherit; text-decoration: none;">
+					<h3>感知 Wisdom</h3>
+				</a>
+				<ul>
+					<li>玩家失去生物的視野之後，將會投擲一個感知數的骰子，決定該生物繼續顯示在地圖裡的時間，如果該生物移動到一個未被探索的迷霧中，則立即丟失視野</li>
+				</ul>
+				<a href="#魅力-charisma" id="魅力-charisma" style="color: inherit; text-decoration: none;">
+					<h3>魅力 Charisma</h3>
+				</a>
+				<ul>
+					<li>尚未實裝。</li>
+				</ul>
+				<a href="#種族" id="種族" style="color: inherit; text-decoration: none;">
+					<h2>種族</h2>
+				</a>
+				<a href="#人類" id="人類" style="color: inherit; text-decoration: none;">
+					<h3>人類</h3>
+				</a>
+				<p>[5,5,5,5,5,5]</p>
+				<a href="#精靈" id="精靈" style="color: inherit; text-decoration: none;">
+					<h3>精靈</h3>
+				</a>
+				<p>[4,6,4,5,6,5]</p>
+				<a href="#獸人" id="獸人" style="color: inherit; text-decoration: none;">
+					<h3>獸人</h3>
+				</a>
+				<p>[7,4,6,3,5,4]</p>
+				<a href="#faq" id="faq" style="color: inherit; text-decoration: none;">
+					<h2>FAQ</h2>
+				</a>
+				<a href="#什麼是-roguelike？" id="什麼是-roguelike？" style="color: inherit; text-decoration: none;">
+					<h3>什麼是 Roguelike？</h3>
+				</a>
+				<p><a href="https://www.gcores.com/radios/121523">Gadio Pro, Roguelike 是什么？：我们一起在过去和现在的游戏中寻找Roguelike</a></p>
+				<a href="#int-和-wis-有什麼區別？" id="int-和-wis-有什麼區別？" style="color: inherit; text-decoration: none;">
+					<h3>Int 和 Wis 有什麼區別？</h3>
+				</a>
+				<ul>
+					<li><a href="https://www.quora.com/What-is-the-difference-between-wisdom-and-intelligence-in-Dungeons-and-Dragons">https://www.quora.com/What-is-the-difference-between-wisdom-and-intelligence-in-Dungeons-and-Dragons</a></li>
+				</ul>
+				<a href="#如何播放音效？" id="如何播放音效？" style="color: inherit; text-decoration: none;">
+					<h3>如何播放音效？</h3>
+				</a>
+				<p>隔壁 <a href="https://github.com/lychees/untrusted/blob/master/scripts/sound.js">Untrusted</a> 使用的 Jplayer 好像有點 old dated，這裡使用的是 <a href="https://howlerjs.com/">Howlerjs</a>。</p>
+				<a href="#如何實現日誌框的漸隱效果？" id="如何實現日誌框的漸隱效果？" style="color: inherit; text-decoration: none;">
+					<h3>如何實現日誌框的漸隱效果？</h3>
+				</a>
+				<p>參考隔壁 <a href="https://github.com/doublespeakgames/adarkroom/blob/master/script/notifications.js">小黑屋</a>。</p>
+				<a href="#我們需要更多的裝備。" id="我們需要更多的裝備。" style="color: inherit; text-decoration: none;">
+					<h3>我們需要更多的裝備。</h3>
+				</a>
+				<ul>
+					<li><a href="http://wiki.d.163.com/diablo/index.htm">http://wiki.d.163.com/diablo/index.htm</a></li>
+					<li><a href="https://nethackwiki.com/wiki/Weapon">https://nethackwiki.com/wiki/Weapon</a></li>
+				</ul>
+				<a href="#教程连载？" id="教程连载？" style="color: inherit; text-decoration: none;">
+					<h2>教程连载？</h2>
+				</a>
+				<p><a href="http://www.gamecreator.com.cn/forum.php?mod=viewthread&amp;tid=238&amp;page=1&amp;extra=#pid1026">地址</a></p>
+				<a href="#数据结构" id="数据结构" style="color: inherit; text-decoration: none;">
+					<h2>数据结构</h2>
+				</a>
+				<pre><code>Tile：地块
+<span class="hljs-code">    Creature：生物  
+    Item：物品 
+    Particle：粒子
+</span>
+
+Item：物品    
+<span class="hljs-code">    Equip 装备
+    Food 食物
+    Potion 药剂
+    ...    
+</span>
+/<span class="hljs-emphasis">*
+- Inventory
+- Equipment
+*</span>/
+game
+map
+schedule
+agents : Creature Particle ...
+
+Utils
+<span class="hljs-code">    logs
+    camera
+UI/AI
+</span></code></pre>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Internals</span>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_chatserver_.html">&quot;chat<wbr>Server&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ai_corpsefire_.html">&quot;src/AI/corpsefire&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ai_hostile_.html">&quot;src/AI/hostile&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ai_random_move_.html">&quot;src/AI/random_<wbr>move&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ai_run_away_.html">&quot;src/AI/run_<wbr>away&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ai_slime_hostile_.html">&quot;src/AI/slime_<wbr>hostile&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_ui_character_.html">&quot;src/UI/character&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_buff_.html">&quot;src/buff&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_chat_.html">&quot;src/chat&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_creature_creature_.html">&quot;src/creature/creature&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_creature_elf_.html">&quot;src/creature/elf&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_creature_human_.html">&quot;src/creature/human&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_creature_monster_undead_.html">&quot;src/creature/monster/undead&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_equip_accessory_.html">&quot;src/item/equip/accessory&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_equip_armor_.html">&quot;src/item/equip/armor&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_equip_equip_.html">&quot;src/item/equip/equip&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_equip_weapon_.html">&quot;src/item/equip/weapon&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_equipment_.html">&quot;src/item/equipment&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_food_.html">&quot;src/item/food&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_inventory_.html">&quot;src/item/inventory&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_item_item_.html">&quot;src/item/item&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_arena_.html">&quot;src/level/arena&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_lv0_.html">&quot;src/level/lv0&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_old_lv0_.html">&quot;src/level/old/lv0&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_old_lv1_.html">&quot;src/level/old/lv1&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_old_lv2_.html">&quot;src/level/old/lv2&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_level_old_lv3_.html">&quot;src/level/old/lv3&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_logs_.html">&quot;src/logs&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_main_.html">&quot;src/main&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_map_.html">&quot;src/map&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_particle_particle_.html">&quot;src/particle/particle&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_tile_corpse_.html">&quot;src/tile/corpse&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_camera_.html">&quot;src/utils/camera&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_event_.html">&quot;src/utils/event&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_save_.html">&quot;src/utils/save&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_sound_.html">&quot;src/utils/sound&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_src_utils_utils_.html">&quot;src/utils/utils&quot;</a>
+					</li>
+					<li class="label tsd-is-external">
+						<span>Externals</span>
+					</li>
+					<li class=" tsd-kind-module tsd-is-external">
+						<a href="modules/_src_creature_player_.html">&quot;src/creature/<wbr>Player&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
