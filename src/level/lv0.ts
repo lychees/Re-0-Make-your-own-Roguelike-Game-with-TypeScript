@@ -1,5 +1,6 @@
 import * as ROT from "rot-js";
-import { game, pop_random, dice, rand } from "../main";
+import { game } from "../main";
+import * as Utils from "../utils/utils";
 import { Player, Rat, Snake, Orc, Slime } from "../creature/creature";
 import { Map, Box, Tile, add_shadow } from "../map";
 import { _, Events } from "../utils/event";

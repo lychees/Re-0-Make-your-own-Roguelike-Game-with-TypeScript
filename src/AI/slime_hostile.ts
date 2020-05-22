@@ -1,5 +1,7 @@
+
 import * as ROT from "rot-js";
-import { game, dice } from "../main";
+import { dice } from "../utils/utils";
+import { game } from "../main";
 import { random_move } from "./random_move";
 import { Slime } from "../creature/creature";
 

@@ -1,5 +1,5 @@
 import * as ROT from "rot-js";
-import { game, rand } from "../main";
+import { game } from "../main";
 import { random_move } from "./random_move";
 
 export function run_away() {

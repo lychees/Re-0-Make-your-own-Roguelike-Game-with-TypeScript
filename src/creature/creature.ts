@@ -1,6 +1,7 @@
 import * as ROT from "rot-js";
+import * as Utils from "../utils/utils";
 import $ from "jquery";
-import { game, rand, dice } from "../main";
+import { game } from "../main";
 import { add_shadow } from "../map";
 
 import { Logs } from "../logs";
@@ -22,9 +23,8 @@ function attack(alice, bob) {
     game.scheduler.setDuration(5000);
 
     if (bob.hp <= 0) return;
-    let dice = rand;
-
-    let miss = dice(6) + dice(6) + 2;
+    
+    let miss = Utils.dice(6) + Utils.dice(6) + 2;
 
     if (miss < bob.dex) {
         game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
@@ -34,7 +34,7 @@ function attack(alice, bob) {
     }
 
     let dmg = alice.get_atk();
-    if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
+    if (alice.str > bob.str) dmg += Utils.dice(alice.str - bob.str);
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
     if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
@@ -147,7 +147,7 @@ export class Creature {
             if (a[0] == 'd') {
                 let t = this.atk[a];
                 while (t--) {
-                    z += dice(parseInt(a.substr(1)));
+                    z += Utils.dice(parseInt(a.substr(1)));
                 }
             }        
         }
@@ -397,17 +397,17 @@ export class Rat extends Enemy {
         Rat_Race.description += Rat_Race.parse();
         Rat_Race.append(this);
 
-        if (dice(2) == 1) {
+        if (Utils.dice(2) == 1) {
             (new Buff.Dex_Talent(1)).append(this);
         }
-        if (dice(2) == 1) {
+        if (Utils.dice(2) == 1) {
             (new Buff.Con_Talent(1)).append(this);
         }
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             let t = new Buff.Buff();
             t.name = "尖牙利爪";
             t.description = "這個單位的攻擊被加強了\n";
-            t.atk['d2'] = dice(3);
+            t.atk['d2'] = Utils.dice(3);
             t.description += t.parse();
         }
         
@@ -430,17 +430,17 @@ export class Snake extends Enemy {
         Snake_Race.description += Snake_Race.parse();
         Snake_Race.append(this);
 
-        if (dice(2) == 1) {
+        if (Utils.dice(2) == 1) {
             (new Buff.Dex_Talent(1)).append(this);
         }
-        if (dice(2) == 1) {
+        if (Utils.dice(2) == 1) {
             (new Buff.Con_Talent(1)).append(this);
         }
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             let t = new Buff.Buff();
             t.name = "尖牙";
             t.description = "這個單位的攻擊被加強了\n";
-            t.atk['d2'] = dice(3);
+            t.atk['d2'] = Utils.dice(3);
             t.description += this.parse_buffs();
         }
     }
@@ -465,19 +465,19 @@ export class Orc extends Enemy {
 
         
         /*
-        if (dice(6) == 1) {
+        if (Utils.dice(6) == 1) {
             let sword = new Item.Equip.Weapon.Sword();
             this.inventory.push(sword);
             sword.equip();
         }
                 
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             let axes = new Item.Equip.Weapon.Axes();
             this.inventory.push(axes);
             axes.equip();
         }
 
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             let shield = new Item.Equip.Armor.Shield();
             this.inventory.push(shield);
             shield.equip();

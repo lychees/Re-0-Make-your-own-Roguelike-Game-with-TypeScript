@@ -1,4 +1,5 @@
 import * as ROT from "rot-js";
+import * as Utils from "./utils/utils";
 import $ from "jquery";
 import { Camera } from "./utils/camera";
 import { Player } from "./creature/creature";
@@ -13,41 +14,6 @@ import { Chat } from "./chat";
 
 
 import { _, Events } from "./utils/event";
-
-
-export function get_avg_atk(atk: any) {
-    let z = 0;
-    for (const a in atk) {
-        if (a[0] == 'd') {
-            z += atk[a] * (1 + parseInt(a.substr(1))) / 2;
-        }        
-    }
-    return z;
-}
-
-export function parse_atk(atk: any) {
-    let z = "";
-    for (let a in atk) {
-        if (z != "") z += ", ";
-        z += atk[a] > 0 ? "+" : "";
-        z += atk[a] + a;
-    }
-    return z;
-}
-
-
-export function rand(n: number): number {
-    return Math.floor(ROT.RNG.getUniform() * n);    
-}
-
-export function dice(n: number): number {
-    return rand(n) + 1;
-}
-
-export function pop_random(A: Array<[number, number]>): [number, number] {
-    var index = rand(A.length);
-    return A[index];
-}
 
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 25;
@@ -88,7 +54,7 @@ class Game {
         this.map = new Map0();
          //this.map = new Ch0_Boss();
         this.score = 0;
-        let p = pop_random(this.map.free_cells);
+        let p = Utils.pop_random(this.map.free_cells);
         game.player = new Player(p[0], p[1]);
         this.characterMenu.parent = game.player;
         this.map.agents.push(game.player);

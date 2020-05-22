@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import $ from "jquery";
-import { game, rand, dice } from "../main";
+import { game } from "../main";
 import { Buff } from "../buff";
 import { Menu } from "../UI/character";
 import * as Creature from "../creature/creature";

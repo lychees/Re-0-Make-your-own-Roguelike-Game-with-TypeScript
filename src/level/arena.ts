@@ -1,5 +1,6 @@
 import * as ROT from "rot-js";
-import { game, pop_random, dice, rand } from "../main";
+import * as Utils from "../utils/utils"
+import { game } from "../main";
 import { Player, Rat, Snake, Orc, Slime } from "../creature/creature";
 import { Map, Box, Tile, add_shadow } from "../map";
 import * as Undead from "../creature/monster/undead";
@@ -104,7 +105,7 @@ class Downstair extends Stair {
         if (!this.target) {
             this.target = {};
             this.target.map = new Map0();
-            let p = pop_random(this.target.map.free_cells);
+            let p = Utils.pop_random(this.target.map.free_cells);
             this.target.x = p[0];
             this.target.y = p[1];
             this.target.map.layer[p[0]+','+p[1]] = new Upstair();
@@ -126,7 +127,7 @@ class Upstair extends Stair {
             game.score += 1;
             this.target = {};
             this.target.map = new Map0();
-            let p = pop_random(this.target.map.free_cells);
+            let p = Utils.pop_random(this.target.map.free_cells);
             this.target.x = p[0];
             this.target.y = p[1];
             this.target.map.layer[p[0]+','+p[1]] = new Downstair();
@@ -204,7 +205,7 @@ export class Dungeon extends Map {
                 let key = x+','+y;
                 if (this.layer[key].length == 0) {
                     this.layer[key].push(new Wall());
-                } else if (this.isDoor(x, y) && dice(6) < 3) {                    
+                } else if (this.isDoor(x, y) && Utils.dice(6) < 3) {                    
                     this.layer[key].push(new Door());
                 }
             }
@@ -222,22 +223,22 @@ export class Dungeon extends Map {
         }
 
         for (let i=0;i<5;++i) {
-            let p = pop_random(this.free_cells);
+            let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Skeleton(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<dice(5);++i) {
-            let p = pop_random(this.free_cells);
+        for (let i=0;i<Utils.dice(5);++i) {
+            let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Walking_Dead(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<dice(5);++i) {
-            let p = pop_random(this.free_cells);
+        for (let i=0;i<Utils.dice(5);++i) {
+            let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Zombie(p[0], p[1]);
             this.agents.push(r);
         }        
 
-        let p = pop_random(this.free_cells);
+        let p = Utils.pop_random(this.free_cells);
         let r = new Undead.Corpsefire(p[0], p[1]);
         this.agents.push(r);
         
@@ -248,14 +249,14 @@ export class Dungeon extends Map {
         });
 
         /*for (let i=0;i<2;++i) {
-            let p = pop_random(this.free_cells);
+            let p = Utils.pop_random(this.free_cells);
             let t = new Upstair();
             let key = p[0]+','+p[1];
             this.layer[key] = t;
         }*/
 
         for (let i=0;i<5;++i) {
-            let p = pop_random(this.free_cells);
+            let p = Utils.pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key].push(t);
@@ -295,26 +296,26 @@ export class Map0 extends Map {
         }
 
         /*for (let i=0;i<10+rand(40);++i) {            
-            let p = pop_random(this.free_cells);                        
+            let p = Utils.pop_random(this.free_cells);                        
             let key = p[0]+','+p[1];
             this.layer[key] = new Tree();
         }*/
 
         this.agents = Array<any>();
         /*
-        for (let i=0;i<dice(7);++i) {            
-            let p = pop_random(this.free_cells);
+        for (let i=0;i<Utils.dice(7);++i) {            
+            let p = Utils.pop_random(this.free_cells);
             let r = new Rat(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<dice(5);++i) {            
-            let p = pop_random(this.free_cells);
+        for (let i=0;i<Utils.dice(5);++i) {            
+            let p = Utils.pop_random(this.free_cells);
             let r = new Snake(p[0], p[1]);
             this.agents.push(r);
         }
 
-        for (let i=0;i<dice(2);++i) {
-            let p = pop_random(this.free_cells);
+        for (let i=0;i<Utils.dice(2);++i) {
+            let p = Utils.pop_random(this.free_cells);
             let r = new Orc(p[0], p[1]);
             this.agents.push(r);
         }*/
@@ -326,7 +327,7 @@ export class Map0 extends Map {
         });
 
         for (let i=0;i<5;++i) {
-            let p = pop_random(this.free_cells);
+            let p = Utils.pop_random(this.free_cells);
             let key = p[0]+','+p[1];
 
             let d = this.dungeon.layer[key][this.dungeon.layer[key].length - 1];
@@ -351,7 +352,7 @@ export class Map0 extends Map {
         }
 
         for (let i=0;i<5;++i) {
-            let p = pop_random(this.free_cells);
+            let p = Utils.pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key].push(t);

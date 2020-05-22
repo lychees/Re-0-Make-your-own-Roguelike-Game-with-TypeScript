@@ -3,7 +3,7 @@ import * as Utils from "../utils/utils";
 
 //export * as Equip from "./equip/equip";
 
-import { game, rand, dice } from "../main";
+import { game } from "../main";
 
 export * as Food from "./food";
 import * as Buff from "../buff";
@@ -209,19 +209,19 @@ export class Axes extends Weapon {
         b.description += b.parse();
         this.buff = b;        
 
-        if (dice(3) <= 2) {
+        if (Utils.dice(3) <= 2) {
             this.name += ' 鋒利的';
-            b.atk['d1'] = dice(3);
+            b.atk['d1'] = Utils.dice(3);
         }
         
-        if (dice(3) <= 2) {
+        if (Utils.dice(3) <= 2) {
             this.name += ' 狂戰士的';
-            b.atk['d2'] = dice(5);
+            b.atk['d2'] = Utils.dice(5);
         }
 
-        if (dice(3) <= 2) {
+        if (Utils.dice(3) <= 2) {
             this.name += ' 矮人的';
-            b.hp = dice(5);
+            b.hp = Utils.dice(5);
         }
 
         this.description += b.parse();
@@ -246,14 +246,14 @@ export class Sword extends Weapon {
         b.description += b.parse();
         this.buff = b;
 
-        if (dice(3) <= 2) {
+        if (Utils.dice(3) <= 2) {
             this.name += ' 鋒利的';
-            b.atk['d1'] = dice(3);
+            b.atk['d1'] = Utils.dice(3);
         }
 
-        if (dice(3) <= 2) {
+        if (Utils.dice(3) <= 2) {
             this.name += ' 矮人的';
-            b.hp = dice(5);
+            b.hp = Utils.dice(5);
         }        
 
         this.description += b.parse();

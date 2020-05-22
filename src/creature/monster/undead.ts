@@ -1,7 +1,8 @@
 
+import * as Utils from "../../utils/utils";
 import { Enemy, Creature } from "../creature";
 import { hostile } from "../../AI/hostile";
-import { game, event, rand, dice } from "../../main";
+import { game, event } from "../../main";
 import { _, Events } from "../../utils/event";
 import * as Buff from "../../buff";
 
@@ -22,9 +23,6 @@ export class Undead extends Creature {
         Undead_Race.description += this.parse_buffs();
         Undead_Race.append(this);
     }
-    get_atk() {
-        return dice(this.str) + dice(this.str);
-    }    
 }
 
 export class Skeleton extends Undead {
@@ -44,10 +42,10 @@ export class Skeleton extends Undead {
         Skeleton_Race.description += Skeleton_Race.parse();
         Skeleton_Race.append(this);
 
-        if (dice(6) == 1) {
+        if (Utils.dice(6) == 1) {
             (new Buff.Dex_Talent(1)).append(this);
         }
-        if (dice(6) == 1) {
+        if (Utils.dice(6) == 1) {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
@@ -78,10 +76,10 @@ export class Walking_Dead extends Undead {
         Walking_Dead_Race.description += Walking_Dead_Race.parse();
         Walking_Dead_Race.append(this);
 
-        if (dice(6) == 1) {
+        if (Utils.dice(6) == 1) {
             (new Buff.Dex_Talent(1)).append(this);
         }
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
@@ -112,10 +110,10 @@ export class Zombie extends Undead {
         Zombie_Race.description += Zombie_Race.parse();
         Zombie_Race.append(this);
 
-        if (dice(6) == 1) {
+        if (Utils.dice(6) == 1) {
             (new Buff.Dex_Talent(1)).append(this);
         }
-        if (dice(3) == 1) {
+        if (Utils.dice(3) == 1) {
             (new Buff.Con_Talent(1)).append(this);
         }        
 

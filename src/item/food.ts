@@ -2,7 +2,7 @@ import * as ROT from "rot-js";
 import * as inventory from "./inventory";
 import * as Creature from "../creature/creature";
 import * as Utils from "../utils/utils";
-import { game, rand, dice } from "../main";
+import { game } from "../main";
 import * as Item from "./item";
 import * as Buff from "../buff";
 

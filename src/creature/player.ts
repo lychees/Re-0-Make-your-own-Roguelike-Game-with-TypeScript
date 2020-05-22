@@ -1,6 +1,8 @@
 import * as ROT from "rot-js";
+import * as Utils from "../utils/utils";
 import $ from "jquery";
-import { game, rand, dice } from "../main";
+import { game } from "../main";
+
 
 
 import * as Item from "../item/item";
@@ -18,9 +20,8 @@ function attack(alice, bob) {
     game.scheduler.setDuration(5000);
 
     if (bob.hp <= 0) return;
-    let dice = rand;
-
-    let miss = dice(6) + dice(6) + 2;
+    
+    let miss = Utils.dice(6) + Utils.dice(6);
 
     if (miss < bob.dex) {
         game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
@@ -30,7 +31,7 @@ function attack(alice, bob) {
     }
 
     let dmg = alice.get_atk();
-    if (alice.str > bob.str) dmg += dice(alice.str - bob.str);
+    if (alice.str > bob.str) dmg += Utils.dice(alice.str - bob.str);
     game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
    
     if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
@@ -195,7 +196,7 @@ export class Player extends Elf.Isabella {
                 game.scheduler.setDuration( 2000 );
             } else {
                 this.logs.notify("你向四處張望");
-                if (rand(5) == 0) this.sp_healing(1);            
+                if (Utils.rand(5) == 0) this.sp_healing(1);            
                 game.scheduler.setDuration( 1000 );
             }
         } else {
@@ -212,9 +213,9 @@ export class Player extends Elf.Isabella {
                 } else {
                     game.scheduler.setDuration( 2000 );
                 }
-                if (rand(10) == 0) this.sp -= 1;
+                if (Utils.rand(10) == 0) this.sp -= 1;
             } else {                
-                if (rand(10) == 0) this.sp_healing(1);
+                if (Utils.rand(10) == 0) this.sp_healing(1);
             }
 
             let attacked = false;

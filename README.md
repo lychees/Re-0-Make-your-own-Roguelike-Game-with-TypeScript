@@ -88,4 +88,20 @@ Item：物品
     Food 食物
     Potion 药剂
     ...    
+
+/*
+- Inventory
+- Equipment
+*/
+game
+map
+schedule
+agents : Creature Particle ...
+
+Utils
+    logs
+    camera
+UI/AI
+
 ```
+

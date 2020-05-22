@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
-
-import { game, rand, dice } from "./main";
+import * as Utils from "./utils/utils";
+import { game } from "./main";
 import { add_shadow } from "./map";
 
 import { Creature } from "./creature/creature"
@@ -248,7 +248,7 @@ export class Injured extends Buff {
         super();
         this.name = "轻傷"; 
         this.lv = lv;
-        this.str = -rand(lv+1);
+        this.str = -Utils.rand(lv+1);
         this.dex = -(lv+this.str);
         this.description = "這個單位受傷了\n";
         this.description += this.parse();
