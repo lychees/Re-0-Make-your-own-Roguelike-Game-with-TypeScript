@@ -83,7 +83,7 @@ export class Walking_Dead extends Undead {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
-        let sword = new Item.Weapon.Sword();
+        let sword = new Item.Equip.Weapon.Sword();
         this.inventory.push(sword);
         sword.equip();
         /*
@@ -118,7 +118,7 @@ export class Zombie extends Undead {
             (new Buff.Con_Talent(1)).append(this);
         }        
 
-        let sword = new Item.Weapon.Sword();
+        let sword = new Item.Equip.Weapon.Sword();
         this.inventory.push(sword);        
         sword.equip();
         //let shield = new Item.Equip.Armor.Shield();

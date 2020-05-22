@@ -9,9 +9,9 @@ import { Equip } from "./item";
 
 
 export class Equipment {
-    weapon: Item.Weapon.Weapon;
-    armor: Item.Armor;
-    accessory: Item.Accessory;
+    weapon: Item.Equip.Weapon.Weapon;
+    armor: Item.Equip.Armor.Armor;
+    accessory: Item.Equip.Accessory.Accessory;
     owner: Creature;
 
     getDom() {
@@ -35,7 +35,7 @@ export class Equipment {
         let accessory_tip = $('<div>').addClass("tooltip bottom right").text(this.accessory ? this.accessory.description : "");
         accessory_tip.appendTo(accessory_dom);
         accessory_name.appendTo(accessory_dom);            
-        accessory_dom.appendTo(z);                
+        accessory_dom.appendTo(z);  
         return z;
     }
 

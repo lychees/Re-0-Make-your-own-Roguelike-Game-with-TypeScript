@@ -2,7 +2,7 @@ import $ from "jquery";
 import { game } from "../main";
 import { Menu } from "../UI/character";
 import * as Item from "./item";
-import { Equip } from "./item";
+import { Equip } from "./equip/equip";
 
 export class ItemMenu extends Menu {
 	parent: any;

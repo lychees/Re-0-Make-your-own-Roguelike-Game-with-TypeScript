@@ -1,16 +1,10 @@
-import * as Creature from "../creature/creature";
-import * as Utils from "../utils/utils";
-
-//export * as Equip from "./equip/equip";
-
-import { game } from "../main";
-
-import * as Item from "./item";
-import * as Buff from "../buff";
+import * as Utils from "../../utils/utils";
+import { Equip } from "./equip";
+import { Buff } from "../../buff";
 
 let dice = Utils.dice;
 
-export class Weapon extends Item.Equip {
+export class Weapon extends Equip {
     cd: number;    
     parse_atk() : string {
         let z = "";        
@@ -67,20 +61,20 @@ function gen_suffix() {
     } else {
         if (Utils.dice(3) <= 2) {
             this.name += ' 狂戰士的';
-            b.atk['d2'] = Utils.dice(5);
+            b.atk['d2'] += Utils.dice(5);
         }
     }
 
     t = Utils.dice(6);
     if (t == 1) {
         this.name += ' 木製的';
-        b.atk['d1'] -= 2 + dice(6);
+        b.atk['d1'] -= dice(6);
         this.weight /= 5;
         this.db /= 3;
         this.value /= 10;
     } if (t == 2) {
         this.name += ' 青銅的';
-        b.atk['d1'] -= dice(6);
+        b.atk['d1'] -= dice(2);
         this.weight /= 2;
         this.db /= 2;        
         this.value /= 2;
@@ -112,7 +106,7 @@ export class Axes extends Weapon {
         this.ch = "斧";
         this.description = "一把斧頭\n";
 
-        let b = new Buff.Buff();
+        let b = new Buff();
         b.name = "斧";
         b.hp = 1;
         b.atk['d13'] = 1;
@@ -139,7 +133,7 @@ export class Sword extends Weapon {
         this.value = 1000;
         this.description = "一把短劍\n";
 
-        let b = new Buff.Buff();
+        let b = new Buff();
         b.name = "短劍";        
         b.atk['d6'] = 2;
         b.description = "這個單位裝備了一把短劍\n";
@@ -161,7 +155,7 @@ export class Long_Sword extends Sword {
         this.description = "一把長劍\n";
         this.weight = 12000;        
 
-        let b = new Buff.Buff();
+        let b = new Buff();
         b.name = "長劍";
         b.atk['d11'] = 1;
         b.description = "這個單位裝備了一把長劍\n";
@@ -185,15 +179,13 @@ export class Board_Sword extends Sword {
         this.weight = 20000;
         this.value = 2000;
         
-        let b = new Buff.Buff();
+        let b = new Buff();
         b.name = "闊";
         b.atk['d20'] = 1;
         b.description = "這個單位裝備了一把闊劍\n";
         b.description += b.parse();
         this.buff = b;
-
-        
-        
+                
         gen_suffix.bind(this)();
         this.db = dice(this.DB);
         this.description += b.parse();
