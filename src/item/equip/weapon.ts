@@ -27,11 +27,11 @@ export class Weapon extends Equip {
         this.equipped = true;        
     }    
     constructor() {
-        super();        
-        this.cd = 20;
+        super();
         this.name = "武器";        
-        this.description = "一把武器";      
-    }    
+        this.DB = 40;
+        this.cd = 4000;
+    }
 }
 
 
@@ -98,37 +98,16 @@ function gen_suffix() {
     }
 }
 
-export class Axes extends Weapon {    
-    constructor() {
-        super();        
-        this.cd = 30;
-        this.name = "斧";
-        this.ch = "斧";
-        this.description = "一把斧頭\n";
 
-        let b = new Buff();
-        b.name = "斧";
-        b.hp = 1;
-        b.atk['d13'] = 1;
-        b.description = "這個單位裝備了一把斧頭\n";
-        b.description += b.parse();
-        this.buff = b;        
-
-        gen_suffix.bind(this)();
-
-        this.description += b.parse();
-    }    
-}
 
 
 
 export class Sword extends Weapon {
     constructor() {
         super();        
-        this.cd = 30;
         this.name = "短劍";
-        this.ch = "༒";        
-        this.DB = 40;
+        this.ch = "༒";
+        this.cd = 30;
         this.weight = 10000;
         this.value = 1000;
         this.description = "一把短劍\n";
@@ -139,10 +118,8 @@ export class Sword extends Weapon {
         b.description = "這個單位裝備了一把短劍\n";
         b.description += b.parse();
         this.buff = b;
-
         
         gen_suffix.bind(this)();
-
         this.db = dice(this.DB);        
         this.description += b.parse();
     }        
@@ -199,4 +176,105 @@ export class Water_Mirror extends Sword {
         this.name = "水鏡";
         this.description = "少女慣用的愛劍";        
     }
-};
+}
+
+
+export class Spear extends Weapon {    
+    constructor() {
+        super();           
+        this.name = "|";
+        this.ch = "槍";
+        this.description = "一把槍\n";
+        this.weight = 20000;    
+        this.value = 1000;      
+        this.cd = 40; 
+
+        let b = new Buff();
+        b.name = "槍";
+        b.hp = 1;
+        b.atk['d30'] = 1;
+        b.description = "這個單位裝備了一把槍\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        gen_suffix.bind(this)();
+        this.description += b.parse();
+    }    
+}
+
+
+
+
+export class Axes extends Weapon {    
+    constructor() {
+        super();        
+        this.cd = 30;
+        this.name = "斧";
+        this.ch = "斧";
+        this.description = "一把斧頭\n";
+
+        let b = new Buff();
+        b.name = "斧";
+        b.hp = 1;
+        b.atk['d13'] = 1;
+        b.description = "這個單位裝備了一把斧頭\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        gen_suffix.bind(this)();
+        this.description += b.parse();
+    }    
+}
+
+
+
+export class Dagger extends Weapon {    
+	/**
+	 * @class 匕首
+	 * @param 匕首是快速且致命的武器。
+	 */
+    constructor() {
+        super();        
+        this.name = "匕首";
+        this.ch = "🗡️";
+        this.description = "一把匕首\n";
+        this.weight = 2000;
+        this.value = 500;
+        this.cd = 10;
+
+        let b = new Buff();
+        b.name = "匕首";
+        b.atk['d2'] = 2;
+        b.description = "這個單位裝備了一把匕首\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        gen_suffix.bind(this)();
+        this.description += b.parse();
+    }    
+}
+
+
+export class Dirk extends Dagger {    
+    constructor() {
+        super(); 
+        this.name = "长匕首";
+        this.ch = "🗡️";
+        this.description = "一把長匕首\n";
+        this.weight = 2000;
+        this.value = 500;
+        this.cd = 15;
+
+        let b = new Buff();
+        b.name = this.name;
+        b.atk['d3'] = 2;
+        b.description = "這個單位裝備了一把" + this.name + "\n";
+        b.description += b.parse();
+        this.buff = b;        
+
+        gen_suffix.bind(this)();
+        this.description += b.parse();
+    }    
+}
+
+

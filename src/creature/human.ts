@@ -12,3 +12,16 @@ export class Human extends Creature {
         (new Buff.Human_Race()).append(this);
     }
 }
+
+export class Akara extends Creature {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "阿卡拉";
+        this.ch = "阿";
+        this.color = "#d0d";
+        (new Buff.Human_Race()).append(this);
+    }
+}
+
+
+

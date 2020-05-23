@@ -34,7 +34,7 @@ export function pop_random(A: Array<[number, number]>): [number, number] {
     return A[index];
 }
 
-export class Thing {
+export class Element {
     name: string;
     ch: string;
     color: string;
