@@ -23,5 +23,16 @@ export class Akara extends Creature {
     }
 }
 
+export class Charsi extends Creature {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "恰西";
+        this.ch = "恰";
+        this.color = "#dd0";
+        (new Buff.Human_Race()).append(this);
+    }
+}
+
+
 
 

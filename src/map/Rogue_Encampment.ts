@@ -348,6 +348,8 @@ export class Rogue_Encampment extends Map {
         let Akara = new Creature.Human.Akara(rx-10, 5);
         this.agents.push(Akara);
 
+        let 恰西 = new Creature.Human.Charsi(rx-12, 5);
+        this.agents.push(恰西);    
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
