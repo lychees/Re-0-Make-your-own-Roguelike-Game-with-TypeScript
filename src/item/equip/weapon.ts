@@ -69,32 +69,32 @@ function gen_suffix() {
     if (t == 1) {
         this.name += ' 木製的';
         b.atk['d1'] -= dice(6);
-        this.weight /= 5;
-        this.db /= 3;
-        this.value /= 10;
+        this.weight = Math.floor(this.weight/5);
+        this.DB = Math.floor(this.DB/5);
+        this.value = Math.floor(this.value/10);        
     } if (t == 2) {
         this.name += ' 青銅的';
         b.atk['d1'] -= dice(2);
-        this.weight /= 2;
-        this.db /= 2;        
-        this.value /= 2;
+        this.weight = Math.floor(this.weight/2);
+        this.DB = Math.floor(this.DB/2);
+        this.value = Math.floor(this.value/2);        
     } else if (t == 3) {
         this.name += ' 鐵的';
     } else if (t == 4) {
         this.name += ' 鋼的';
-        b.atk['d1'] += dice(6);        
-        this.db *= 1.2;
-        this.value *= 1.2;
+        b.atk['d1'] += dice(6);
+        this.DB = Math.floor(this.DB*1.2);
+        this.value = Math.floor(this.value*1.2);        
     } else if (t == 5) {
         this.name += ' 銀的';
         b.atk['d6'] += dice(4);
-        this.db *= 1.5;
-        this.value *= 10;
+        this.DB = Math.floor(this.DB*1.4);
+        this.value = Math.floor(this.value*10);
     } else if (t == 6) {
         this.name += ' 玄鐵的';
         b.atk['d8'] += dice(6);
-        this.db *= 4;
-        this.value *= 4;
+        this.DB = Math.floor(this.DB*5);
+        this.value = Math.floor(this.value*5);
     }
 }
 

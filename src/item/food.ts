@@ -19,20 +19,21 @@ export class Food extends Item.Item {
 	 */    
     constructor() {
         super();
+        this.db = 2; this.DB = 2;
     }
     eat() {
         this.db -= 1;
-        let hp = this.owner.hp_healing(Math.floor(ROT.RNG.getUniform() * this.hp / this.DB));
-        let mp = this.owner.mp_healing(Math.floor(ROT.RNG.getUniform() * this.mp / this.DB));
-        let sp = this.owner.sp_healing(Math.floor(ROT.RNG.getUniform() * this.sp / this.DB));
+        let hp = this.owner.hp_healing(Utils.rand(this.hp));
+        let mp = this.owner.mp_healing(Utils.rand(this.mp));
+        let sp = this.owner.sp_healing(Utils.rand(this.sp));
 
         let logs = this.owner.name + " 吃了一口 " + this.name + "\n";
 
         if (hp > 0 || mp > 0 || sp > 0) {
             logs += "恢復了";
-            if (hp > 0) logs += " " + hp + "點生命";
-            if (mp > 0) logs += " " + mp + "點魔法";
-            if (sp > 0) logs += " " + sp + "點體力";
+            if (hp > 0) logs += " " + hp + " 點生命";
+            if (mp > 0) logs += " " + mp + " 點魔法";
+            if (sp > 0) logs += " " + sp + " 點體力";
             logs += "\n";   
         }
         this.owner.logs.notify(logs);
@@ -56,10 +57,9 @@ export class Apple extends Food {
         this.name = "蘋果";
         this.ch = "o";
         this.color = "#f22";        
-        this.hp = 3;
-        this.mp = 1;
-        this.sp = 1;
-        this.db = 2;        
+        this.hp = 4;
+        this.mp = 2;
+        this.sp = 2;
         this.description = "一個蘋果";
     }
 }
@@ -77,10 +77,9 @@ export class Banana extends Food {
         this.name = "香蕉";
         this.ch = "o";
         this.color = "#ee4";        
-        this.hp = 1;
-        this.mp = 3;
-        this.sp = 1;
-        this.db = 2;        
+        this.hp = 2;
+        this.mp = 4;
+        this.sp = 2;
         this.description = "一個香蕉";
     }
 }
@@ -100,8 +99,7 @@ export class Orange extends Food {
         this.color = "#ee4";        
         this.hp = 1;
         this.mp = 1;
-        this.sp = 2;
-        this.db = 2;
+        this.sp = 3;
         this.description = "一個橘子";
     }
 }
@@ -116,14 +114,10 @@ export class Drink extends Food {
     }
     constructor() {
         super();
-        this.name = "橘子";
-        this.ch = "o";
-        this.color = "#ee4";        
-        this.hp = 1;
-        this.mp = 1;
-        this.sp = 2;
-        this.db = 2;
-        this.description = "一個橘子";
+        this.name = "水";
+        this.ch = "u";
+        this.color = "#ee4";                
+        this.description = "一瓶水";
     }
 }
 
@@ -137,13 +131,11 @@ export class Cola extends Drink {
     }
     constructor() {
         super();
-        this.name = "可乐";
-        this.ch = "u";
-        this.color = "#f45";        
-        this.hp = 1;
-        this.mp = 2;
-        this.sp = 1;
-        this.db = 1;
+        this.name = "可乐";        
+        this.color = "#f45";
+        this.hp = 5;
+        this.mp = 5;
+        this.sp = 5;
         this.description = "一瓶可乐";
     }
 }

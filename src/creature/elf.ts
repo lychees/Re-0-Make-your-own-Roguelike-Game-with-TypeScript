@@ -52,17 +52,8 @@ export class Isabella extends Elf {
         (new Buff.Int_Talent(1)).append(this);              
         (new Buff.MP_Talent(10)).append(this);        
         (new Buff.Sickly(1)).append(this);
-        (new Buff.Cheating()).append(this);
         
-        /*this.inventory.push(new Item.Equip.Weapon.Axes());    
-        let t = new Item.Equip.Weapon.Sword();
-        this.inventory.push(t);
-        t.equip();*/
-
-        //this.inventory.push(new Item.Light_Armor());
-        //this.inventory.push(new Item.HP_Ring());
-        //this.inventory.push(new Item.MP_Ring());
-        //this.inventory.push(new Item.Apple());
-        //this.inventory.push(new Item.Apple());
+        
+        
     }
 }

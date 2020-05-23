@@ -86,7 +86,7 @@ export class Inventory {
         for (let i=0;i<this.items.length;++i) {
             let item = this.items[i];            
             let dom = $('<div>').addClass('inventoryRow');
-            let name =$('<div>').addClass('row_key').text(item.name + (item.equipped ?  "*" : ""));
+            let name =$('<div>').addClass('row_key').text(item.name + (item.equipped ?  "*" : "") + "  " + item.db + "/" + item.DB);
             let tip = $('<div>').addClass("tooltip bottom right").text(item.description);
             tip.appendTo(dom);
             name.appendTo(dom);

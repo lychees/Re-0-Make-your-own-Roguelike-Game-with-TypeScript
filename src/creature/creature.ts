@@ -28,7 +28,7 @@ export function attack(alice, bob) {
     let miss = Utils.dice(6) + Utils.dice(6) + 2;
 
     if (miss < bob.dex) {
-        game.SE.playSEs(["Wolf RPG Maker/[Action]Swing1_Komori.ogg", "[Action]Cutting_wind1_Komori.ogg"]);
+        game.SE.playSEs(["Wolf RPG Maker/[Action]Swing1_Komori.ogg", "Wolf RPG Maker/[Action]Cutting_wind1_Komori.ogg"]);
         alice.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         bob.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         return; 
