@@ -19,7 +19,7 @@ import { Equipment } from "../item/equipment";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
 
-function attack(alice, bob) {    
+export function attack(alice, bob) {    
 
     game.scheduler.setDuration(5000);
 
@@ -28,16 +28,22 @@ function attack(alice, bob) {
     let miss = Utils.dice(6) + Utils.dice(6) + 2;
 
     if (miss < bob.dex) {
-        game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
+        game.SE.playSEs(["Wolf RPG Maker/[Action]Swing1_Komori.ogg", "[Action]Cutting_wind1_Komori.ogg"]);
         alice.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         bob.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
         return; 
     }
 
-    let dmg = alice.get_atk();
+    let dmg = alice.get_atk();    
     if (alice.str > bob.str) dmg += Utils.dice(alice.str - bob.str);
-    game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
-   
+
+    dmg -= bob.def;
+    if (dmg <= 0) {
+        game.SE.playSE("[Action]Chinese_blade1_Komori.ogg");  
+        return;
+    }
+
+    game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");   
     if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
         bob.injured(1);
     }
@@ -120,8 +126,8 @@ export class Creature {
                     }
                 }
             }        
-        }
-        return z;
+        }        
+        return Math.max(0, z);
     }
 
     parse_atk_buffs() {
@@ -299,14 +305,14 @@ export class Creature {
         this.color = '#222';
         this.z = 0;
 
-        let agents = game.map.agents;
-        let idx = agents.findIndex((e) => e == this);
-        agents.splice(idx, 1);
-        game.scheduler.remove(this);
-
-        let layer = game.map.layer[this.x+','+this.y];
-
-        layer.push(new Corpse.Corpse(this));
+        if (this != game.player) {
+            let agents = game.map.agents;
+            let idx = agents.findIndex((e) => e == this);
+            agents.splice(idx, 1);
+            game.scheduler.remove(this);
+            let layer = game.map.layer[this.x+','+this.y];
+            layer.push(new Corpse.Corpse(this));
+        }
     }
     moveTo(x: number, y: number) {
         if (game.map.pass(x, y)) {

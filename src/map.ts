@@ -1,11 +1,8 @@
 import * as ROT from "rot-js";
 import { game, event } from "./main";
-import { Player, Rat, Snake, Creature } from "./creature/creature";
+import { Creature } from "./creature/creature";
 import { Apple } from "./item/food";
 import * as Particle from "./particle/particle"
-
-const MAP_WIDTH = 15;
-const MAP_HEIGHT = 15;
 
 export function add_shadow(c1) {
     if (c1[0] !== '#') {
@@ -182,7 +179,7 @@ export class Map {
         }
         return true;
     }
-    gen_shadow(p: Player, color: string) {
+    gen_shadow(p: Creature, color: string) {
         let fov = new ROT.FOV.RecursiveShadowcasting((x, y) => {
             return this.light(x, y);
         });
@@ -231,6 +228,6 @@ export class Map {
         for (let p of this.particles) {
             p.draw();            
         }
-        this.gen_shadow(game.player, '#555');
+        //this.gen_shadow(game.player, '#555');
     }
 }

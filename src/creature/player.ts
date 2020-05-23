@@ -1,49 +1,15 @@
 import * as ROT from "rot-js";
 import * as Utils from "../utils/utils";
-import $ from "jquery";
 import { game } from "../main";
 
-
-
-import * as Item from "../item/item";
 import * as Elf from "./elf";
 import * as Buff from "../buff";
 import * as Particle from "../particle/particle";
-import * as Corpse from "../tile/corpse"
+import * as Corpse from "../tile/corpse";
 
-import { Creature } from "./creature";
+import { attack, Creature } from "./creature";
 
 // https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
-
-function attack(alice, bob) {    
-
-    game.scheduler.setDuration(5000);
-
-    if (bob.hp <= 0) return;
-    
-    let miss = Utils.dice(6) + Utils.dice(6);
-
-    if (miss < bob.dex) {
-        game.SE.playSE("Wolf RPG Maker/[Action]Swing1_Komori.ogg");        
-        alice.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
-        bob.logs.notify(bob.name + '躲開了' + alice.name + '的攻擊');
-        return; 
-    }
-
-    let dmg = alice.get_atk();
-    if (alice.str > bob.str) dmg += Utils.dice(alice.str - bob.str);
-    game.SE.playSE("Wolf RPG Maker/[Effect]Attack5_panop.ogg");
-   
-    if (bob.hp >= bob.HP*0.7 && bob.hp - dmg < bob.HP*0.7) {
-        bob.injured(1);
-    }
-    bob.hp -= dmg; 
-    alice.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
-    bob.logs.notify(alice.name + '對' + bob.name + '造成了' + dmg + '點傷害'); 
-    if (bob.hp <= 0) {
-        bob.dead(alice);
-    }
-}
 
 export class Skill {
     hp: number;

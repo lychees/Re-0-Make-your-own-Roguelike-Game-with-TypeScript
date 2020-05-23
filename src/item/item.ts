@@ -23,7 +23,7 @@ export class Item extends Utils.Element {
 	 */
     constructor() {
         super();
-        this.db = 1;
+        this.db = 1; this.DB = 1;
         this.ch = "。";
         this.color = "#fff";
     }

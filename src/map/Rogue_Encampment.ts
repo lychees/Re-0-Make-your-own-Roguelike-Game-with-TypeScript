@@ -148,10 +148,7 @@ export class Dungeon extends Map {
         let deg = 0;
         for (let i=0;i<4;++i) {
             let xx = x + ROT.DIRS[4][i][0];
-            let yy = y + ROT.DIRS[4][i][1];            
-
-            console.log(x, y, xx, yy);
-
+            let yy = y + ROT.DIRS[4][i][1];
             if (this.pass_without_agents(xx, yy)) {
                 deg += 1;
             }
@@ -166,7 +163,6 @@ export class Dungeon extends Map {
         if (this.getDeg(x, y) != 2) {            
             return false;
         }
-        //if (this.getDeg(x, y) > 2) return false;
 
         let degs = [];
         let dirs = [];
@@ -179,7 +175,6 @@ export class Dungeon extends Map {
             }
         }
 
-        // console.log(degs);
         if ((dirs[0] + dirs[1]) & 1) return false;
 
         if (degs[0] > degs[1]) {
@@ -187,8 +182,6 @@ export class Dungeon extends Map {
             degs[0] = degs[1];
             degs[1] = t;
         }
-        //console.log(degs, degs[0], degs[1]);
-        //return true;
 
         return degs[0] >= 2 && degs[1] >= 4;
     }
