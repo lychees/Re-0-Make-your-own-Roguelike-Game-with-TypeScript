@@ -13,7 +13,7 @@ export class Human extends Creature {
     }
 }
 
-export class Akara extends Creature {
+export class 阿卡拉 extends Creature {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "阿卡拉";
@@ -23,7 +23,7 @@ export class Akara extends Creature {
     }
 }
 
-export class Charsi extends Creature {
+export class 恰西 extends Creature {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "恰西";
@@ -33,6 +33,22 @@ export class Charsi extends Creature {
     }
 }
 
+export class 卡夏 extends Creature {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "卡夏";
+        this.ch = "卡";
+        this.color = "#d11";
+        (new Buff.Human_Race()).append(this);
+    }
+}
 
-
-
+export class 瓦瑞夫 extends Creature {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "瓦瑞夫";
+        this.ch = "瓦";
+        this.color = "#33d";
+        (new Buff.Human_Race()).append(this);
+    }
+}

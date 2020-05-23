@@ -5,8 +5,8 @@ import { Map, Box, Tile, add_shadow } from "../map";
 import * as Undead from "../creature/monster/undead";
 import * as Creature from "../creature/creature";
 
-const MAP_WIDTH = 120;
-const MAP_HEIGHT = 80;
+const MAP_WIDTH = 60;
+const MAP_HEIGHT = 40;
 
 
 class Wall extends Tile {
@@ -187,8 +187,8 @@ export class Dungeon extends Map {
     }
 
     constructor() {
-        let w = MAP_WIDTH;
-        let h = MAP_HEIGHT;
+        let w = 50 + Utils.dice(150);
+        let h = 40 + Utils.dice(120);
         super(w, h);
         this.free_cells = [];
 
@@ -248,12 +248,12 @@ export class Dungeon extends Map {
             return 0;
         });
 
-        /*for (let i=0;i<2;++i) {
+        for (let i=0;i<2;++i) {
             let p = Utils.pop_random(this.free_cells);
             let t = new Upstair();
             let key = p[0]+','+p[1];
             this.layer[key] = t;
-        }*/
+        }
 
         for (let i=0;i<5;++i) {
             let p = Utils.pop_random(this.free_cells);
@@ -324,32 +324,18 @@ export class Rogue_Encampment extends Map {
             }
         }
 
-        /*
-        this.dungeon = new Dungeon();                
 
-
-        for (let x=0;x<w;++x) {
-            for (let y=0;y<h;++y) {
-                let key = x+','+y;
-                if (this.layer[key].length == 0) {
-                    this.layer[key].push(new Wall());
-                }
-            }
-        }
-
-        /*for (let i=0;i<10+rand(40);++i) {            
-            let p = Utils.pop_random(this.free_cells);                        
-            let key = p[0]+','+p[1];
-            this.layer[key] = new Tree();
-        }*/
 
         this.agents = Array<any>();
 
-        let Akara = new Creature.Human.Akara(rx-10, 5);
-        this.agents.push(Akara);
-
-        let 恰西 = new Creature.Human.Charsi(rx-12, 5);
-        this.agents.push(恰西);    
+        let 阿卡拉 = new Creature.Human.阿卡拉(rx-4, 3);
+        this.agents.push(阿卡拉);
+        let 恰西 = new Creature.Human.恰西(lx+7, 5);
+        this.agents.push(恰西);
+        let 卡夏 = new Creature.Human.卡夏(lx+13, 14);
+        this.agents.push(卡夏);
+        let 瓦瑞夫 = new Creature.Human.瓦瑞夫(lx+15, 12);
+        this.agents.push(瓦瑞夫);    
         
         this.agents.sort(function(a: any, b: any): number {
             if (a.z < b.z) return -1;
@@ -357,8 +343,10 @@ export class Rogue_Encampment extends Map {
             return 0;
         });
 
-        /*
-        for (let i=0;i<5;++i) {
+                
+        this.dungeon = new Dungeon();                
+    
+        for (let i=0;i<2;++i) {
             let p = Utils.pop_random(this.free_cells);
             let key = p[0]+','+p[1];
 
@@ -381,14 +369,14 @@ export class Rogue_Encampment extends Map {
 
             this.layer[key].push(down);
             this.dungeon.layer[key].push(up); 
-        }*/
+        }
 
-        /*
+        
         for (let i=0;i<5;++i) {
             let p = Utils.pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key].push(t);
-        }*/
+        }
     }
 }

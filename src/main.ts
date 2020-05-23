@@ -59,7 +59,7 @@ class Game {
         this.score = 0;
      //   let p = Utils.pop_random(this.map.free_cells);
 //        game.player = new Player(p[0], p[1]);
-        game.player = new Player(60, 10);
+        game.player = new Player(40, 10);
         this.characterMenu.parent = game.player;
         this.map.agents.push(game.player);
 
