@@ -190,8 +190,9 @@ export class Player extends Elf.Isabella {
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
             let yy = this.y + d[1];
-            let door = game.map.layer[xx+','+yy];
-            if (door && (door.ch == "門" || door.ch == "關")) {
+            let layer = game.map.layer[xx+','+yy];
+            let door = layer[layer.length - 1];
+            if (door.ch == "門" || door.ch == "關") {
                 door.trigger(this);
                 game.scheduler.setDuration( 2000 );
             } else {
@@ -224,7 +225,7 @@ export class Player extends Elf.Isabella {
                 if (a.x === xx && a.y === yy && a.hp > 0) {
                     attack(this, a);
                     attacked = true;
-                    game.player.logs.printMessage
+                    game.player.logs.printMessage;
                     break;
                 }
             }

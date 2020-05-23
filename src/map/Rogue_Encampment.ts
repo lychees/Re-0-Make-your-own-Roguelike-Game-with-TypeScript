@@ -149,7 +149,10 @@ export class Dungeon extends Map {
         for (let i=0;i<4;++i) {
             let xx = x + ROT.DIRS[4][i][0];
             let yy = y + ROT.DIRS[4][i][1];            
-            if (this.pass(xx, yy)) {
+
+            console.log(x, y, xx, yy);
+
+            if (this.pass_without_agents(xx, yy)) {
                 deg += 1;
             }
         }
@@ -157,10 +160,13 @@ export class Dungeon extends Map {
     }
 
     isDoor(x: number, y: number) : boolean {
-
-        //console.log(this.getDeg(x, y));
         
-        if (this.getDeg(x, y) != 2) return false;
+        if (!this.pass(x, y)) return false;
+
+        if (this.getDeg(x, y) != 2) {            
+            return false;
+        }
+        //if (this.getDeg(x, y) > 2) return false;
 
         let degs = [];
         let dirs = [];
@@ -173,6 +179,7 @@ export class Dungeon extends Map {
             }
         }
 
+        // console.log(degs);
         if ((dirs[0] + dirs[1]) & 1) return false;
 
         if (degs[0] > degs[1]) {
@@ -180,10 +187,10 @@ export class Dungeon extends Map {
             degs[0] = degs[1];
             degs[1] = t;
         }
+        //console.log(degs, degs[0], degs[1]);
+        //return true;
 
-        //console.log(degs);
-
-        return degs[0] == 2 && degs[1] > 2;
+        return degs[0] >= 2 && degs[1] >= 4;
     }
 
     constructor() {
@@ -193,6 +200,7 @@ export class Dungeon extends Map {
         this.free_cells = [];
 
         let dungeon = new ROT.Map.Digger(this.width, this.height);
+        //let dungeon = new ROT.Map.Arena(this.width, this.height);
         dungeon.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
@@ -201,15 +209,23 @@ export class Dungeon extends Map {
         });
 
         for (let x=0;x<w;++x) {
-            for (let y=0;y<h;++y) {
+            for (let y=0;y<h;++y) {                
                 let key = x+','+y;
                 if (this.layer[key].length == 0) {
                     this.layer[key].push(new Wall());
-                } else if (this.isDoor(x, y) && Utils.dice(6) < 3) {                    
+                }
+            }
+        }        
+
+        for (let x=0;x<w;++x) {
+            for (let y=0;y<h;++y) {
+                let key = x+','+y;
+                if (Utils.dice(6) <= 2 && this.isDoor(x, y)) {                                        
                     this.layer[key].push(new Door());
                 }
             }
         }
+
 
         // Close all doors at the beginning
         for (let x=0;x<w;++x) {
@@ -248,6 +264,7 @@ export class Dungeon extends Map {
             return 0;
         });
 
+        /*
         for (let i=0;i<2;++i) {
             let p = Utils.pop_random(this.free_cells);
             let t = new Upstair();
@@ -260,7 +277,7 @@ export class Dungeon extends Map {
             let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key].push(t);
-        }
+        } */
     }
 
 }
@@ -350,8 +367,7 @@ export class Rogue_Encampment extends Map {
             let p = Utils.pop_random(this.free_cells);
             let key = p[0]+','+p[1];
 
-            let d = this.dungeon.layer[key][this.dungeon.layer[key].length - 1];
-            if (d.ch != '.') {
+            if (this.dungeon.outside(p[0],p[1]) || this.dungeon.layer[key][this.dungeon.layer[key].length - 1].ch != '.') {            
                 --i;
                 continue;
             }

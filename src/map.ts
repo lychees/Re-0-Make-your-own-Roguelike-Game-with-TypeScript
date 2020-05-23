@@ -193,14 +193,19 @@ export class Map {
     }    
     draw_tile_at(x: number, y: number, key: string, bg?: string) {
         game.display.draw(x, y, null);        
+
+        if (this.layer[key].length == 0) {            
+            return;
+        }
+        //console.log(x, y, key);
         this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key]);
     }
 
     draw_tile_at2(x: number, y: number, key: string, bg?: string) {
         game.display.draw(x, y, null);
-        console.log(x, y, key, bg);
-        //if (this.layer[key].length == 0) return;
-        console.log(this.layer[key]);
+        //console.log(x, y, key, bg);
+        if (this.layer[key].length == 0) return;
+        //console.log(this.layer[key]);
         this.layer[key][this.layer[key].length - 1].draw(x, y, this.shadow[key], '#aaa');
     }
 
@@ -212,9 +217,12 @@ export class Map {
         	for (let y=0;y<h;++y) {
                 let xx = x + game.camera.x - game.camera.ox;
                 let yy = y + game.camera.y - game.camera.oy;
-                if (this.outside(xx, yy)) continue;
-                let key = xx+','+yy;
-                this.draw_tile_at(x, y, key);
+                if (this.outside(xx, yy)) {
+                    game.display.draw(x, y, null);  
+                } else {
+                    let key = xx+','+yy;
+                    this.draw_tile_at(x, y, key);
+                }
         	}
         }        
         for (let a of this.agents) {
