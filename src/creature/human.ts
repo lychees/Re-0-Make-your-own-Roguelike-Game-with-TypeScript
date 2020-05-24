@@ -14,7 +14,7 @@ export class Human extends Creature {
     }
 }
 
-export class 阿卡拉 extends Creature {
+export class 阿卡拉 extends Human {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "阿卡拉";
@@ -63,7 +63,7 @@ export class 阿卡拉 extends Creature {
     }
 }
 
-export class 恰西 extends Creature {
+export class 恰西 extends Human {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "恰西";
@@ -73,7 +73,7 @@ export class 恰西 extends Creature {
     }
 }
 
-export class 卡夏 extends Creature {
+export class 卡夏 extends Human {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "卡夏";
@@ -83,7 +83,7 @@ export class 卡夏 extends Creature {
     }
 }
 
-export class 瓦瑞夫 extends Creature {
+export class 瓦瑞夫 extends Human {
     constructor(x: number, y: number) {
         super(x, y);
         this.name = "瓦瑞夫";

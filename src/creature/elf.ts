@@ -51,9 +51,19 @@ export class Isabella extends Elf {
         (new Buff.Dex_Talent(1)).append(this);
         (new Buff.Int_Talent(1)).append(this);              
         (new Buff.MP_Talent(10)).append(this);        
-        (new Buff.Sickly(1)).append(this);
-        
-        
-        
+        (new Buff.Sickly(1)).append(this);        
+    }
+}
+
+export class Luna extends Elf {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "璐娜";
+        this.ch = "璐";
+        this.color = "#1ad";        
+        this.z = 100;
+
+        (new Buff.Dex_Talent(1)).append(this);
+        (new Buff.MP_Talent(20)).append(this);
     }
 }
