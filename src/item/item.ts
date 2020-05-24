@@ -1,6 +1,5 @@
 import * as Creature from "../creature/creature";
 import * as Utils from "../utils/utils";
-export * as Food from "./food";
 
 /**
  * 物品
@@ -69,3 +68,5 @@ export class Item extends Utils.Element {
 }
 
 export * as Equip from "./equip/equip";
+export * as Food from "./food";
+export * as Potion from "./potion";
