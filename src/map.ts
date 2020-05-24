@@ -62,7 +62,9 @@ export class Box extends Tile {
 }
 
 export class Map {
-    
+        
+    name: string;
+
     width: number;
     height: number;
     layer: {};

@@ -113,6 +113,12 @@ class Downstair extends Stair {
             this.target.map.layer[p[0]+','+p[1]].target.x = who.x;
             this.target.map.layer[p[0]+','+p[1]].target.y = who.y;
         }
+
+        if (this.target.map instanceof Dungeon && this.target.map.next_level == undefined) {
+            this.target.map.generate_next_level();
+        }
+
+
         super.enter(who);
     }
 }
@@ -142,7 +148,9 @@ class Upstair extends Stair {
 
 export class Dungeon extends Map {
 
+    level: number;
     free_cells: Array<[number, number]>;
+    next_level: Dungeon;
 
     getDeg(x: number, y: number) : number {
         let deg = 0;
@@ -230,22 +238,22 @@ export class Dungeon extends Map {
                 this.shadow[key] = '#fff';
             }
         }
-
-        for (let i=0;i<5;++i) {
+            
+        for (let i=0;i<Utils.dice(Math.floor(w*h/5));++i) {
             let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Skeleton(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<Utils.dice(5);++i) {
+        for (let i=0;i<Utils.dice(Math.floor(w*h/10));++i) {
             let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Walking_Dead(p[0], p[1]);
             this.agents.push(r);
         }
-        for (let i=0;i<Utils.dice(5);++i) {
+        for (let i=0;i<Utils.dice(Math.floor(w*h/20));++i) {
             let p = Utils.pop_random(this.free_cells);
             let r = new Undead.Zombie(p[0], p[1]);
             this.agents.push(r);
-        }        
+        }
 
         let p = Utils.pop_random(this.free_cells);
         let r = new Undead.Corpsefire(p[0], p[1]);
@@ -273,18 +281,50 @@ export class Dungeon extends Map {
         } */
     }
 
+    generate_next_level() {         
+        
+        this.next_level = new Dungeon();
+        this.next_level.level = this.level + 1;
+        this.next_level.name = "地下城 Level " + this.next_level.level;
+
+        for (let i=0;i<Utils.dice(100);++i) {
+            let p = Utils.pop_random(this.free_cells);
+            let key = p[0]+','+p[1];
+
+            if (this.next_level.outside(p[0],p[1]) || this.next_level.layer[key][this.next_level.layer[key].length - 1].ch != '.') {
+                --i;
+                continue;
+            }
+
+            let down = new Downstair();
+            down.target = {};
+            down.target.map = this.next_level;
+            down.target.x = p[0];
+            down.target.y = p[1];
+            let up = new Upstair();
+            up.target = {}; 
+            up.target.map = this;
+            up.target.x = p[0];
+            up.target.y = p[1];
+
+            this.layer[key].push(down);
+            this.next_level.layer[key].push(up); 
+        }
+    }
+
 }
 
 
 export class Rogue_Encampment extends Map {
 
-    dungeon: Map;
+    dungeon: Dungeon;
     free_cells: Array<[number, number]>;
 
     constructor() {
         let w = MAP_WIDTH;
         let h = MAP_HEIGHT;
         super(w, h);
+        this.name = "羅格營地";
 
         this.free_cells = [];
         let forest = new ROT.Map.Cellular(this.width, this.height);
@@ -354,7 +394,9 @@ export class Rogue_Encampment extends Map {
         });
 
                 
-        this.dungeon = new Dungeon();                
+        this.dungeon = new Dungeon();    
+        this.dungeon.level = 1;            
+        this.dungeon.name = "地下城 Level " + this.dungeon.level;
     
         for (let i=0;i<2;++i) {
             let p = Utils.pop_random(this.free_cells);
