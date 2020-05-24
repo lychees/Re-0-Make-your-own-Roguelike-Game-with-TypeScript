@@ -1,7 +1,6 @@
 import * as ROT from "rot-js";
 import * as Utils from "./utils/utils";
 import { game } from "./main";
-import { add_shadow } from "./map";
 
 import { Creature } from "./creature/creature"
 
