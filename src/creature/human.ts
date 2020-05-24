@@ -20,6 +20,7 @@ export class 阿卡拉 extends Human {
         this.name = "阿卡拉";
         this.ch = "阿";
         this.color = "#d0d";
+        this.team = 'NPC';        
         this.inventory.push(new Item.Equip.Accessory.HP_Ring());
         this.inventory.push(new Item.Equip.Accessory.MP_Ring());
         this.inventory.push(new Item.Food.Apple());
@@ -93,6 +94,7 @@ export class 恰西 extends Human {
         this.name = "恰西";
         this.ch = "恰";
         this.color = "#dd0";
+        this.team = 'NPC';
     }
 }
 
@@ -102,6 +104,7 @@ export class 卡夏 extends Human {
         this.name = "卡夏";
         this.ch = "卡";
         this.color = "#d11";
+        this.team = 'NPC';        
     }
 }
 
@@ -111,5 +114,6 @@ export class 瓦瑞夫 extends Human {
         this.name = "瓦瑞夫";
         this.ch = "瓦";
         this.color = "#33d";
+        this.team = 'NPC';        
     }
 }

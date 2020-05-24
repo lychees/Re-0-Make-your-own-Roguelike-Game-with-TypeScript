@@ -12,32 +12,41 @@ export class ItemMenu extends Menu {
 	init(item: Item.Item) {
 
         let info = [];
-    
-        if (item instanceof Equip) {
-            if (item.equipped) {
-                info.push({
-                    title: "卸下",
-                    click: item.unequip.bind(item)
-                });
-            } else {
-                info.push({
-                    title: "裝備",
-                    click: item.equip.bind(item)
-                });
-            }
-        }
+        
 
-        if (item instanceof Item.Food.Food) {
+        if (item.owner.team == 'NPC') {
             info.push({
-                title: "吃",
-                click: item.eat.bind(item)
+                title: "買",
+//                click: item.eat.bind(item)
             });
         }
+        else {
+            if (item instanceof Equip) {
+                if (item.equipped) {
+                    info.push({
+                        title: "卸下",
+                        click: item.unequip.bind(item)
+                    });
+                } else {
+                    info.push({
+                        title: "裝備",
+                        click: item.equip.bind(item)
+                    });
+                }
+            }
 
-        info.push({
-            title: "丟棄",
-            click: item.drop.bind(item)
-        });
+            if (item instanceof Item.Food.Food) {
+                info.push({
+                    title: "吃",
+                    click: item.eat.bind(item)
+                });
+            }
+
+            info.push({
+                title: "丟棄",
+                click: item.drop.bind(item)
+            });
+        }
 
         
         if (item.owner !== game.player && item.owner.hp <= 0) {
@@ -131,3 +140,4 @@ export class Inventory {
         // TODO(minakokojima): trigger 菜单事件
     }
 }
+

@@ -72,6 +72,8 @@ export class Creature extends Tile {
     logs: Logs;
     inventory: Inventory;
     equipment: Equipment;
+    team: string;
+
     buffs : Array<Buff.Buff>;
     run_buff: Buff.Buff;
 
