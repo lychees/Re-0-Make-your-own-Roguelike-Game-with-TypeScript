@@ -15,8 +15,6 @@ import * as Buff from "../buff";
 import * as Corpse from "../tile/corpse"
 import { Equipment } from "../item/equipment";
 
-// https://stackoverflow.com/questions/12143544/how-to-multiply-two-colors-in-javascript
-
 export function attack(alice, bob) {    
 
     game.scheduler.setDuration(5000);
@@ -104,7 +102,7 @@ export class Creature extends Tile {
         this.buffs = new Array<Buff.Buff>();
         this.run_buff = new Buff.Buff();
         this.run_buff.name = "跑";
-        this.run_buff.description = "移動速度加快 4 倍，但每次移動有 10% 的概率消耗一點體力，當沒有體力時此狀態無效。";
+        this.run_buff.description = "這個單位正在跑步，移動速度加快 4 倍，但每次移動有 10% 的概率消耗一點體力，當沒有體力時此狀態無效。";
     }
 
     get_atk() {

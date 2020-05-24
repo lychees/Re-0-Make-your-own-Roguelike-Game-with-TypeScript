@@ -6,8 +6,7 @@ import * as Particle from "./particle/particle"
 import { Tile } from "./tile/tile"
 export { Tile } from "./tile/tile"
 
-
-export function add_shadow(c1) {
+export function add_shadow(c1: string) {
     if (c1[0] !== '#') {
         return c1;
     }    
@@ -83,8 +82,7 @@ export class Map {
         if (e.length == 1) {
             l[e[0]].enter(p);
             return;
-        }        
-        //alert("to be test: multi events");
+        }       
 
         let btns = {};
 
@@ -208,7 +206,7 @@ export class Map {
         	}
         }        
         for (let a of this.agents) {
-            a.draw();
+            //a.draw();
         }
         for (let p of this.particles) {
             p.draw();            

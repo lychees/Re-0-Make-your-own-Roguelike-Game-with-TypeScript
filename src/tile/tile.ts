@@ -1,7 +1,4 @@
-import * as ROT from "rot-js";
 import { game } from "../main";
-import * as Creature from "../creature/creature"
-import { CharacterMenu } from "../UI/character";
 
 export function add_shadow(c1) {
     if (c1[0] !== '#') {

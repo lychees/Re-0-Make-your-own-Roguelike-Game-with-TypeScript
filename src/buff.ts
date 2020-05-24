@@ -1,8 +1,4 @@
-import * as ROT from "rot-js";
 import * as Utils from "./utils/utils";
-import { game } from "./main";
-
-import { Creature } from "./creature/creature"
 
 export function parse_atk(atk: any) {
     let z = "";

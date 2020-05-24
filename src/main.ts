@@ -5,7 +5,6 @@ import { Camera } from "./utils/camera";
 import { Player } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
-
 import { Ch0_Boss } from "./level/lv0";
 
 import { Sound } from "./utils/sound";
@@ -155,8 +154,7 @@ class Game {
             Engine.event('progress', 'new game');
             */
         }
-    }  
-    
+    }    
 };
 
 export let game = new Game();
@@ -166,9 +164,6 @@ export let event = new Events();
 event.init();
 
 //openCharacterMenu(game.player);
-
-
-
 
 $( "#character" ).click(function() {    
     game.characterMenu.toggle(game.player);
@@ -247,22 +242,6 @@ $( "#inventory" ).click(function() {
             }
         });
 });
-
-
-    //game.characterMenu.toggle(game.player);
-    /*let menu = new Menu();
-    menu.init([
-        {
-            title: "行尸",
-            click: alert(1),
-        },
-        {
-            title: "向上的楼梯",
-            click: alert(2),
-        },
-    ]);
-    menu.menu.appendTo($('#wrapper'));
-    menu.open();*/
 
         /*
     let juqing = {
