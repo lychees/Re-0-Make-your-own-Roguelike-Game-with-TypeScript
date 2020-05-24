@@ -164,7 +164,7 @@ export class Dungeon extends Map {
                 let t = this.layer[key][this.layer[key].length - 1];
                 if (t.ch == "門") t.trigger('god');
                 // Light the dungeon for debug
-                this.shadow[key] = '#fff';
+               // this.shadow[key] = '#fff';
             }
         }
             
@@ -268,7 +268,7 @@ export class Rogue_Encampment extends Map {
             this.layer[key] = [];
             this.layer[key].push(new Tile.Grass());
             this.free_cells.push([x, y]);
-            this.shadow[key] = '#fff';
+           // this.shadow[key] = '#fff';
         });
 
         // Camp

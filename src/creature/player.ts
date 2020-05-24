@@ -202,9 +202,14 @@ export class Player extends Elf.Isabella {
             for (let i=0;i<game.map.agents.length;++i) {
                 let a = game.map.agents[i];
                 if (a.x === xx && a.y === yy && a.hp > 0) {
-                    attack(this, a);
-                    attacked = true;
-                    game.player.logs.printMessage;
+
+                    if (a.react) {
+                        a.react();
+                    } else {                    
+                        attack(this, a);
+                        game.player.logs.printMessage;
+                    }
+                    attacked = true;                    
                     break;
                 }
             }

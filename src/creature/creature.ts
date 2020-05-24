@@ -343,7 +343,6 @@ export class Creature extends Tile {
     act() {
 
     }
-
     handleEvent(e) {
         
     }
