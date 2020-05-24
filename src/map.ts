@@ -206,7 +206,7 @@ export class Map {
         	}
         }        
         for (let a of this.agents) {
-            //a.draw();
+            a.draw();
         }
         for (let p of this.particles) {
             p.draw();            

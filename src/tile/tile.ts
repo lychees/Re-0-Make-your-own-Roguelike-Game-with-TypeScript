@@ -14,6 +14,11 @@ export function add_shadow(c1) {
     return c2;
 }
 
+
+/**
+ * @class Tile, 地砖， Roguelike 是一个 tile-based 游戏 https://en.wikipedia.org/wiki/Roguelike 
+ * @param {ROT.Scheduler} scheduler
+ */
 export class Tile {
     name: string;
     ch: string;

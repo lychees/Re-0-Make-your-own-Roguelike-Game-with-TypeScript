@@ -1,86 +1,15 @@
 import * as ROT from "rot-js";
 import * as Utils from "../utils/utils"
 import { game } from "../main";
-import { Map, Box, Tile, add_shadow } from "../map";
+import { Map, Box } from "../map";
 import * as Undead from "../creature/monster/undead";
 import * as Creature from "../creature/creature";
+import * as Tile from "../tile/tile";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
 
-
-class Wall extends Tile {
-    constructor() {
-        super();        
-        this.ch = "墻"
-        this.color = "#fff";
-        this.pass = false;
-        this.light = false;
-    }
-}
-
-class Stone extends Tile {
-    constructor() {
-        super();
-        this.ch = "."
-        this.color = "#666";
-        this.pass = true;
-        this.light = true;
-    }
-}
-
-class Grass extends Tile {
-    constructor() {
-        super();        
-        this.ch = "."
-        this.color = "#2f2";
-        this.pass = true;
-        this.light = true;
-    }
-}
-
-export class Door extends Tile {
-    name: string;
-    ch: string;
-    color: string;
-    pass: any;
-    light: any;
-
-    trigger(who?: any) {
-        if (this.pass == false) {            
-            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
-            if (who && who.logs) who.logs.notify("你打開了門");
-            this.ch = "門";
-            this.pass = true;
-            this.light = true;
-        } else {
-            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
-            if (who && who.logs) who.logs.notify("你關上了門");
-            this.ch = "關";
-            this.pass = false;
-            this.light = false;
-        }
-    }
-    constructor() {      
-        super();  
-        this.ch = "門";
-        this.color = "#eee";
-        this.pass = true;
-        this.light = true;
-    }    
-}
-
-class Tree extends Tile {
-    constructor() {
-        super();
-        this.ch = "樹"
-        this.color = "#1f1";
-        this.pass = false;
-        this.light = false;
-    }
-}
-
-class Stair extends Tile {
+class Stair extends Tile.Tile {
 
     target: any;
 
@@ -205,7 +134,7 @@ export class Dungeon extends Map {
         dungeon.create((x, y, value) => {
             if (value) return; 
             var key = x + "," + y;
-            this.layer[key].push(new Stone());
+            this.layer[key].push(new Tile.Stone());
             this.free_cells.push([x, y]);
         });
 
@@ -213,7 +142,7 @@ export class Dungeon extends Map {
             for (let y=0;y<h;++y) {                
                 let key = x+','+y;
                 if (this.layer[key].length == 0) {
-                    this.layer[key].push(new Wall());
+                    this.layer[key].push(new Tile.Wall());
                 }
             }
         }        
@@ -222,7 +151,7 @@ export class Dungeon extends Map {
             for (let y=0;y<h;++y) {
                 let key = x+','+y;
                 if (Utils.dice(6) <= 2 && this.isDoor(x, y)) {                                        
-                    this.layer[key].push(new Door());
+                    this.layer[key].push(new Tile.Door());
                 }
             }
         }
@@ -264,21 +193,13 @@ export class Dungeon extends Map {
             if (a.z > b.z) return 1;
             return 0;
         });
-
-        /*
-        for (let i=0;i<2;++i) {
-            let p = Utils.pop_random(this.free_cells);
-            let t = new Upstair();
-            let key = p[0]+','+p[1];
-            this.layer[key] = t;
-        }
-
+    
         for (let i=0;i<5;++i) {
             let p = Utils.pop_random(this.free_cells);
             let t = new Box();
             let key = p[0]+','+p[1];
             this.layer[key].push(t);
-        } */
+        }
     }
 
     generate_next_level() {         
@@ -333,7 +254,7 @@ export class Rogue_Encampment extends Map {
         for (let x=0;x<w;++x) {
             for (let y=0;y<h;++y) {            
                 let key = x + ',' + y;
-                this.layer[key].push(new Tree());
+                this.layer[key].push(new Tile.Tree());
             }
         }
         
@@ -345,7 +266,7 @@ export class Rogue_Encampment extends Map {
             if (value) return; 
             var key = x + "," + y;
             this.layer[key] = [];
-            this.layer[key].push(new Grass());
+            this.layer[key].push(new Tile.Grass());
             this.free_cells.push([x, y]);
             this.shadow[key] = '#fff';
         });
@@ -364,12 +285,12 @@ export class Rogue_Encampment extends Map {
                 this.layer[key] = [];            
                 if ((x == lx || x == rx || y == ly || y == ry)) {
                     if (y == ry && w/2-dn < x && x < w/2+dn || (x == lx || x == rx) && h/4-dn < y && y < h/4+dn) {
-                        this.layer[key].push(new Stone());
+                        this.layer[key].push(new Tile.Stone());
                     } else {
-                        this.layer[key].push(new Wall());
+                        this.layer[key].push(new Tile.Wall());
                     }
                 } else {
-                    this.layer[key].push(new Stone());
+                    this.layer[key].push(new Tile.Stone());
                 }
             }
         }
