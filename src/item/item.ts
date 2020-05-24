@@ -64,7 +64,45 @@ export class Item extends Utils.Element {
         }
         taker.logs.notify(taker.name + " 從 " + this.owner.name + " 身上拿走了 " + this.name);        
         taker.inventory.push(this);
-    }    
+    }
+
+    sell() {
+        alert('買不起');
+    }
+}
+/**
+ * @class 安琪拉區域的金幣，很重
+ */
+export class Aquaria_Copper_Coin extends Item {
+    constructor() {
+        super();
+        this.db = 1; this.DB = 1;
+        this.ch = "。";
+        this.color = "#dc9";
+        this.weight = 30;
+        this.value = 1;
+    }
+}
+
+export class Aquaria_Silver_Coin extends Item {
+    constructor() {
+        super();
+        this.db = 1; this.DB = 1;
+        this.ch = "。";
+        this.color = "#ddd";
+        this.weight = 40;
+        this.value = 1000;
+    }
+}
+export class Aquaria_Gold_Coin extends Item {
+    constructor() {
+        super();
+        this.db = 1; this.DB = 1;
+        this.ch = "。";
+        this.color = "#ff3";
+        this.weight = 50;
+        this.value = 1000000000;
+    }
 }
 
 export * as Equip from "./equip/equip";

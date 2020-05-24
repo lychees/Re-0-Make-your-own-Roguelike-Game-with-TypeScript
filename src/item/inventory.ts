@@ -13,11 +13,10 @@ export class ItemMenu extends Menu {
 
         let info = [];
         
-
         if (item.owner.team == 'NPC') {
             info.push({
                 title: "買",
-//                click: item.eat.bind(item)
+                click: item.sell.bind(item, game.player)
             });
         }
         else {
