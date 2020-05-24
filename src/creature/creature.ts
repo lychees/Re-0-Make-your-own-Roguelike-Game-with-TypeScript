@@ -74,7 +74,25 @@ export class Creature extends Tile {
     equipment: Equipment;
     buffs : Array<Buff.Buff>;
     run_buff: Buff.Buff;
-        
+
+    // Alignment
+    // https://en.wikipedia.org/wiki/Alignment_(Dungeons_%26_Dragons)#Axes
+    alignment_law: number;
+    alignment_good: number;
+
+    // Mood
+    // https://zh.wikipedia.org/wiki/%E5%BF%83%E5%A2%83
+    mood_happy: number;
+    mood_angry: number;
+    mood_social: number;
+
+    // Personality
+    // https://zh.wikipedia.org/wiki/%E9%82%81%E7%88%BE%E6%96%AF-%E5%B8%83%E9%87%8C%E6%A0%BC%E6%96%AF%E6%80%A7%E6%A0%BC%E5%88%86%E9%A1%9E%E6%B3%95#MBTI_%E6%B8%AC%E8%A9%A6%E7%9A%84%E5%9B%9B%E5%80%8B%E7%B6%AD%E5%BA%A6
+    personality_extraversion: number;
+    personality_sensing: number;
+    personality_thinking: number;
+    personality_judging: number;
+
     constructor(x: number, y: number) {
         super();
         this.name = "生物";
@@ -267,6 +285,39 @@ export class Creature extends Tile {
     modify_int(d: number) {
         this.int += d;        
     }
+
+    modify_alignment_law(d: number) {
+        this.alignment_law += d;
+        if (d > 0) {
+            if (this.alignment_law > 10) this.alignment_law = 10;
+            this.logs.notify("你的 守序 傾向增加了" + d + " 點");
+        }
+        if (d < 0) {
+            if (this.alignment_law < -10) this.alignment_law = -10;
+            this.logs.notify("你的 混亂 傾向增加了" + d + " 點");
+        }
+    }
+    modify_alignment_good(d: number) {        
+        if (d > 0) {
+            this.alignment_good += d;   
+            if (this.alignment_good > 10) this.alignment_law = 10;
+            this.logs.notify("你的 善良 傾向增加了 " + d + " 點");
+        }
+        if (d < 0) {
+            d = -d;
+            this.alignment_good -= d;   
+            if (this.alignment_good < -10) this.alignment_good = -10;
+            this.logs.notify("你的 邪惡 傾向增加了 " + d + " 點");
+        }
+    }
+    modify_alignment_good_to(t: number, d?: number) {
+        if (d == undefined) d = 1;
+        if (this.alignment_good > t) {
+            this.modify_alignment_good(-1);
+        } else if (this.alignment_good < t) {
+            this.modify_alignment_good(1);
+        }
+    }    
     
     hp_healing(d: number): number {
         d = Math.min(d, this.HP - this.hp);
