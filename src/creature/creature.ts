@@ -2,9 +2,7 @@ import * as Utils from "../utils/utils";
 import { game } from "../main";
 
 import { add_shadow } from "../map";
-
 //import { add_shadow } from "../tile/tile";
-
 import { Tile } from "../tile/tile";
 
 import { Logs } from "../logs";
@@ -56,12 +54,11 @@ export function attack(alice, bob) {
 }
 
 export class Creature extends Tile {
-    name: string;
+    
     x: number;
     y: number;
     z: number;
     ch: string;
-    color: string;
     dir: number;
     
     atk: {}; 

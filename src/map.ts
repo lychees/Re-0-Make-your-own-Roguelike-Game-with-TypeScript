@@ -3,6 +3,9 @@ import { game, event } from "./main";
 import { Creature } from "./creature/creature";
 import { Apple } from "./item/food";
 import * as Particle from "./particle/particle"
+import { Tile } from "./tile/tile"
+export { Tile } from "./tile/tile"
+
 
 export function add_shadow(c1) {
     if (c1[0] !== '#') {
@@ -17,26 +20,6 @@ export function add_shadow(c1) {
     let c2 = '#' + String.fromCharCode(r) + String.fromCharCode(g) + String.fromCharCode(b);    
     return c2;
 }
-
-export class Tile {
-    name: string;
-    ch: string;
-    color: string;
-    pass: any;
-    light: any;
-
-    constructor() {        
-    }
-    draw(x: number, y: number, s: string, bg?: string){
-        if (!bg) bg = '#000';
-        if (s === '#fff') {
-            game.display.draw(x, y, this.ch, this.color, bg);
-        } else if (s === '#555') {
-            game.display.draw(x, y, this.ch, add_shadow(this.color), bg);
-        }
-    }
-}
-
 
 export class Box extends Tile {
 
