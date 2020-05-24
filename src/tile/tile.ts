@@ -3,7 +3,7 @@ import { game } from "../main";
 import * as Creature from "../creature/creature"
 import { CharacterMenu } from "../UI/character";
 
-function add_shadow(c1: string) {
+export function add_shadow(c1) {
     if (c1[0] !== '#') {
         return c1;
     }    

@@ -1,19 +1,19 @@
-import * as ROT from "rot-js";
 import * as Utils from "../utils/utils";
-import $ from "jquery";
 import { game } from "../main";
+
 import { add_shadow } from "../map";
+
+//import { add_shadow } from "../tile/tile";
+
+import { Tile } from "../tile/tile";
 
 import { Logs } from "../logs";
 import { Inventory } from "../item/inventory";
-import * as Item from "../item/item";
 import { hostile } from "../AI/hostile";
 import { slime_hostile } from "../AI/slime_hostile";
 
 import { Injured } from "../buff";
-import * as Elf from "./elf";
 import * as Buff from "../buff";
-import * as Particle from "../particle/particle";
 import * as Corpse from "../tile/corpse"
 import { Equipment } from "../item/equipment";
 
@@ -55,7 +55,7 @@ export function attack(alice, bob) {
     }
 }
 
-export class Creature {
+export class Creature extends Tile {
     name: string;
     x: number;
     y: number;
@@ -81,6 +81,7 @@ export class Creature {
     run_buff: Buff.Buff;
         
     constructor(x: number, y: number) {
+        super();
         this.name = "生物";
         this.x = x;
         this.y = y;
@@ -292,6 +293,9 @@ export class Creature {
         (new Injured(d)).append(this);
     }
     draw() {
+        // TODO(minakokojima): figure it out...
+        //super.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, game.map.shadow[this.x+','+this.y]);        
+        
         let s = game.map.shadow[this.x+','+this.y];        
         if (s === '#fff') {
             game.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
