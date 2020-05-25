@@ -1,8 +1,5 @@
 import * as Utils from "../utils/utils";
 import { game } from "../main";
-
-import { add_shadow } from "../map";
-//import { add_shadow } from "../tile/tile";
 import { Tile } from "../tile/tile";
 
 import { Logs } from "../logs";
@@ -344,15 +341,7 @@ export class Creature extends Tile {
         (new Injured(d)).append(this);
     }
     draw() {
-        // TODO(minakokojima): figure it out...
-        //super.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, game.map.shadow[this.x+','+this.y]);        
-        
-        let s = game.map.shadow[this.x+','+this.y];        
-        if (s === '#fff') {
-            game.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, this.color);
-        } else if (s === '#555') {
-            game.display.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, this.ch, add_shadow(this.color));
-        }
+        super.draw(this.x - game.camera.x + game.camera.ox, this.y - game.camera.y + game.camera.oy, game.map.shadow[this.x+','+this.y]);
     }
     dead(murderer: any) {        
         
