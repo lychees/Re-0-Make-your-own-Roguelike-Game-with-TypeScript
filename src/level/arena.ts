@@ -2,7 +2,8 @@ import * as ROT from "rot-js";
 import * as Utils from "../utils/utils"
 import { game } from "../main";
 import { Player, Rat, Snake, Orc, Slime } from "../creature/creature";
-import { Map, Box, Tile, add_shadow } from "../map";
+import { Map, Box, Tile } from "../map";
+
 import * as Undead from "../creature/monster/undead";
 
 const MAP_WIDTH = 80;

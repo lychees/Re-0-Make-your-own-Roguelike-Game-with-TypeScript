@@ -4,21 +4,9 @@ import { Creature } from "./creature/creature";
 import { Apple } from "./item/food";
 import * as Particle from "./particle/particle"
 import { Tile } from "./tile/tile"
+import { dice } from "./utils/utils";
+import { Aquaria_Gold_Coin, Aquaria_Silver_Coin } from "./item/item";
 export { Tile } from "./tile/tile"
-
-export function add_shadow(c1: string) {
-    if (c1[0] !== '#') {
-        return c1;
-    }    
-    let r = c1.charCodeAt(1); if (r >= 97) r -= 97 - 10; else r -= 48;
-    let g = c1.charCodeAt(2); if (g >= 97) g -= 97 - 10; else g -= 48;
-    let b = c1.charCodeAt(3); if (b >= 97) b -= 97 - 10; else b -= 48;
-    r = Math.floor(r / 2) + 48;
-    g = Math.floor(g / 2) + 48;
-    b = Math.floor(b / 2) + 48;
-    let c2 = '#' + String.fromCharCode(r) + String.fromCharCode(g) + String.fromCharCode(b);    
-    return c2;
-}
 
 export class Box extends Tile {
 
@@ -30,7 +18,11 @@ export class Box extends Tile {
         this.color = "#ee1";
         this.pass = true;
         this.light = true;
-        this.item = new Apple();
+        if (dice(6) < 2) {
+            this.item = new Apple();
+        } else {
+            this.item = new Aquaria_Silver_Coin();
+        }
     }    
     enter(who: any) {
         if (this.item != null) {
@@ -211,6 +203,6 @@ export class Map {
         for (let p of this.particles) {
             p.draw();            
         }
-        //this.gen_shadow(game.player, '#555');
+        this.gen_shadow(game.player, '#555');
     }
 }

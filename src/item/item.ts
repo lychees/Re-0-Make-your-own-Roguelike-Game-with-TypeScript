@@ -75,6 +75,7 @@ export class Item extends Utils.Element {
 export class Aquaria_Copper_Coin extends Item {
     constructor() {
         super();
+        this.name = "安琪拉銅幣";
         this.db = 1; this.DB = 1;
         this.ch = "。";
         this.color = "#dc9";
@@ -83,24 +84,26 @@ export class Aquaria_Copper_Coin extends Item {
     }
 }
 
-export class Aquaria_Silver_Coin extends Item {
+export class Aquaria_Silver_Coin extends  Aquaria_Copper_Coin {
     constructor() {
         super();
+        this.name = "安琪拉銀幣";
         this.db = 1; this.DB = 1;
         this.ch = "。";
         this.color = "#ddd";
         this.w = 40;
-        this.value = 1000;
+        this.value *= 1000;
     }
 }
-export class Aquaria_Gold_Coin extends Item {
+export class Aquaria_Gold_Coin extends  Aquaria_Silver_Coin {
     constructor() {
         super();
+        this.name = "安琪拉金幣";
         this.db = 1; this.DB = 1;
         this.ch = "。";
         this.color = "#ff3";
         this.w = 50;
-        this.value = 1000000000;
+        this.value *= 1000;
     }
 }
 
