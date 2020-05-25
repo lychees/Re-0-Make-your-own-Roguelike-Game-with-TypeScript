@@ -83,6 +83,9 @@ export class Player extends Elf.Isabella {
         this.inventory.push(new Item.Equip.Accessory.MP_Ring());
         this.inventory.push(new Item.Food.Apple());
         this.inventory.push(new Item.Food.Banana());
+        this.inventory.push(new Item.Potion.HP_Potion());
+        this.inventory.push(new Item.Potion.MP_Potion());
+        this.inventory.push(new Item.Potion.SP_Potion());
     }
     dead(murderer: any) {
         super.dead(murderer);

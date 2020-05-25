@@ -177,6 +177,23 @@ export class MP_Talent extends Buff {
     }
 }
 
+export class Str_Talent extends Buff {
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.str = lv;
+        if (lv > 0) {
+            this.name = "強壯";
+            this.description = "這個單位看起來很強壯\n";
+        } else {
+            this.name = "虚弱";
+            this.description = "這個單位看起來很瘦弱\n";
+        }        
+        this.description += this.parse();
+    }    
+}
+
 export class Int_Talent extends Buff {    
     lv: number;
     constructor(lv: number) {
@@ -184,10 +201,10 @@ export class Int_Talent extends Buff {
         this.lv = lv;
         this.int = lv;
         if (lv > 0) {
-            this.name = "天資聰穎";
+            this.name = "聰穎";
             this.description = "這個單位的智力異於常人\n";
         } else {
-            this.name = "頭腦簡單";
+            this.name = "愚笨";
             this.description = "這個單位的智力弱於常人\n";
         }        
         this.description += this.parse();
@@ -218,11 +235,45 @@ export class Con_Talent extends Buff {
         this.lv = lv;
         this.con = lv;
         if (lv > 0) {
-            this.name = "強壯";
+            this.name = "健壮";
             this.description = "這個單位看起來很強壯\n";
         } else {
             this.name = "瘦弱";
             this.description = "這個單位看起來很瘦弱\n";
+        }        
+        this.description += this.parse();
+    }    
+}
+
+export class Wis_Talent extends Buff {
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.con = lv;
+        if (lv > 0) {
+            this.name = "灵敏";
+            this.description = "這個單位的感知异于常人\n";
+        } else {
+            this.name = "迟钝";
+            this.description = "這個單位的感知弱于常人\n";
+        }        
+        this.description += this.parse();
+    }    
+}
+
+export class Cha_Talent extends Buff {
+    lv: number;
+    constructor(lv: number) {
+        super();
+        this.lv = lv;
+        this.con = lv;
+        if (lv > 0) {
+            this.name = "魅力";
+            this.description = "這個單位的魅力提高了\n";
+        } else {
+            this.name = "生厌";
+            this.description = "這個單位的魅力降低了\n";
         }        
         this.description += this.parse();
     }    

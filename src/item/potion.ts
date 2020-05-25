@@ -17,8 +17,10 @@ export class Potion extends Item.Item {
     constructor() {
         super();
         this.db = 2; this.DB = 2;
+        this.hp = 0; this.mp = 0; this.sp = 0;
     }
-    eat() {
+    eat() {        
+        game.SE.playSE("Diablo/drink.wav");
         this.db -= 1;
         let hp = this.owner.hp_healing(Utils.rand(this.hp));
         let mp = this.owner.mp_healing(Utils.rand(this.mp));
@@ -44,7 +46,6 @@ export class Potion extends Item.Item {
 export class HP_Potion extends Potion {    
     eat() {
         super.eat();
-        game.SE.playSE("吃.wav");
     }
     use() {
         this.eat();
@@ -62,7 +63,6 @@ export class HP_Potion extends Potion {
 export class MP_Potion extends Potion {    
     eat() {
         super.eat();
-        game.SE.playSE("吃.wav");
     }
     use() {
         this.eat();
@@ -80,7 +80,6 @@ export class MP_Potion extends Potion {
 export class SP_Potion extends Potion {    
     eat() {
         super.eat();
-        game.SE.playSE("吃.wav");
     }
     use() {
         this.eat();

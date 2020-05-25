@@ -14,6 +14,7 @@ import { Chat } from "./chat";
 
 import { _, Events } from "./utils/event";
 import { Rogue_Encampment } from "./map/Rogue_Encampment";
+import { Linzh } from "./creature/human";
 
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 25;
@@ -58,9 +59,16 @@ class Game {
         this.score = 0;
      //   let p = Utils.pop_random(this.map.free_cells);
 //        game.player = new Player(p[0], p[1]);
+        
         game.player = new Player(40, 10);
         this.characterMenu.parent = game.player;
         this.map.agents.push(game.player);
+
+        let linzh = new Linzh(39, 11);
+        this.map.agents.push(linzh);
+
+        game.player.team = 
+        linzh.team = "player";
 
         this.camera = new Camera();
 
@@ -129,9 +137,7 @@ class Game {
                 $('#saveNotify').css('opacity', 1).animate({opacity: 0}, 1000, 'linear');
                 Engine._lastNotify = Date.now();
             }*/
-
-//            console.log(game.player);
-            
+//            console.log(game.player);            
   //          localStorage.gameState = JSON.stringify(game.player);
             localStorage.gameState = JSON.stringify(game.player.logs);  
             return localStorage.gameState;

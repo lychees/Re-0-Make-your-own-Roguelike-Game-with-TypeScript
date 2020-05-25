@@ -117,3 +117,15 @@ export class 瓦瑞夫 extends Human {
         this.team = 'NPC';        
     }
 }
+
+export class Linzh extends Human {
+    constructor(x: number, y: number) {
+        super(x, y);
+        this.name = "Linzh";
+        this.ch = "澪";
+        this.color = "#77d";
+        this.team = 'Player';
+        (new Buff.Int_Talent(1)).append(this);              
+        (new Buff.Wis_Talent(1)).append(this);        
+    }
+}

@@ -19,6 +19,7 @@ export class Food extends Item.Item {
         this.db = 2; this.DB = 2;
     }
     eat() {
+        game.SE.playSE("eat.wav");
         this.db -= 1;
         let hp = this.owner.hp_healing(Utils.rand(this.hp));
         let mp = this.owner.mp_healing(Utils.rand(this.mp));
@@ -43,8 +44,7 @@ export class Food extends Item.Item {
 
 export class Apple extends Food {    
     eat() {
-        super.eat();
-        game.SE.playSE("吃.wav");
+        super.eat();        
     }
     use() {
         this.eat();

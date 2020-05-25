@@ -41,6 +41,13 @@ export class ItemMenu extends Menu {
                 });
             }
 
+            if (item instanceof Item.Potion.Potion) {
+                info.push({
+                    title: "使用",
+                    click: item.eat.bind(item)
+                });
+            }
+
             info.push({
                 title: "丟棄",
                 click: item.drop.bind(item)
