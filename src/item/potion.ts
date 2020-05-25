@@ -55,7 +55,7 @@ export class HP_Potion extends Potion {
         this.ch = "o";
         this.color = "#f22";        
         this.hp = 10;
-        this.description = "一瓶生命藥劑";
+        this.description = "一瓶" + this.name;
     }
 }
 
@@ -69,11 +69,11 @@ export class MP_Potion extends Potion {
     }
     constructor() {
         super();
-        this.name = "生命藥劑";
+        this.name = "魔法藥劑";
         this.ch = "o";
         this.color = "#f22";        
         this.mp = 10;
-        this.description = "一瓶生命藥劑";
+        this.description = "一瓶" + this.name;
     }
 }
 
@@ -87,10 +87,10 @@ export class SP_Potion extends Potion {
     }
     constructor() {
         super();
-        this.name = "生命藥劑";
+        this.name = "體力藥劑";
         this.ch = "o";
         this.color = "#f22";        
         this.sp = 5;
-        this.description = "一瓶生命藥劑";
+        this.description = "一瓶" + this.name;
     }
 }

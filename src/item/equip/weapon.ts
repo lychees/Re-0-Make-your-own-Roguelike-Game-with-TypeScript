@@ -69,13 +69,13 @@ function gen_suffix() {
     if (t == 1) {
         this.name += ' 木製的';
         b.atk['d1'] -= dice(6);
-        this.weight = Math.floor(this.weight/5);
+        this.w = Math.floor(this.w/5);
         this.DB = Math.floor(this.DB/5);
         this.value = Math.floor(this.value/10);        
     } if (t == 2) {
         this.name += ' 青銅的';
         b.atk['d1'] -= dice(2);
-        this.weight = Math.floor(this.weight/2);
+        this.w = Math.floor(this.w/2);
         this.DB = Math.floor(this.DB/2);
         this.value = Math.floor(this.value/2);        
     } else if (t == 3) {
@@ -108,7 +108,7 @@ export class Sword extends Weapon {
         this.name = "短劍";
         this.ch = "༒";
         this.cd = 30;
-        this.weight = 10000;
+        this.w = 10000;
         this.value = 1000;
         this.description = "一把短劍\n";
 
@@ -130,7 +130,7 @@ export class Long_Sword extends Sword {
         super();                
         this.name = "長劍";
         this.description = "一把長劍\n";
-        this.weight = 12000;        
+        this.w = 12000;        
 
         let b = new Buff();
         b.name = "長劍";
@@ -153,7 +153,7 @@ export class Board_Sword extends Sword {
         super();                
         this.name = "闊劍";
         this.description = "一把闊劍\n";
-        this.weight = 20000;
+        this.w = 20000;
         this.value = 2000;
         
         let b = new Buff();
@@ -185,7 +185,7 @@ export class Spear extends Weapon {
         this.name = "|";
         this.ch = "槍";
         this.description = "一把槍\n";
-        this.weight = 20000;    
+        this.w = 20000;    
         this.value = 1000;      
         this.cd = 40; 
 
@@ -238,7 +238,7 @@ export class Dagger extends Weapon {
         this.name = "匕首";
         this.ch = "🗡️";
         this.description = "一把匕首\n";
-        this.weight = 2000;
+        this.w = 2000;
         this.value = 500;
         this.cd = 10;
 
@@ -261,7 +261,7 @@ export class Dirk extends Dagger {
         this.name = "长匕首";
         this.ch = "🗡️";
         this.description = "一把長匕首\n";
-        this.weight = 2000;
+        this.w = 2000;
         this.value = 500;
         this.cd = 15;
 

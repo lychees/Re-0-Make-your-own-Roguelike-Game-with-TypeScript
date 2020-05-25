@@ -403,6 +403,24 @@ div.tooltip:hover {
 	z-index: -1;
 }
 
+.abilitiesMenuRightTitle {
+	display: inline-block;
+	font-weight: bold;
+	position: relative;
+	top: -10px;
+}
+
+.abilitiesMenuRightTitle:after {
+	background-color: white;
+	bottom: 32%;
+	content: " ";
+	height: 15px;	
+	left: 0;
+	position: absolute;
+	width: 100%;
+	z-index: -1;
+}
+
 
 /* Events */
 

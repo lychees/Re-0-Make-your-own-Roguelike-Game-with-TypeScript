@@ -84,6 +84,11 @@ export class Inventory {
     }
 
     push(item: any) {
+
+        if (this.owner != undefined) {
+            this.owner.w += item.w;
+        }
+
         item.owner = this.owner;
         this.items.push(item);
         this.draw();

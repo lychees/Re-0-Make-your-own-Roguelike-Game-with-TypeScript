@@ -56,7 +56,6 @@ export class Creature extends Tile {
     x: number;
     y: number;
     z: number;
-    ch: string;
     dir: number;
     
     atk: {}; 
@@ -95,6 +94,9 @@ export class Creature extends Tile {
     personality_thinking: number;
     personality_judging: number;
 
+    // 负重
+    w: number; W: number;
+
     constructor(x: number, y: number) {
         super();
         this.name = "生物";
@@ -105,15 +107,16 @@ export class Creature extends Tile {
         this.dir = 1;
         this.z = 1;
 
-        this.atk = {}; 
+        this.atk = {};
         this.def = 0;
-        
+                
         this.hp = 0; this.HP = 0;
         this.mp = 0; this.MP = 0;
         this.sp = 0; this.SP = 0;
 
         this.str = 0; this.dex = 0; this.con = 0;
-        this.int = 0; this.wis = 0; this.cha = 0;        
+        this.int = 0; this.wis = 0; this.cha = 0;
+        this.w = 0; this.W = 10;
         this.logs = new Logs();
         
         this.inventory = new Inventory(); this.inventory.owner = this;
@@ -141,8 +144,8 @@ export class Creature extends Tile {
                         z -= Utils.dice(parseInt(a.substr(1)));
                     }
                 }
-            }        
-        }        
+            }
+        }
         return Math.max(0, z);
     }
 
@@ -171,7 +174,7 @@ export class Creature extends Tile {
     }
 
     parse_hp_buffs() {
-        let z = "";                
+        let z = "";
         z += "+" + (this.con * 5) + " HP 來自 體質\n";        
         for (const b of this.buffs) {
             let t = b.parse_hp();

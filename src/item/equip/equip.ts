@@ -43,7 +43,7 @@ export class Equip extends Item.Item {
         this.name = "裝備";        
         this.ch = "(";
         this.description = "一件裝備";
-        this.weight = 10000;
+        this.w = 10000;
         this.value = 1000;   
         this.DB = 10;
     }

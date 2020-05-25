@@ -170,6 +170,10 @@ $( "#character" ).click(function() {
 });
 
 $( "#inventory" ).click(function() {
+    game.characterMenu.toggle(game.player);
+});
+
+$( "#save" ).click(function() {
 
         event.startEvent({
             title: _('Export / Import'),
