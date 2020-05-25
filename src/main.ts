@@ -24,8 +24,8 @@ class Game {
     display: any;
     map: any;
     team: Array<Creature>;
-    active_player: Player;
-    player: Player;
+    active_player: Creature;
+    player: Creature;
     camera: Camera;
     SE: Sound;
     score: number;
@@ -57,37 +57,14 @@ class Game {
         //this.map = new Map0();
 
         this.map = new Rogue_Encampment();
+        this.camera = new Camera();
+        game.player.focus();
+
          //this.map = new Ch0_Boss();
         this.score = 0;
      //   let p = Utils.pop_random(this.map.free_cells);
 //        game.player = new Player(p[0], p[1]);
         
-        game.player = new Player(40, 10);
-        this.characterMenu.parent = game.player;
-        this.map.agents.push(game.player);
-
-        let linzh = new Linzh(19, 11);
-        this.map.agents.push(linzh);
-
-        linzh.act = game.player.act.bind(linzh);
-        linzh.handleEvent = game.player.handleEvent.bind(linzh);
-
-
-        game.player.team = "player";
-        linzh.team = "player";
-
-        this.camera = new Camera();
-        game.player.focus();
-
-        this.team = [];
-        this.team.push(game.player);
-        this.team.push(linzh);
-
-        for (let t of this.team) {
-            game.player = t;
-            this.draw();
-        }
-
         this.chat.initialize();
 
         this.scheduler = new ROT.Scheduler.Action();
@@ -96,7 +73,11 @@ class Game {
         }
         this.engine = new ROT.Engine(this.scheduler);
         this.engine.start();
-        this.draw();
+
+        for (let t of game.team) {
+            game.player = t;
+            this.draw();
+        }        
     }
     reschedule() {
         this.scheduler.clear();

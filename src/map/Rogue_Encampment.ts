@@ -342,7 +342,6 @@ export class Rogue_Encampment extends Map {
             this.layer[key].push(down);
             this.dungeon.layer[key].push(up); 
         }
-
         
         for (let i=0;i<5;++i) {
             let p = Utils.pop_random(this.free_cells);
@@ -350,5 +349,22 @@ export class Rogue_Encampment extends Map {
             let key = p[0]+','+p[1];
             this.layer[key].push(t);
         }
+
+        game.player = new Creature.Player(40, 10);
+        game.characterMenu.parent = game.player;
+        this.agents.push(game.player);
+
+        let linzh = new Creature.Human.Linzh(40, 11);
+        this.agents.push(linzh);
+
+        linzh.act = game.player.act.bind(linzh);
+        linzh.handleEvent = game.player.handleEvent.bind(linzh);
+
+        game.player.team = "player";
+        linzh.team = "player";
+
+        game.team = [];
+        game.team.push(game.player);
+        game.team.push(linzh);
     }
 }

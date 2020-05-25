@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
 import * as Utils from "../utils/utils";
-import { game } from "../main";
+import { game, event as eventt } from "../main";
 
 import * as Elf from "./elf";
 import * as Item from "../item/item";
@@ -91,6 +91,96 @@ export class Player extends Elf.Isabella {
         this.logs.notify("眼前一片漆黑，你掛了")
         game.SE.playSE("狂父/[びたちー]少女（悲鳴）.ogg");
     }
+
+    react() {
+        let btns = [
+            {
+                text: "对话",
+                nextScene: 'talk',
+            },
+            {
+                text: "交換",
+                onChoose: game.characterMenu.toggle.bind(game.characterMenu, this)
+            },            {
+                text: "命令",
+                nextScene: 'command',
+            },
+            {
+                text: '再見',                
+            },
+        ];
+      
+        let options = {
+            title: this.name,
+            scenes: {
+                'command': {
+                    text: [
+                        '那麼接下來？'
+                    ],  
+                    buttons: [
+                        {
+                            text: '跟隨',
+                            onChoose: this.modify_alignment_good.bind(game.player, 1)
+                        },
+                        {
+                            text: '待命',
+                            onChoose: this.modify_alignment_good_to.bind(game.player, 0)
+                        },
+                        {
+                            text: '委任',
+                            onChoose: this.modify_alignment_good.bind(game.player, -1)
+                        },
+                        {
+                            text: '多人同機',
+                            onChoose: this.modify_alignment_good.bind(game.player, -1)
+                        },
+                        {
+                            text: '網絡通信',
+                            onChoose: this.modify_alignment_good.bind(game.player, -1)
+                        },
+                    ]  
+                },
+                'start': {
+                    text: [
+                        '你好，陌生人。',
+                    ],
+                    buttons: btns
+                },
+                'talk': {
+                    text: [
+                        '我是阿卡拉，目盲之眼这个修女会的高等女教士。欢迎你们来到我们的营地, 但恐怕我们只能在这些危壁之中, 提供简陋的避风之处。\
+                        你可以看到，我们古老的修女会已经陷入奇怪的诅咒中。我们用来看守通往东方大门的伟大城塞, 已经被邪恶的女恶魔 —— 安达利尔所占领。',
+                        '我到现在还无法相信…但是她把许多曾经是我们姊妹的萝格们变成我们的敌人，并把我们赶出祖先留下来的家园。现在，最后一个修女会的守护者，可能早就死亡或是在荒野中倒下了。\
+                        我恳求你，陌生人，请你帮助我们。找到一个方法去除这个可怕的诅咒, 我们就以对你不变的忠诚为代价。'
+                    ],  
+                    buttons: [
+                        {
+                            text: '應允',
+                            onChoose: this.modify_alignment_good.bind(game.player, 1)
+                        },
+                        {
+                            text: '沈默',
+                            onChoose: this.modify_alignment_good_to.bind(game.player, 0)
+                        },
+                        {
+                            text: '拒絕',
+                            onChoose: this.modify_alignment_good.bind(game.player, -1)
+                        },
+                    ]          
+                }
+            }
+        };
+
+        /*
+        buttons: {
+            'see you': {
+                text: '再見',
+            },
+        }     */     
+
+        eventt.startEvent(options);
+    }
+    
     act() {
         game.draw();
         game.active_player = this;        
@@ -217,6 +307,9 @@ export class Player extends Elf.Isabella {
             }
 
             if (!attacked) {
+
+                //console.log(xx, yy);
+
                 if (game.map.pass(xx, yy)) {
                     game.camera.move(d[0], d[1]);
                     this.x = xx;
