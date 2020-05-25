@@ -1,6 +1,7 @@
 import * as ROT from "rot-js";
 import * as Utils from "../utils/utils";
 import { game, event as eventt } from "../main";
+import { follow } from "../AI/follow";
 
 import * as Elf from "./elf";
 import * as Item from "../item/item";
@@ -120,7 +121,7 @@ export class Player extends Elf.Isabella {
                     buttons: [
                         {
                             text: '跟隨',
-                            onChoose: this.modify_alignment_good.bind(game.player, 1)
+                            onChoose: this.act = follow.bind(this)
                         },
                         {
                             text: '待命',
@@ -299,7 +300,7 @@ export class Player extends Elf.Isabella {
                         a.react();
                     } else {                    
                         attack(this, a);
-                        game.player.logs.printMessage;
+                        //game.player.logs.printMessage;
                     }
                     attacked = true;                    
                     break;
@@ -308,7 +309,7 @@ export class Player extends Elf.Isabella {
 
             if (!attacked) {
 
-                //console.log(xx, yy);
+                console.log(xx, yy); // ？
 
                 if (game.map.pass(xx, yy)) {
                     game.camera.move(d[0], d[1]);

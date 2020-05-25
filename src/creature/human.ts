@@ -128,4 +128,7 @@ export class Linzh extends Human {
         (new Buff.Int_Talent(1)).append(this);              
         (new Buff.Wis_Talent(1)).append(this);        
     }
+    react(){
+        
+    }
 }

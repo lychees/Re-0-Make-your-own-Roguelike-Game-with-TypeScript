@@ -25,7 +25,7 @@ class Game {
     map: any;
     team: Array<Creature>;
     active_player: Creature;
-    player: Creature;
+    player: any;
     camera: Camera;
     SE: Sound;
     score: number;
@@ -62,8 +62,8 @@ class Game {
 
          //this.map = new Ch0_Boss();
         this.score = 0;
-     //   let p = Utils.pop_random(this.map.free_cells);
-//        game.player = new Player(p[0], p[1]);
+     // let p = Utils.pop_random(this.map.free_cells);
+//      game.player = new Player(p[0], p[1]);
         
         this.chat.initialize();
 

@@ -359,6 +359,7 @@ export class Rogue_Encampment extends Map {
 
         linzh.act = game.player.act.bind(linzh);
         linzh.handleEvent = game.player.handleEvent.bind(linzh);
+        linzh.react = game.player.react.bind(linzh);
 
         game.player.team = "player";
         linzh.team = "player";
