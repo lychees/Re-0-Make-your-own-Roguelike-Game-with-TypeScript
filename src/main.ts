@@ -2,7 +2,7 @@ import * as ROT from "rot-js";
 import * as Utils from "./utils/utils";
 import $ from "jquery";
 import { Camera } from "./utils/camera";
-import { Player } from "./creature/creature";
+import { Player, Creature } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
 import { Ch0_Boss } from "./level/lv0";
@@ -23,7 +23,9 @@ class Game {
     
     display: any;
     map: any;
-    player: Player;    
+    team: Array<Creature>;
+    active_player: Player;
+    player: Player;
     camera: Camera;
     SE: Sound;
     score: number;
@@ -67,10 +69,23 @@ class Game {
         let linzh = new Linzh(39, 11);
         this.map.agents.push(linzh);
 
+        linzh.act = game.player.act.bind(linzh);
+        linzh.handleEvent = game.player.handleEvent.bind(linzh);
+
+
         game.player.team = 
         linzh.team = "player";
 
         this.camera = new Camera();
+
+        this.team = [];
+        this.team.push(game.player);
+        this.team.push(linzh);
+
+        for (let t of this.team) {
+            game.player = t;
+            this.draw();
+        }
 
         this.chat.initialize();
 
@@ -111,6 +126,14 @@ class Game {
         $("#MP > .tooltip").text(p.parse_mp_buffs());
         $("#SP > .row_key").text("SP:" + this.player.sp + "/" + this.player.SP);
         $("#SP > .tooltip").text(p.parse_sp_buffs()); 
+    }
+
+    next_player() {
+        for (let i=0;i<game.team.length;++i) {
+            if (game.player == game.team[i]) {
+                return game.team[i==game.team.length-1?0:i+1];
+            }
+        }
     }
 
     draw() {     

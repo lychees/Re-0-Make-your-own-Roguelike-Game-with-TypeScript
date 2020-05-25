@@ -66,7 +66,6 @@ export class Fireball extends Skill {
     }
 }
 
-
 export class Player extends Elf.Isabella {
 
     constructor(x: number, y: number) {
@@ -94,11 +93,19 @@ export class Player extends Elf.Isabella {
     }
     act() {
         game.draw();
-        game.engine.lock();
+        game.active_player = this;        
+        game.player = this;
+        game.draw();
+        game.engine.lock();        
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
+        
+        event.preventDefault();
+        
+        let code = e.keyCode;        
         let keyMap = {};
+        
 
         keyMap[ROT.KEYS.VK_UP] = 0; 
         keyMap[33] = 1;
@@ -110,11 +117,15 @@ export class Player extends Elf.Isabella {
         keyMap[36] = 7;
         
 
+        if (game.player !== game.active_player) {            
+            game.SE.playSE("select.wav");
+            return;
+        }
 
-        let code = e.keyCode;
-       
-        if (keyMap[code] != undefined) {
-            event.preventDefault();
+        if (code == ROT.KEYS.VK_TAB) {
+            game.player = game.next_player();
+            game.draw();
+            game.SE.playSE("Wolf RPG Maker/[01S]cursor.ogg");                        
         }
 
         if (game.characterMenu.opened == true) {
@@ -122,8 +133,7 @@ export class Player extends Elf.Isabella {
             return;
         }
         
-        if (code == ROT.KEYS.VK_I) {                        
-            // this.inventory.open();
+        if (code == ROT.KEYS.VK_I) { 
             game.characterMenu.toggle(game.player);
             return;
         }
@@ -144,15 +154,7 @@ export class Player extends Elf.Isabella {
 
 
         if (code == 13 || code == 32) {
-            //var key = this.x + "," + this.y;
-            //let t = game.map.layer[key];
-            game.map.enter(this.x, this.y, this);
-            /*if (t) {                
-                if (t.enter) {
-                    t.enter(this);
-                } else {
-                }
-            }*/
+            game.map.enter(this.x, this.y, this);            
             return;
         }
 

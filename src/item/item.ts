@@ -84,7 +84,7 @@ export class Aquaria_Copper_Coin extends Item {
     }
 }
 
-export class Aquaria_Silver_Coin extends  Aquaria_Copper_Coin {
+export class Aquaria_Silver_Coin extends Aquaria_Copper_Coin {
     constructor() {
         super();
         this.name = "安琪拉銀幣";
