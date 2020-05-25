@@ -66,17 +66,18 @@ class Game {
         this.characterMenu.parent = game.player;
         this.map.agents.push(game.player);
 
-        let linzh = new Linzh(39, 11);
+        let linzh = new Linzh(19, 11);
         this.map.agents.push(linzh);
 
         linzh.act = game.player.act.bind(linzh);
         linzh.handleEvent = game.player.handleEvent.bind(linzh);
 
 
-        game.player.team = 
+        game.player.team = "player";
         linzh.team = "player";
 
         this.camera = new Camera();
+        game.player.focus();
 
         this.team = [];
         this.team.push(game.player);
@@ -104,9 +105,12 @@ class Game {
         }
     }
     draw_abilities(p: any) {
+        /*
         $('#abilities div').each(function() {            
             $(this).remove();					
         });
+
+        $('#dashboard').attr('data_legend', p.name);
 
         for (let i=0;i<p.buffs.length;++i) {
             let b = p.buffs[i];
@@ -116,10 +120,11 @@ class Game {
             tip.appendTo(dom);
             name.appendTo(dom);            
             dom.appendTo('div#abilities');
-        }        
+        }   */     
     }
 
     draw_attributes(p: any) {
+        $('#perks').attr('data-legend', p.name);
         $("#HP > .row_key").text("HP:" + this.player.hp + "/" + this.player.HP);
         $("#HP > .tooltip").text(p.parse_hp_buffs());
         $("#MP > .row_key").text("MP:" + this.player.mp + "/" + this.player.MP);
@@ -138,9 +143,7 @@ class Game {
 
     draw() {     
         this.map.draw();
-
-        this.draw_attributes(this.player);
-        
+        this.draw_attributes(this.player);        
         /*
         let d = new Date();
         d.setTime(Math.floor(this.scheduler.getTime()));
@@ -153,7 +156,7 @@ class Game {
     saveGame() {
         if(typeof Storage != 'undefined' && localStorage) {
 
-/*            if(Engine._saveTimer != null) {
+/*          if(Engine._saveTimer != null) {
                 clearTimeout(Engine._saveTimer);
             }
             if(typeof Engine._lastNotify == 'undefined' || Date.now() - Engine._lastNotify > Engine.SAVE_DISPLAY){

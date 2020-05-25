@@ -111,13 +111,13 @@ export class Map {
         this.agents.splice(idx, 1);            
         target.map.agents.push(agent);
         agent.x = target.x; agent.y = target.y;
-        if (agent.ch === "伊") {
+        if (agent == game.active_player) {
             game.SE.playSE("Wolf RPG Maker/[Action]Steps1_Isooki.ogg");                          
             game.player.x = target.x;
             game.player.y = target.y;
             game.player.logs.notify("你进入了" + target.map.name);
             game.map = target.map;
-            game.camera.reload();
+            game.player.focus();
             game.reschedule();
             game.draw();
         }

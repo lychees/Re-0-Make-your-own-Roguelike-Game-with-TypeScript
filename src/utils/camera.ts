@@ -6,18 +6,8 @@ export class Camera {
     ox: number;
     oy: number;
 
-    reload() {
-        const o = game.display.getOptions();
-        const w = o.width, h = o.height;
-        this.x = game.player.x;
-        this.y = game.player.y;
-        this.ox = Math.floor(w/2)
-        this.oy = Math.floor(h/2);        
-        this.adjust();
-    }
-
     constructor() {        
-        this.reload();
+        //this.reload();
     }
 
     adjust() {

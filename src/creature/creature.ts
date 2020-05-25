@@ -385,6 +385,16 @@ export class Creature extends Tile {
         }
     }
 
+    focus() {
+        const o = game.display.getOptions();
+        const w = o.width, h = o.height;
+        game.camera.x = this.x;
+        game.camera.y = this.y;
+        game.camera.ox = Math.floor(w/2)
+        game.camera.oy = Math.floor(h/2);        
+        game.camera.adjust();
+    }
+
     act() {
 
     }

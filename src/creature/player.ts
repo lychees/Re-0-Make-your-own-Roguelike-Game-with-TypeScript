@@ -95,6 +95,7 @@ export class Player extends Elf.Isabella {
         game.draw();
         game.active_player = this;        
         game.player = this;
+        this.focus();
         game.draw();
         game.engine.lock();        
         window.addEventListener("keydown", this);
@@ -106,7 +107,6 @@ export class Player extends Elf.Isabella {
         let code = e.keyCode;        
         let keyMap = {};
         
-
         keyMap[ROT.KEYS.VK_UP] = 0; 
         keyMap[33] = 1;
         keyMap[ROT.KEYS.VK_RIGHT] = 2;
@@ -117,15 +117,12 @@ export class Player extends Elf.Isabella {
         keyMap[36] = 7;
         
 
-        if (game.player !== game.active_player) {            
-            game.SE.playSE("select.wav");
-            return;
-        }
-
-        if (code == ROT.KEYS.VK_TAB) {
+        if (game.player != game.active_player || code == ROT.KEYS.VK_TAB) {
             game.player = game.next_player();
+            game.player.focus();
             game.draw();
-            game.SE.playSE("Wolf RPG Maker/[01S]cursor.ogg");                        
+            game.SE.playSE("select.wav");
+            return;                  
         }
 
         if (game.characterMenu.opened == true) {
