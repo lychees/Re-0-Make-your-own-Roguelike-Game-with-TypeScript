@@ -30,14 +30,14 @@ export function follow() {
         visible[key] = true;
     });
 
-    const x = game.player.x, y = game.player.y;
+    const x = this.x, y = this.y;
 
 
     for (let dd=0;dd<4;++dd) {
         let d = ROT.DIRS[4][dd];    
         let xx = x + d[0];
         let yy = y + d[1];
-        if (xx == game.player_last_x && yy == game.player_last_y) {            
+        if (xx == game.player_last_x && yy == game.player_last_y) {    
             this.moveBy(d[0], d[1]);
             return;        
         }
@@ -52,13 +52,13 @@ export function follow() {
     var passableCallback = function(x, y) {
         return game.map.pass_without_agents(x, y);
     }
-    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
+    var astar = new ROT.Path.AStar(game.player.x, game.player.y, passableCallback, {topology:4});
 
     var path = [];
     var pathCallback = function(x, y) {
         path.push([x, y]);
     }
-    astar.compute(this.x, this.y, pathCallback);    
+    astar.compute(x, y, pathCallback);    
 
     path.shift();
     if (!path || path.length === 0) {      

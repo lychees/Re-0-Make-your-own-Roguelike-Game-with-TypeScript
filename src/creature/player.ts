@@ -203,12 +203,9 @@ export class Player extends Elf.Isabella {
     }
     handleEvent(e) {
 
-       // console.log(this.name, this.x, this.y);
+        console.log('--', this.name, this.x, this.y);
         
-        event.preventDefault();
-
-
-        
+        event.preventDefault();        
         let code = e.keyCode;        
         let keyMap = {};
         
@@ -350,12 +347,9 @@ export class Player extends Elf.Isabella {
             if (!attacked) {
                 if (game.map.pass(xx, yy)) {
 
+                    console.log(this.name, this.x, this.y);
                     game.player_last_x = this.x;
                     game.player_last_y = this.y; 
-
-                    console.log(game.player_last_x);
-                    console.log(game.player_last_y);
-
                     game.camera.move(d[0], d[1]);
                     this.x = xx;
                     this.y = yy;
