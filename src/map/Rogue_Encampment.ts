@@ -21,7 +21,12 @@ class Stair extends Tile.Tile {
         this.light = true;
     }    
     enter(who: any) {
-        game.map.move(who, this.target);        
+        // TODO:minakokojima (细化)
+        for (let t of game.team) {
+            game.map.move(t, this.target);
+        }
+
+        // game.map.move(who, this.target);        
     }
 }
 

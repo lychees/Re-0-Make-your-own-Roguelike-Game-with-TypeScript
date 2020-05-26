@@ -4,15 +4,6 @@ import { game } from "../main";
 import { random_move } from "./random_move";
 
 export function hostile() {
-    if (this.hp <= 0) return;
-
-   /*if (this.hp != this.HP) {
-        if (dice(6) == 1) {
-            this.act = random_move.bind(this);
-            this.act();
-        }
-        return;
-    }*/
 
     let fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
         return game.map.light(x, y);

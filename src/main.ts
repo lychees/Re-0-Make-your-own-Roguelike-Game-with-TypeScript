@@ -35,13 +35,15 @@ class Game {
     characterMenu: any;
 
     chat: Chat;
+    player_last_x: any;
+    player_last_y: any;
 
     constructor() {
         this.chat = new Chat();
     }
 
     init() {
-
+        
         game.display = new ROT.Display({
             width: DISPLAY_WIDTH,
             height: DISPLAY_HEIGHT,
@@ -76,7 +78,10 @@ class Game {
         for (let t of game.team) {
             game.player = t;
             this.draw();
-        }        
+        }
+
+        this.player_last_x = -1;
+        this.player_last_y = -1;
     }
     reschedule() {
         this.scheduler.clear();

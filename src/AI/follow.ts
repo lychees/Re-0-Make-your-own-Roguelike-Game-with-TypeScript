@@ -17,7 +17,7 @@ export function swap(p: any) {
 }
 
 export function follow() {
-    if (this.hp <= 0) return;
+    game.scheduler.setDuration( 4000 );
 
     let fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
         return game.map.light(x, y);
@@ -32,13 +32,22 @@ export function follow() {
 
     const x = game.player.x, y = game.player.y;
 
+
+    for (let dd=0;dd<4;++dd) {
+        let d = ROT.DIRS[4][dd];    
+        let xx = x + d[0];
+        let yy = y + d[1];
+        if (xx == game.player_last_x && yy == game.player_last_y) {            
+            this.moveBy(d[0], d[1]);
+            return;        
+        }
+    }
+
     let key = x+','+y;
     if (!visible[key]) {
         // random_move.bind(this)();
         return;
     }
-
-    game.scheduler.setDuration( 4000 );
 
     var passableCallback = function(x, y) {
         return game.map.pass_without_agents(x, y);

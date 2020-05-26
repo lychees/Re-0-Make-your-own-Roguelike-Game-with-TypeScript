@@ -8,6 +8,7 @@ import * as Item from "../item/item";
 import * as Buff from "../buff";
 import * as Particle from "../particle/particle";
 import * as Corpse from "../tile/corpse";
+import * as AI from "../AI/AI";
 
 import { attack, Creature } from "./creature";
 
@@ -130,11 +131,14 @@ export class Player extends Elf.Isabella {
                         },
                         {
                             text: '待命',
-                            onChoose: this.modify_alignment_good_to.bind(game.player, 0)
+                            onChoose: () => {
+                                this.act = AI.stand_by.bind(this);
+                            }
                         },
                         {
                             text: '委任',
-                            onChoose: this.modify_alignment_good.bind(game.player, -1)
+                            onChoose: () => {
+                            }
                         },
                         {
                             text: '多人同機',
@@ -188,7 +192,7 @@ export class Player extends Elf.Isabella {
     }
     
     act() {
-        console.log(this.name);
+        //console.log(this.name);
         game.draw();
         game.active_player = this;        
         game.player = this;
@@ -202,6 +206,8 @@ export class Player extends Elf.Isabella {
        // console.log(this.name, this.x, this.y);
         
         event.preventDefault();
+
+
         
         let code = e.keyCode;        
         let keyMap = {};
@@ -343,6 +349,13 @@ export class Player extends Elf.Isabella {
 
             if (!attacked) {
                 if (game.map.pass(xx, yy)) {
+
+                    game.player_last_x = this.x;
+                    game.player_last_y = this.y; 
+
+                    console.log(game.player_last_x);
+                    console.log(game.player_last_y);
+
                     game.camera.move(d[0], d[1]);
                     this.x = xx;
                     this.y = yy;
