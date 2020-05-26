@@ -2,6 +2,7 @@
 import * as ROT from "rot-js";
 import { game } from "../main";
 import { random_move } from "./random_move";
+import { Creature } from "../creature/creature";
 
 
 export function swap(p: any) {
@@ -17,7 +18,7 @@ export function swap(p: any) {
     game.scheduler.setDuration( 4000 );
 }
 
-export function follow() {
+export function act() {
     game.scheduler.setDuration( 4000 );
 
     let fov = new ROT.FOV.PreciseShadowcasting(function(x, y) {
@@ -67,4 +68,10 @@ export function follow() {
     } else {        
         this.moveTo(path[0][0], path[0][1]);
     }
+}
+
+export function follow(a: Creature, b: Creature) {
+    a.act = act.bind(a, b);
+    a.react = swap.bind(a, b);
+    a.shift_react = a.talk;
 }

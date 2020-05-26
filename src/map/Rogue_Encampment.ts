@@ -5,6 +5,7 @@ import { Map, Box } from "../map";
 import * as Undead from "../creature/monster/undead";
 import * as Creature from "../creature/creature";
 import * as Tile from "../tile/tile";
+import * as AI from "../AI/AI";
 
 const MAP_WIDTH = 60;
 const MAP_HEIGHT = 40;
@@ -362,9 +363,13 @@ export class Rogue_Encampment extends Map {
         let linzh = new Creature.Human.Linzh(40, 11);
         this.agents.push(linzh);
 
+        /*
         linzh.act = game.player.act.bind(linzh);
         linzh.handleEvent = game.player.handleEvent.bind(linzh);
         linzh.react = game.player.react.bind(linzh);
+        */
+        AI.local_player.bind(game.player)();
+        AI.follow(linzh, game.player); //, .act = game.player.act.bind(linzh);
 
         game.player.team = "player";
         linzh.team = "player";

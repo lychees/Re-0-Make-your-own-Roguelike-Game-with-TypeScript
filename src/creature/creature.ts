@@ -94,6 +94,7 @@ export class Creature extends Tile {
     // 负重
     w: number; W: number;
 
+
     constructor(x: number, y: number) {
         super();
         this.name = "生物";
@@ -394,7 +395,15 @@ export class Creature extends Tile {
         game.camera.oy = Math.floor(h/2);        
         game.camera.adjust();
     }
+    talk() {
+        
+    }
+    shift_react() {
 
+    }
+    react() {
+
+    }
     act() {
 
     }
