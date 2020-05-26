@@ -79,13 +79,13 @@ export class Door extends Tile {
 
     trigger(who?: any) {
         if (this.pass == false) {            
-            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア開.ogg");
+            if (who == game.player) game.SE.playSEs(["maoudamashii/door_open.ogg","On-Jin/door_open.ogg","On-Jin/door_open2.ogg"]);
             if (who && who.logs) who.logs.notify("你打開了門");
             this.ch = "門";
             this.pass = true;
             this.light = true;
         } else {
-            if (who == game.player) game.SE.playSE("魔王魂/[魔王]ドア強閉.ogg");
+            if (who == game.player) game.SE.playSEs(["maoudamashii/door_close.ogg","On-Jin/door_close.ogg","On-Jin/door_close2.ogg","On-Jin/door_close3.ogg"]);
             if (who && who.logs) who.logs.notify("你關上了門");
             this.ch = "關";
             this.pass = false;

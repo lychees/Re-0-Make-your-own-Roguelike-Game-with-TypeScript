@@ -142,8 +142,6 @@ export function local_player() {
         }
         
         let new_dir = keyMap[code];
-
-//        console.log(this.name, this.x, this.y);
         
         if (e.shiftKey) {                    
 
@@ -216,13 +214,17 @@ export function local_player() {
 
             if (!attacked) {
                 if (game.map.pass(xx, yy)) {
-
-                    console.log(this.name, this.x, this.y);
                     game.player_last_x = this.x;
                     game.player_last_y = this.y; 
                     game.camera.move(d[0], d[1]);
                     this.x = xx;
                     this.y = yy;
+                } else {
+                    let layer = game.map.layer[xx+','+yy];
+                    let tile = layer[layer.length - 1];                             
+                    if (tile.ch == '墻') {
+                        game.SE.playSE('On-Jin/hit.ogg');
+                    }
                 }
             }
         }

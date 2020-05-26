@@ -20,7 +20,7 @@ export class Potion extends Item.Item {
         this.hp = 0; this.mp = 0; this.sp = 0;
     }
     eat() {        
-        game.SE.playSEs(["Diablo/drink.wav", "On-Jin/[音人]吸盤.ogg"]);
+        game.SE.playSEs(["Diablo/drink.wav", "On-Jin/potion.ogg"]);
         
         this.db -= 1;
         let hp = this.owner.hp_healing(Utils.rand(this.hp));
