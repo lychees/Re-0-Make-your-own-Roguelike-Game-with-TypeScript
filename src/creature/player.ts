@@ -183,6 +183,7 @@ export class Player extends Elf.Isabella {
     }
     
     act() {
+        console.log(this.name);
         game.draw();
         game.active_player = this;        
         game.player = this;
@@ -192,6 +193,8 @@ export class Player extends Elf.Isabella {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
+
+        console.log(this.name, this.x, this.y);
         
         event.preventDefault();
         
@@ -206,6 +209,13 @@ export class Player extends Elf.Isabella {
         keyMap[35] = 5;
         keyMap[ROT.KEYS.VK_LEFT] = 6;
         keyMap[36] = 7;
+
+        if (code == ROT.KEYS.VK_Q) {
+            window.removeEventListener("keydown", this);
+            game.engine.unlock();
+
+            return;                  
+        }
         
 
         if (game.player != game.active_player || code == ROT.KEYS.VK_TAB) {
@@ -256,6 +266,8 @@ export class Player extends Elf.Isabella {
         }
         
         let new_dir = keyMap[code];
+
+//        console.log(this.name, this.x, this.y);
         
         if (e.shiftKey) {                    
 
@@ -308,9 +320,6 @@ export class Player extends Elf.Isabella {
             }
 
             if (!attacked) {
-
-                console.log(xx, yy); // ？
-
                 if (game.map.pass(xx, yy)) {
                     game.camera.move(d[0], d[1]);
                     this.x = xx;

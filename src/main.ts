@@ -2,7 +2,7 @@ import * as ROT from "rot-js";
 import * as Utils from "./utils/utils";
 import $ from "jquery";
 import { Camera } from "./utils/camera";
-import { Player, Creature } from "./creature/creature";
+import { Creature } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
 import { Map0 } from "./level/arena";
 import { Ch0_Boss } from "./level/lv0";
@@ -14,7 +14,6 @@ import { Chat } from "./chat";
 
 import { _, Events } from "./utils/event";
 import { Rogue_Encampment } from "./map/Rogue_Encampment";
-import { Linzh } from "./creature/human";
 
 const DISPLAY_WIDTH = 40;
 const DISPLAY_HEIGHT = 25;

@@ -365,7 +365,7 @@ export class Rogue_Encampment extends Map {
         linzh.team = "player";
 
         game.team = [];
-        game.team.push(game.player);
         game.team.push(linzh);
+        game.team.push(game.player);        
     }
 }
