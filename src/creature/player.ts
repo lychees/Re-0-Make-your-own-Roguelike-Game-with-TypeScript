@@ -125,7 +125,7 @@ export class Player extends Elf.Isabella {
                             text: '跟隨',
                             onChoose: () => {
                                 this.act = follow.follow.bind(this);
-                                this.shift_react = this.react;
+                                this.shift_react = this.react;                                
                                 this.react = follow.swap.bind(this, game.player);
                             }
                         },
@@ -158,22 +158,19 @@ export class Player extends Elf.Isabella {
                 },
                 'talk': {
                     text: [
-                        '我是阿卡拉，目盲之眼这个修女会的高等女教士。欢迎你们来到我们的营地, 但恐怕我们只能在这些危壁之中, 提供简陋的避风之处。\
-                        你可以看到，我们古老的修女会已经陷入奇怪的诅咒中。我们用来看守通往东方大门的伟大城塞, 已经被邪恶的女恶魔 —— 安达利尔所占领。',
-                        '我到现在还无法相信…但是她把许多曾经是我们姊妹的萝格们变成我们的敌人，并把我们赶出祖先留下来的家园。现在，最后一个修女会的守护者，可能早就死亡或是在荒野中倒下了。\
-                        我恳求你，陌生人，请你帮助我们。找到一个方法去除这个可怕的诅咒, 我们就以对你不变的忠诚为代价。'
+                        '嗯？'
                     ],  
                     buttons: [
                         {
-                            text: '應允',
+                            text: '。。。',
                             onChoose: this.modify_alignment_good.bind(game.player, 1)
                         },
                         {
-                            text: '沈默',
+                            text: '哦。',
                             onChoose: this.modify_alignment_good_to.bind(game.player, 0)
                         },
                         {
-                            text: '拒絕',
+                            text: '今天天气不错。',
                             onChoose: this.modify_alignment_good.bind(game.player, -1)
                         },
                     ]          
@@ -202,9 +199,6 @@ export class Player extends Elf.Isabella {
         window.addEventListener("keydown", this);
     }
     handleEvent(e) {
-
-        console.log('--', this.name, this.x, this.y);
-        
         event.preventDefault();        
         let code = e.keyCode;        
         let keyMap = {};
@@ -295,6 +289,7 @@ export class Player extends Elf.Isabella {
                     if (a.x === xx && a.y === yy && a.hp > 0) {
                         if (a.shift_react) {
                             a.shift_react();
+                            return;
                         } else {                    
                             attack(this, a);
                         }
@@ -335,6 +330,7 @@ export class Player extends Elf.Isabella {
                 if (a.x === xx && a.y === yy && a.hp > 0) {
                     if (a.react) {
                         a.react();
+                        return;
                     } else {                    
                         attack(this, a);
                         //game.player.logs.printMessage;

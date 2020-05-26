@@ -13,6 +13,7 @@ export function swap(p: any) {
     this.y = p.y;
     p.y = t;
 
+    game.draw();
     game.scheduler.setDuration( 4000 );
 }
 
