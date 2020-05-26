@@ -3,6 +3,19 @@ import * as ROT from "rot-js";
 import { game } from "../main";
 import { random_move } from "./random_move";
 
+
+export function swap(p: any) {
+    let t = this.x;
+    this.x = p.x;
+    p.x = t;
+
+    t = this.y;
+    this.y = p.y;
+    p.y = t;
+
+    game.scheduler.setDuration( 4000 );
+}
+
 export function follow() {
     if (this.hp <= 0) return;
 

@@ -1,7 +1,7 @@
 import * as ROT from "rot-js";
 import * as Utils from "../utils/utils";
 import { game, event as eventt } from "../main";
-import { follow } from "../AI/follow";
+import * as follow from "../AI/follow";
 
 import * as Elf from "./elf";
 import * as Item from "../item/item";
@@ -68,6 +68,7 @@ export class Fireball extends Skill {
 }
 
 export class Player extends Elf.Isabella {
+    shift_react: () => void;
 
     constructor(x: number, y: number) {
         super(x, y);
@@ -121,7 +122,11 @@ export class Player extends Elf.Isabella {
                     buttons: [
                         {
                             text: '跟隨',
-                            onChoose: this.act = follow.bind(this)
+                            onChoose: () => {
+                                this.act = follow.follow.bind(this);
+                                this.shift_react = this.react;
+                                this.react = follow.swap.bind(this, game.player);
+                            }
                         },
                         {
                             text: '待命',
@@ -194,7 +199,7 @@ export class Player extends Elf.Isabella {
     }
     handleEvent(e) {
 
-        console.log(this.name, this.x, this.y);
+       // console.log(this.name, this.x, this.y);
         
         event.preventDefault();
         
@@ -275,16 +280,34 @@ export class Player extends Elf.Isabella {
             let xx = this.x + d[0];
             let yy = this.y + d[1];
             let layer = game.map.layer[xx+','+yy];
-            let door = layer[layer.length - 1];
+            let door = layer[layer.length - 1];         
+            let attacked = true;   
             if (door.ch == "門" || door.ch == "關") {
                 door.trigger(this);
                 game.scheduler.setDuration( 2000 );
             } else {
+                let attacked = false;
+                for (let i=0;i<game.map.agents.length;++i) {
+                    let a = game.map.agents[i];
+                    if (a.x === xx && a.y === yy && a.hp > 0) {
+                        if (a.shift_react) {
+                            a.shift_react();
+                        } else {                    
+                            attack(this, a);
+                        }
+                        attacked = true;                    
+                        break;
+                    }
+                }
+            }
+            if (!attacked) {
                 this.logs.notify("你向四處張望");
                 if (Utils.rand(5) == 0) this.sp_healing(1);            
                 game.scheduler.setDuration( 1000 );
             }
         } else {
+
+            
             let d = ROT.DIRS[8][new_dir];
             let xx = this.x + d[0];
             let yy = this.y + d[1];
@@ -307,7 +330,6 @@ export class Player extends Elf.Isabella {
             for (let i=0;i<game.map.agents.length;++i) {
                 let a = game.map.agents[i];
                 if (a.x === xx && a.y === yy && a.hp > 0) {
-
                     if (a.react) {
                         a.react();
                     } else {                    
