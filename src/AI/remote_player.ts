@@ -203,7 +203,7 @@ export function local_player() {
                 let a = game.map.agents[i];
                 if (a.x === xx && a.y === yy && a.hp > 0) {
                     if (a.react) {
-                        a.react(this);
+                        a.react();
                         return;
                     } else {                    
                         attack(this, a);

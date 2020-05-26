@@ -396,13 +396,13 @@ export class Creature extends Tile {
         game.camera.adjust();
     }
     talk() {
-        
+
     }
     shift_react() {
 
     }
-    react() {
-
+    react(p: Creature) {
+        attack(p, this);
     }
     act() {
 
