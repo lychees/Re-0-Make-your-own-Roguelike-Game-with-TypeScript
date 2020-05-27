@@ -56,13 +56,13 @@ class Game {
        
         console.log( $(game.display.getContainer().Node) );
         $('#ROT>canvas').mousedown(function(e) {
-            alert(123);
+            let y = e.offsetY;
+            let x = e.offsetX ; 
+            x /= 24; x = Math.floor(x); x += game.camera.x - game.camera.ox; x += 1;
+            y /= 24; y = Math.floor(y); y += game.camera.y - game.camera.oy;
+            let l = game.map.layer[x+','+y];
+            alert(x + ',' + y + ',' + l[l.length-1].ch);
         });
-
-        console.log($('#ROT>canvas'));
-
-
-        console.log($('#ROT>canvas').mousedown);
      
         this.SE = new Sound();
         this.characterMenu = new CharacterMenu();
