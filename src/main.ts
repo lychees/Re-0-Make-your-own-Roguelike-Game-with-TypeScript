@@ -50,7 +50,20 @@ class Game {
             fontSize: 24,            
             fontFamily: 'sans-serif',
         });
-        document.body.replaceChild(game.display.getContainer(), document.getElementById('canvas'));
+
+
+        $('#ROT')[0].replaceChild(game.display.getContainer(), document.getElementById('canvas'));
+       
+        console.log( $(game.display.getContainer().Node) );
+        $('#ROT>canvas').mousedown(function(e) {
+            alert(123);
+        });
+
+        console.log($('#ROT>canvas'));
+
+
+        console.log($('#ROT>canvas').mousedown);
+     
         this.SE = new Sound();
         this.characterMenu = new CharacterMenu();
         
