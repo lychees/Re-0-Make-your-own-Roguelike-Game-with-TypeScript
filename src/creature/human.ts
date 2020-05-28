@@ -5,6 +5,7 @@ import * as Item from "../item/item";
 import { hostile } from "../AI/hostile";
 import { game, event as eventt } from "../main";
 import * as AI from "../AI/AI";
+import * as Planes_Walker from "../planes_walker/planes_walker";
 
 export class Human extends Creature {
     constructor(x: number, y: number) {
@@ -142,6 +143,13 @@ export class Linzh extends Human {
             },            {
                 text: "命令",
                 nextScene: 'command',
+            },
+            {
+                text: "切磋旅法牌",
+                onChoose: () => {
+                    game.planes_walker = new Planes_Walker.Battle(this, game.player);
+                    game.draw();
+                }
             },
             {
                 text: '再見',                

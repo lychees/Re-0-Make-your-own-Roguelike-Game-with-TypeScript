@@ -38,6 +38,8 @@ class Game {
     player_last_x: any;
     player_last_y: any;
 
+    planes_walker: any;
+
     constructor() {
         this.chat = new Chat();
     }
@@ -48,7 +50,7 @@ class Game {
             width: DISPLAY_WIDTH,
             height: DISPLAY_HEIGHT,
             fontSize: 24,            
-            fontFamily: 'sans-serif',
+            fontFamily: 'Verdana' //Arial //'sans-serif',
         });
 
 
@@ -141,13 +143,10 @@ class Game {
 
     draw() {     
         this.map.draw();
-        this.draw_attributes(this.player);        
-        /*
-        let d = new Date();
-        d.setTime(Math.floor(this.scheduler.getTime()));
-        $("#TIME > .row_key").text(d.toUTCString());
-        $("#SCORE > .row_key").text("SCORE:" + game.score);
-        */
+        this.draw_attributes(this.player);
+        if (this.planes_walker) {
+            this.planes_walker.draw();
+        }
     }
 
 
