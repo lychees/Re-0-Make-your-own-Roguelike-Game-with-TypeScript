@@ -1,6 +1,6 @@
 import * as ROT from "rot-js";
-import * as Utils from "./utils/utils";
 import $ from "jquery";
+import * as Utils from "./utils/utils";
 import { Camera } from "./utils/camera";
 import { Creature } from "./creature/creature";
 //import { Map0 } from "./level/lv0";
